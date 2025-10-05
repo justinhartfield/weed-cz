@@ -1,0 +1,4 @@
+# Netlify redirects
+/blog  /blog.html  200
+/regions  /regions.html  200
+/categories  /categories.html  200
