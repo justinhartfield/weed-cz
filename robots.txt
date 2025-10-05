@@ -1,0 +1,11 @@
+# Robots.txt for Weed.cz
+User-agent: *
+Allow: /
+Disallow: /js/
+Disallow: /css/
+
+# Sitemap
+Sitemap: https://weed.cz/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
