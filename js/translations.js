@@ -15,6 +15,10 @@ const TRANSLATIONS = {
     'nav_seed_banks': 'Seed Banky',
     'nav_grow_shops': 'Grow Shopy',
     'nav_medical': 'Lékárny',
+    'nav_blog': 'Blog',
+    'section_blog': '📝 Cannabis Průvodce',
+    'section_blog_subtitle': 'Komplexní články o konopí v České republice',
+    'btn_all_articles': 'Všechny články',
     
     // Homepage
     'hero_title': '🌿 Najděte Cannabis v České Republice',
@@ -112,6 +116,10 @@ const TRANSLATIONS = {
     'nav_seed_banks': 'Seed Banks',
     'nav_grow_shops': 'Grow Shops',
     'nav_medical': 'Pharmacies',
+    'nav_blog': 'Blog',
+    'section_blog': '📝 Cannabis Guide',
+    'section_blog_subtitle': 'Comprehensive articles about cannabis in Czech Republic',
+    'btn_all_articles': 'All articles',
     
     // Homepage
     'hero_title': '🌿 Find Cannabis in Czech Republic',
