@@ -8,17 +8,17 @@ let currentCategory = '';
 function initializeFilters(category) {
     currentCategory = category;
     
-    // Get businesses from weedData
-    if (typeof window.weedData === 'undefined' || !window.weedData.businesses) {
-        console.error('weedData not loaded');
+    // Get businesses from SITE_DATA
+    if (typeof window.SITE_DATA === 'undefined' || !window.SITE_DATA.businesses) {
+        console.error('SITE_DATA not loaded');
         return;
     }
     
     // Filter by category if specified
     if (category && category !== 'all') {
-        allBusinesses = window.weedData.businesses.filter(b => b.category === category);
+        allBusinesses = window.SITE_DATA.businesses.filter(b => b.category === category);
     } else {
-        allBusinesses = window.weedData.businesses;
+        allBusinesses = window.SITE_DATA.businesses;
     }
     
     filteredBusinesses = [...allBusinesses];
