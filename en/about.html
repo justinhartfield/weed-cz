@@ -29,7 +29,7 @@
                 <a href="/" class="logo"><img src="/../images/logo-horizontal.webp" alt="Weed.cz" style="height: 40px; width: auto;"></a>
                 
                 <div class="search-container">
-                    <input type="text" id="global-search" placeholder="Search Weed.cz..." class="search-input">
+                    <input type="text" id="header-search" placeholder="Weed.cz prohledávat..." style="padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; width: 200px; font-size: 14px;">
                     <button id="search-button" class="search-button">🔍</button>
                 </div>
                 
@@ -404,5 +404,22 @@
     <!-- Scripts -->
     <script src="../js/search.js"></script>
     <script src="../js/mobile-menu.js"></script>
+
+    <script>
+    // Header search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const headerSearch = document.getElementById('header-search');
+        if (headerSearch) {
+            headerSearch.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (query) {
+                        window.location.href = '/search.html?q=' + encodeURIComponent(query);
+                    }
+                }
+            });
+        }
+    });
+    </script>
 </body>
 </html>
