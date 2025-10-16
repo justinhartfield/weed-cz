@@ -18,33 +18,46 @@
 <body>
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
     
-    <header>
-        <div class="header-top">
-            🌿 Kompletní databáze 144+ cannabis lokací v České republice
-        </div>
-        <div class="header-main">
+        <!-- Header -->
+    <header class="header">
+        <div class="header-container">
             <a href="/" class="logo">WEED.CZ</a>
-            <div class="search-bar">
-                <input type="text" id="search-input" placeholder="Hledat obchody, produkty, města...">
+            <div class="header-search">
+                <input type="text" placeholder="Weed.cz prohledávat...">
             </div>
             <div class="header-actions">
-                <a href="/regions.html" class="btn btn-outline">Regiony</a>
-                <a href="/categories.html" class="btn btn-primary">Kategorie</a>
+                <select class="header-btn" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;">
+                    <option>CS</option>
+                    <option>EN</option>
+                </select>
             </div>
         </div>
     </header>
-    
-    <nav>
+
+    <!-- Navigation with Badges -->
+    <nav class="main-nav">
         <div class="nav-container">
-            <ul class="nav-links">
-                <li><a href="/">Domů</a></li>
-                <li><a href="/regions.html">Regiony</a></li>
-                <li><a href="/categories.html">Kategorie</a></li>
-                <li><a href="/cbd-shops.html">CBD Obchody</a></li>
-                <li><a href="/seed-banks.html">Seed Banky</a></li>
-                <li><a href="/medical.html">Lékárny</a></li>
-                <li><a href="/blog.html" data-i18n="nav_blog">Blog</a></li>
-            </ul>
+            <a href="/" class="nav-badge">
+                🏠 Domů
+            </a>
+            <a href="/cbd-shops.html" class="nav-badge pink">
+                🌿 CBD Obchody <span class="count">79</span>
+            </a>
+            <a href="/seed-banks.html" class="nav-badge orange">
+                🌱 Seed Banky <span class="count">21</span>
+            </a>
+            <a href="/grow-shops.html" class="nav-badge blue">
+                🌾 Grow Shopy <span class="count">23</span>
+            </a>
+            <a href="/medical.html" class="nav-badge green">
+                💊 Lékárny <span class="count">21</span>
+            </a>
+            <a href="/blog/" class="nav-badge yellow">
+                📝 Blog
+            </a>
+            <a href="/sitemap.html" class="nav-badge purple">
+                🗺️ Mapa stránek
+            </a>
         </div>
     </nav>
 
