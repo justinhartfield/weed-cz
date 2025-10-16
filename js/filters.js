@@ -162,6 +162,14 @@ function applyFilters() {
 function renderBusinessCards() {
     const container = document.getElementById('business-list');
     if (!container) return;
+
+    // Debug: Check if image function is available
+    if (typeof window.getBusinessThumbnail !== 'function') {
+        console.error('getBusinessThumbnail function not available!');
+    } else {
+        console.log('getBusinessThumbnail is available');
+    }
+
     
     if (filteredBusinesses.length === 0) {
         container.innerHTML = `
@@ -191,7 +199,7 @@ function createBusinessCard(business, index) {
     card.className = 'business-card';
     
     // Get business image
-    const imageUrl = typeof getBusinessThumbnail === 'function' ? getBusinessThumbnail(business.name, business.category) : '/images/businesses/cbd-shop-display.jpg';
+    const imageUrl = (typeof window.getBusinessThumbnail === 'function') ? window.getBusinessThumbnail(business.name, business.category) : '/images/businesses/cbd-shop-display.jpg';
     
     // Add colored border
     const colors = ['pink', 'orange', 'purple', 'green'];

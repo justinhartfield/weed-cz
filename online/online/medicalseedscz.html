@@ -86,8 +86,8 @@
             const businessName = "MedicalSeeds.cz";
             const category = document.querySelector('.badge-primary')?.textContent || 'Other';
             
-            if (typeof getBusinessImages === 'function') {
-                const images = getBusinessImages(businessName, category);
+            if (typeof window.getBusinessImages === 'function') {
+                const images = window.getBusinessImages(businessName, category);
                 const gallery = document.getElementById('business-gallery');
                 
                 if (images && images.length > 0) {
