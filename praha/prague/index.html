@@ -971,6 +971,66 @@
 
     
     <!-- Footer -->
+    
+        <!-- Filters Section -->
+        <section class="filters-section">
+            <div class="container">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label for="search-filter">🔍 Vyhledávání</label>
+                        <input type="text" id="search-filter" placeholder="Hledat podle názvu, města...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="city-filter">📍 Město</label>
+                        <select id="city-filter">
+                            <option value="">Všechna města</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="delivery-filter">🚚 Rozvoz</label>
+                        <select id="delivery-filter">
+                            <option value="">Vše</option>
+                            <option value="yes">Ano</option>
+                            <option value="no">Ne</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="online-filter">🛒 E-shop</label>
+                        <select id="online-filter">
+                            <option value="">Vše</option>
+                            <option value="yes">Ano</option>
+                            <option value="no">Ne</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sort-by">⬇️ Řadit podle</label>
+                        <select id="sort-by">
+                            <option value="name">Název</option>
+                            <option value="city">Město</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sort-order">🔄 Pořadí</label>
+                        <select id="sort-order">
+                            <option value="asc">A-Z</option>
+                            <option value="desc">Z-A</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="reset-btn" onclick="resetFilters()">↺ Reset</button>
+                <div class="results-count" id="results-count"></div>
+            </div>
+        </section>
+
+        <!-- Business Cards Grid -->
+        <section class="business-section">
+            <div class="container">
+                <div class="business-grid" id="business-list">
+                    <!-- Business cards will be loaded here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-content">
@@ -1011,5 +1071,32 @@
     <script src="../../js/data.js"></script>
     <script src="../../js/main.js"></script>
     <script src="/js/business-images.js"></script>
+
+    <script src="/js/data.js"></script>
+    <script src="/js/business-images.js"></script>
+    <script src="/js/filters.js"></script>
+    <script>
+        // Initialize filters for this region
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter by region/city
+            initializeFilters('all'); // Show all categories
+            
+            // Additional filtering by region if needed
+            const region = "praha";
+            const city = "prague";
+            
+            if (region !== 'all') {
+                // Apply region filter after initialization
+                setTimeout(() => {
+                    const searchFilter = document.getElementById('search-filter');
+                    if (searchFilter && city !== 'index.html') {
+                        searchFilter.value = city.replace(/-/g, ' ');
+                        searchFilter.dispatchEvent(new Event('input'));
+                    }
+                }, 500);
+            }
+        });
+    </script>
+
 </body>
 </html>
