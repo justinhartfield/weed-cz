@@ -191,7 +191,7 @@ function createBusinessCard(business, index) {
     card.className = 'business-card';
     
     // Get business image
-    const imageUrl = typeof getBusinessImage === 'function' ? getBusinessImage(business.name, business.category) : '/images/businesses/cannabis-shop-prague-generic.jpg';
+    const imageUrl = typeof getBusinessThumbnail === 'function' ? getBusinessThumbnail(business.name, business.category) : '/images/businesses/cbd-shop-display.jpg';
     
     // Add colored border
     const colors = ['pink', 'orange', 'purple', 'green'];
