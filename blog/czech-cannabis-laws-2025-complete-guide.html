@@ -76,36 +76,49 @@
     </script>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <a href="../index.html" class="logo">🌿 WEED.CZ</a>
-                <div class="header-right">
-                    <div class="search-container">
-                        <input type="text" class="search-input" placeholder="Hledat obchody, produkty, města..." data-i18n-placeholder="search_placeholder">
-                    </div>
-                    <div class="language-switcher">
-                        <button class="lang-btn active" data-lang="cs">CS</button>
-                        <button class="lang-btn" data-lang="en">EN</button>
-                    </div>
-                </div>
+        <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">WEED.CZ</a>
+            <div class="header-search">
+                <input type="text" placeholder="Weed.cz prohledávat...">
+            </div>
+            <div class="header-actions">
+                <select class="header-btn" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;">
+                    <option>CS</option>
+                    <option>EN</option>
+                </select>
             </div>
         </div>
     </header>
 
+    <!-- Navigation with Badges -->
     <nav class="main-nav">
-        <div class="container">
-            <ul class="nav-menu">
-                <li><a href="../index.html" data-i18n="nav_home">Domů</a></li>
-                <li><a href="../regions.html" data-i18n="nav_regions">Regiony</a></li>
-                <li><a href="../categories.html" data-i18n="nav_categories">Kategorie</a></li>
-                <li><a href="../cbd-shops.html" data-i18n="nav_cbd">CBD Obchody</a></li>
-                <li><a href="../seed-banks.html" data-i18n="nav_seeds">Seed Banky</a></li>
-                <li><a href="../medical.html" data-i18n="nav_medical">Lékárny</a></li>
-                <li><a href="../blog.html" data-i18n="nav_blog" class="active">Blog</a></li>
-            </ul>
+        <div class="nav-container">
+            <a href="/" class="nav-badge">
+                🏠 Domů
+            </a>
+            <a href="/cbd-shops.html" class="nav-badge pink">
+                🌿 CBD Obchody <span class="count">79</span>
+            </a>
+            <a href="/seed-banks.html" class="nav-badge orange">
+                🌱 Seed Banky <span class="count">21</span>
+            </a>
+            <a href="/grow-shops.html" class="nav-badge blue">
+                🌾 Grow Shopy <span class="count">23</span>
+            </a>
+            <a href="/medical.html" class="nav-badge green">
+                💊 Lékárny <span class="count">21</span>
+            </a>
+            <a href="/blog.html" class="nav-badge yellow">
+                📝 Blog
+            </a>
+            <a href="/sitemap.html" class="nav-badge purple">
+                🗺️ Mapa stránek
+            </a>
         </div>
     </nav>
+
 
     <div class="article-container">
         <article>
