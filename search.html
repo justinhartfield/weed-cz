@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Výsledky vyhledávání | Weed.cz - Cannabis Directory České Republiky</title>
+    <meta name="description" content="Výsledky vyhledávání v největší databázi cannabis obchodů, lékáren a služeb v České republice.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo"><img src="/images/logo-horizontal.png" alt="Weed.cz" style="height: 40px; width: auto;"></a>
+                
+                <div class="search-container">
+                    <input type="text" id="global-search" placeholder="Weed.cz prohledávat..." class="search-input">
+                    <button id="search-button" class="search-button">🔍</button>
+                </div>
+                
+                <div class="language-selector">
+                    <select id="language-select">
+                        <option value="cs">CS</option>
+                        <option value="en">EN</option>
+                    </select>
+                </div>
+            </div>
+            
+            <nav class="nav">
+                <a href="/" class="nav-item">
+                    🏠 Domů
+                </a>
+                <a href="/cbd-shops.html" class="nav-item">
+                    🍃 CBD Obchody <span class="badge badge-pink">79</span>
+                </a>
+                <a href="/seed-banks.html" class="nav-item">
+                    🌱 Seed Banky <span class="badge badge-orange">21</span>
+                </a>
+                <a href="/grow-shops.html" class="nav-item">
+                    🌾 Grow Shopy <span class="badge badge-blue">23</span>
+                </a>
+                <a href="/medical.html" class="nav-item">
+                    💊 Lékárny <span class="badge badge-green">21</span>
+                </a>
+                <a href="/blog.html" class="nav-item">
+                    📝 Blog <span class="badge badge-yellow">5</span>
+                </a>
+                <a href="/sitemap.html" class="nav-item">
+                    🗺️ Mapa stránek
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Search Results Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Výsledky vyhledávání</h1>
+                    <p id="results-count" class="section-subtitle"></p>
+                </div>
+                
+                <!-- Results Grid -->
+                <div id="search-results" class="business-grid">
+                    <!-- Results will be inserted here by JavaScript -->
+                    <div style="text-align: center; padding: 60px 20px;">
+                        <p style="color: #999;">Načítání výsledků...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">Weed.cz</h3>
+                    <p class="footer-text">Kompletní adresář cannabis obchodů, lékáren a služeb v České republice.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Kategorie</h4>
+                    <ul class="footer-links">
+                        <li><a href="/cbd-shops.html">CBD Obchody</a></li>
+                        <li><a href="/seed-banks.html">Seed Banky</a></li>
+                        <li><a href="/grow-shops.html">Grow Shopy</a></li>
+                        <li><a href="/medical.html">Lékárny</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Blog</h4>
+                    <ul class="footer-links">
+                        <li><a href="/blog.html">Všechny články</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Regiony</h4>
+                    <ul class="footer-links">
+                        <li><a href="/praha/">Praha</a></li>
+                        <li><a href="/jihomoravsky/">Brno</a></li>
+                        <li><a href="/online/">Online</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">O nás</h4>
+                    <ul class="footer-links">
+                        <li><a href="/about.html">O projektu</a></li>
+                        <li><a href="/contact.html">Kontakt</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Weed.cz - Cannabis Directory České Republiky</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/translations.js"></script>
+    <script src="js/business-images.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/mobile-menu.js"></script>
+</body>
+</html>
+

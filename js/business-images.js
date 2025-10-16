@@ -1,20 +1,21 @@
-// Business image mapping
+// Business image mapping - specific businesses with real photos
 const BUSINESS_IMAGES = {
   "Mr.Budz Cannabis Shop": ["mr-budz-exterior.webp", "mr-budz-interior-1.jpg", "mr-budz-interior-2.jpg"],
   "Hempo Cannabis Shop": ["hempo-exterior.jpg", "hempo-interior.jpg", "hempo-street.jpg"],
-  "Konopny Koutek CBD": ["konopny-koutek-interior-1.jpg", "konopny-koutek-interior-2.jpg", "konopny-koutek-interior-3.jpg"],
+  "Konopny Koutek CBD": ["konopny-koutek-interior-1.jpg", "konopny-koutek-interior-2.jpg", "konopny-koutek-interior-3.jpg", "konopny-koutek-interior-4.jpg", "konopny-koutek-products.jpg"],
   "Medical Seeds": ["medical-seeds-exterior.jpeg", "medical-seeds-exterior-2.jpeg"],
   "My-Garden growshop": ["my-garden-interior-1.jpeg", "my-garden-interior-2.jpeg"],
   "GrowShop Olomouc": ["growshop-olomouc-interior-1.jpeg", "growshop-olomouc-interior-2.jpeg", "growshop-olomouc-interior-3.jpg"]
 };
 
-// Generic fallback images by category
+// Generic fallback images by category - ensures all businesses have images
 const FALLBACK_IMAGES = {
   "CBD Retail Shop": "cbd-shop-prague-generic.webp",
-  "Seeds & Grow Shop": "cannabis-store-interior-generic.jpg",
-  "Seed Bank": "cannabis-store-interior-generic.jpg",
+  "Seeds & Grow Shop": "grow-shop-generic.jpg",
+  "Seed Bank": "nuka-seeds-product.webp",
   "Grow Shop": "cannabis-store-interior-generic.jpg",
-  "Medical Cannabis": "cannabis-shop-prague-generic.jpg"
+  "Medical Cannabis": "cannabis-shop-prague-generic.jpg",
+  "Online Shop": "cbd-shop-display.jpg"
 };
 
 /**
@@ -126,7 +127,10 @@ function openLightbox(index, images) {
  * Close lightbox
  */
 function closeLightbox() {
-  document.getElementById('image-lightbox').style.display = 'none';
+  const lightbox = document.getElementById('image-lightbox');
+  if (lightbox) {
+    lightbox.style.display = 'none';
+  }
 }
 
 /**
@@ -151,4 +155,3 @@ document.addEventListener('keydown', function(e) {
     closeLightbox();
   }
 });
-

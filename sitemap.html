@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
+    <link rel="icon" type="image/png" href="/images/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa Stránek | Weed.cz</title>
@@ -23,21 +24,24 @@
         }
         .sitemap-section {
             margin-bottom: 50px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         .sitemap-section h2 {
-            font-family: 'Arial Black', sans-serif;
             font-size: 32px;
-            color: var(--bud-green);
+            color: #3D2817;
             margin-bottom: 20px;
-            text-transform: uppercase;
-            border-bottom: 3px solid var(--leaf-green);
+            font-weight: 700;
+            border-bottom: 3px solid #D2691E;
             padding-bottom: 10px;
         }
         .sitemap-section h3 {
-            font-family: 'Arial Black', sans-serif;
             font-size: 24px;
-            color: var(--bud-green);
+            color: #3D2817;
             margin: 30px 0 15px 0;
+            font-weight: 600;
         }
         .sitemap-links {
             display: grid;
@@ -46,69 +50,76 @@
             margin-bottom: 20px;
         }
         .sitemap-links a {
-            color: var(--text-dark);
+            color: #2D4A2B;
             text-decoration: none;
             padding: 8px 12px;
-            background: var(--bg-light);
-            border-left: 3px solid var(--leaf-green);
-            transition: all 0.3s;
-            font-size: 14px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: block;
         }
         .sitemap-links a:hover {
-            background: var(--leaf-green);
-            color: white;
-            padding-left: 20px;
+            background-color: #FAF9F6;
+            color: #D2691E;
+            transform: translateX(4px);
         }
         .sitemap-count {
+            color: #999;
             font-size: 14px;
-            color: #666;
             margin-left: 8px;
-            font-weight: normal;
         }
     </style>
     <link rel="canonical" href="https://weed.cz/sitemap.html">
 </head>
 <body>
-    <header>
+    <!-- Header -->
+    <header class="header">
         <div class="container">
             <div class="header-content">
-                <a href="./index.html" class="logo">🌿 WEED.CZ</a>
-                <div class="header-right">
-                    <div class="search-container">
-                        <input type="text" class="search-input" placeholder="Hledat obchody, produkty, města...">
-                    </div>
-                    <div class="language-switcher">
-                        <button class="lang-btn active" data-lang="cs">CS</button>
-                        <button class="lang-btn" data-lang="en">EN</button>
-                    </div>
+                <a href="/" class="logo"><img src="/images/logo-horizontal.png" alt="Weed.cz" style="height: 40px; width: auto;"></a>
+                
+                <div class="search-container">
+                    <input type="text" id="global-search" placeholder="Weed.cz prohledávat..." class="search-input">
+                    <button id="search-button" class="search-button">🔍</button>
+                </div>
+                
+                <div class="language-selector">
+                    <select id="language-select">
+                        <option value="cs">CS</option>
+                        <option value="en">EN</option>
+                    </select>
                 </div>
             </div>
+            
+            <nav class="nav">
+                <a href="/" class="nav-item">
+                    🏠 Domů
+                </a>
+                <a href="/cbd-shops.html" class="nav-item">
+                    🍃 CBD Obchody <span class="badge badge-pink">79</span>
+                </a>
+                <a href="/seed-banks.html" class="nav-item">
+                    🌱 Seed Banky <span class="badge badge-orange">21</span>
+                </a>
+                <a href="/grow-shops.html" class="nav-item">
+                    🌾 Grow Shopy <span class="badge badge-blue">23</span>
+                </a>
+                <a href="/medical.html" class="nav-item">
+                    💊 Lékárny <span class="badge badge-green">21</span>
+                </a>
+                <a href="/blog.html" class="nav-item">
+                    📝 Blog <span class="badge badge-yellow">5</span>
+                </a>
+                <a href="/sitemap.html" class="nav-item active">
+                    🗺️ Mapa stránek <span class="badge badge-purple">190+</span>
+                </a>
+            </nav>
         </div>
     </header>
 
-    <nav class="main-nav">
+    <!-- Main Content -->
+    <main class="main">
         <div class="container">
-            <ul class="nav-menu">
-                <li><a href="./index.html">Domů</a></li>
-                <li><a href="./regions.html">Regiony</a></li>
-                <li><a href="./categories.html">Kategorie</a></li>
-                <li><a href="./cbd-shops.html">CBD Obchody</a></li>
-                <li><a href="./seed-banks.html">Seed Banky</a></li>
-                <li><a href="./medical.html">Lékárny</a></li>
-                <li><a href="./blog.html">Blog</a></li>
-                <li><a href="./about.html">O nás</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="hero" style="background: linear-gradient(135deg, var(--leaf-green) 0%, var(--bud-green) 100%); padding: 60px 0;">
-        <div class="container">
-            <h1 class="hero-title" style="color: white; text-align: center;">🗺️ MAPA STRÁNEK</h1>
-            <p class="hero-subtitle" style="color: white; text-align: center; opacity: 0.95;">Kompletní přehled všech 190+ stránek na Weed.cz</p>
-        </div>
-    </div>
-
-    <div class="sitemap-container">
+            <div class="sitemap-container">
         
         <!-- Main Pages -->
         <div class="sitemap-section">

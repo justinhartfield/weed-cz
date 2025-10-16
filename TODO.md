@@ -369,3 +369,77 @@
 **Last Updated:** October 16, 2025  
 **Assignee:** AI Assistant
 
+
+
+
+---
+
+## 🔐 9. User Login, Ratings & Reviews System
+**Priority:** 🟢 Medium  
+**Status:** ❌ Not Started  
+**Estimated Time:** 15-20 hours
+
+### Features to Implement:
+- [ ] **User Authentication System**
+  - [ ] User registration (email/password)
+  - [ ] Login/logout functionality
+  - [ ] Password reset
+  - [ ] Email verification
+  - [ ] OAuth integration (Google, Facebook - optional)
+  - [ ] User profile pages
+  - [ ] Session management
+
+- [ ] **Rating System**
+  - [ ] 5-star rating for businesses
+  - [ ] Display average rating on business cards
+  - [ ] Display rating count
+  - [ ] Sort businesses by rating
+  - [ ] Prevent duplicate ratings from same user
+  - [ ] Rating analytics dashboard
+
+- [ ] **Review System**
+  - [ ] Write reviews for businesses
+  - [ ] Edit/delete own reviews
+  - [ ] Review moderation (admin approval)
+  - [ ] Display reviews on business detail pages
+  - [ ] Helpful/unhelpful voting on reviews
+  - [ ] Report inappropriate reviews
+  - [ ] Review photos (optional)
+  - [ ] Verified purchase badge (optional)
+
+- [ ] **User Dashboard**
+  - [ ] View own ratings and reviews
+  - [ ] Edit profile information
+  - [ ] Favorite businesses list
+  - [ ] Review history
+  - [ ] Notification preferences
+
+### Technical Requirements:
+- Backend: Node.js/Express or Python/Flask
+- Database: PostgreSQL or MongoDB
+- Authentication: JWT tokens or sessions
+- Frontend: JavaScript for interactive components
+- Security: Input validation, XSS prevention, rate limiting
+- Email service: SendGrid or AWS SES
+
+### Database Schema:
+```sql
+Users: id, email, password_hash, name, created_at, verified
+Ratings: id, user_id, business_id, rating (1-5), created_at
+Reviews: id, user_id, business_id, rating, text, created_at, updated_at, approved
+ReviewVotes: id, review_id, user_id, vote_type (helpful/unhelpful)
+```
+
+### UI Components:
+- Login/register modal
+- Rating stars (interactive)
+- Review form
+- Review display cards
+- User profile page
+- Admin moderation panel
+
+---
+
+**Updated Total Tasks:** 9 major items  
+**Updated Estimated Time:** 55-70 hours total
+
