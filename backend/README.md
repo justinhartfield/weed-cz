@@ -75,6 +75,10 @@ The API will be available at `http://localhost:5000`
 - `POST /api/moderation/reviews/<id>/reject` - Reject review
 - `POST /api/moderation/reviews/<id>/shadow-hide` - Hide review
 
+### Admin Panel
+- `GET /admin` - Web-based moderation panel (requires moderator/admin role)
+- `GET /admin/stats` - Admin statistics (admin only)
+
 ## Database Schema
 
 ### Users
@@ -160,10 +164,18 @@ Add to your HTML pages:
 Business page markup:
 ```html
 <body data-business-id="business-slug">
-  <button class="write-review-btn" style="display:none" onclick="showReviewForm('business-slug')">Write a review</button>
+  <button class="write-review-btn" onclick="showReviewForm('business-slug')">Write a review</button>
   <div id="reviews-container"></div>
 </body>
 ```
+
+## Moderation Panel Access
+
+1. **Create admin user**: Run `python migrate.py` to create admin user
+2. **Login**: Visit `/admin` and login with admin email (default: `admin@weed.cz`)
+3. **Moderate**: Use the web interface to approve/reject/hide reviews
+
+**Note**: The review button is now visible to all users. Logged-out users will be prompted to login when they click it.
 
 ## Docker Support
 

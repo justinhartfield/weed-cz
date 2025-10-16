@@ -9,6 +9,7 @@ from .config import Settings
 from .db import init_db
 from .routes.reviews import reviews_bp
 from .routes.moderation import moderation_bp
+from .routes.admin import admin_bp
 from .auth import auth_bp
 
 
@@ -106,6 +107,7 @@ def create_app() -> Flask:
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(reviews_bp, url_prefix='/api/reviews')
     app.register_blueprint(moderation_bp, url_prefix='/api/moderation')
+    app.register_blueprint(admin_bp)
 
     @app.get('/api/health')
     def health():  # simple health check

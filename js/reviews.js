@@ -203,9 +203,11 @@ function updateUIForLoggedInUser() {
 }
 
 function updateUIForLoggedOutUser() {
-    // Hide "Write Review" button or show login prompt
+    // Show "Write Review" button and prompt for login when clicked
     const writeReviewBtns = document.querySelectorAll('.write-review-btn');
     writeReviewBtns.forEach(btn => {
+        btn.style.display = 'inline-block';
+        btn.disabled = false;
         btn.onclick = showLoginPrompt;
     });
 }
