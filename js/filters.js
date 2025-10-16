@@ -10,9 +10,14 @@ function initializeFilters(category) {
     
     // Get businesses from SITE_DATA
     if (typeof window.SITE_DATA === 'undefined' || !window.SITE_DATA.businesses) {
-        console.error('SITE_DATA not loaded');
+        console.log('Waiting for SITE_DATA to load...');
+        // Wait a bit and try again
+        setTimeout(() => initializeFilters(category), 100);
         return;
     }
+    
+    console.log('SITE_DATA loaded with', window.SITE_DATA.businesses.length, 'businesses');
+    console.log('Filtering for category:', category);
     
     // Filter by category if specified
     if (category && category !== 'all') {
