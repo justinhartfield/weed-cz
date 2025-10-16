@@ -19,7 +19,7 @@
         <div class="header-container">
             <a href="/" class="logo"><img src="/../images/logo-horizontal.webp" alt="Weed.cz" style="height: 40px; width: auto;"></a>
             <div class="header-search">
-                <input type="text" placeholder="Search Weed.cz...">
+                <input type="text" id="header-search" placeholder="Weed.cz prohledávat..." style="padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; width: 200px; font-size: 14px;">
             </div>
             <div class="header-actions">
                 <select class="header-btn language-switcher" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;" onchange="if(this.value=='CS') window.location.href='/medical.html';">
@@ -200,7 +200,8 @@
             <p style="margin-top: 16px;">
                 <a href="/privacy.html">Ochrana osobních údajů</a> | 
                 <a href="/terms.html">Podmínky používání</a> | 
-                <a href="/contact.html">Contact</a>
+                <a href="/contact.html">Contact</a> | 
+                <a href="about.html">About</a>
             </p>
         </div>
     </footer>
@@ -218,6 +219,23 @@
                 initializeFilters('Medical Cannabis');
             }
         });
+    </script>
+
+    <script>
+    // Header search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const headerSearch = document.getElementById('header-search');
+        if (headerSearch) {
+            headerSearch.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (query) {
+                        window.location.href = '/search.html?q=' + encodeURIComponent(query);
+                    }
+                }
+            });
+        }
+    });
     </script>
 </body>
 </html>
