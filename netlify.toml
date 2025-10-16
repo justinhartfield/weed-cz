@@ -29,3 +29,11 @@
   for = "*.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# Optional: Proxy API requests to backend
+# Uncomment and configure when backend is deployed
+# [[redirects]]
+#   from = "/api/*"
+#   to = "https://api.weed.cz/api/:splat"
+#   status = 200
+#   force = false

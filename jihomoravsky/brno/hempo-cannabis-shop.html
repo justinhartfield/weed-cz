@@ -16,7 +16,7 @@
       gtag('config', 'G-2Y3YW0SDT8');
     </script>
 </head>
-<body>
+<body data-business-id="hempo-brno">
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
     
         <!-- Header -->
@@ -189,6 +189,14 @@
                 </div>
             </div>
             
+            <!-- Reviews Section -->
+            <div class="reviews-section" style="margin-top: 40px;">
+                <div class="info-box">
+                    <h3>⭐ Hodnocení zákazníků</h3>
+                    <button class="write-review-btn" style="display:none" onclick="showReviewForm('hempo-brno')">Napsat recenzi</button>
+                    <div id="reviews-container"></div>
+                </div>
+            </div>
             
                 <!-- Photo Gallery -->
                 <div id="business-gallery"></div>
@@ -249,9 +257,11 @@
         </div>
     </footer>
     
+    <script>window.REVIEWS_API_BASE = 'http://localhost:5000/api';</script>
     <script src="../../js/data.js"></script>
     <script src="../../js/translations.js"></script>
     <script src="../../js/schema.js"></script>
+    <script src="../../js/reviews.js"></script>
     <script src="../../js/main.js"></script>
     <script>
         // Load related businesses

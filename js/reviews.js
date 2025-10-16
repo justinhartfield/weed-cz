@@ -1,7 +1,28 @@
 // Reviews System for Weed.cz
 // Connects to Flask API for ratings and reviews
 
-const API_BASE = 'http://localhost:5000/api';  // Change to production URL when deployed
+const API_BASE = (typeof window !== 'undefined' && window.REVIEWS_API_BASE) ? window.REVIEWS_API_BASE : 'http://localhost:5000/api';
+
+function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function clampInt(n, min, max) {
+    const num = Number(n);
+    if (!Number.isFinite(num)) return min;
+    return Math.max(min, Math.min(max, Math.trunc(num)));
+}
+
+function renderStars(value) {
+    const count = clampInt(Math.round(Number(value) || 0), 0, 5);
+    return '★'.repeat(count) + '☆'.repeat(5 - count);
+}
 
 // Current user state
 let currentUser = null;
@@ -95,6 +116,13 @@ async function loadBusinessReviews(businessId) {
         const data = await response.json();
         
         if (response.ok) {
+            // Expose sanitized aggregate for schema injection
+            const avg = Number(data.average_rating);
+            const cnt = Number(data.review_count);
+            window.__LATEST_REVIEWS_AGGREGATE__ = {
+                average_rating: Number.isFinite(avg) ? Math.max(0, Math.min(5, avg)) : 0,
+                review_count: Number.isFinite(cnt) ? Math.max(0, Math.trunc(cnt)) : 0
+            };
             displayReviews(data);
         }
     } catch (error) {
@@ -195,11 +223,12 @@ function showReviewForm(businessId) {
         return;
     }
     
+    const safeBusinessId = String(businessId).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     const formHTML = `
         <div class="review-form-overlay" id="review-form-overlay">
             <div class="review-form-modal">
                 <h2>Write a Review</h2>
-                <form id="review-form" onsubmit="handleReviewSubmit(event, '${businessId}')">
+                <form id="review-form" data-business-id="${safeBusinessId}">
                     <div class="form-group">
                         <label>Overall Rating *</label>
                         <div class="star-rating" data-rating="0">
@@ -285,6 +314,7 @@ function showReviewForm(businessId) {
                         <button type="submit" class="btn-primary">Submit Review</button>
                         <button type="button" class="btn-secondary" onclick="closeReviewForm()">Cancel</button>
                     </div>
+                    <input type="submit" value="Submit" style="display:none" />
                 </form>
             </div>
         </div>
@@ -294,6 +324,14 @@ function showReviewForm(businessId) {
     
     // Initialize star rating
     initStarRating();
+
+    // Bind submit handler safely
+    const form = document.getElementById('review-form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            handleReviewSubmit(e, form.getAttribute('data-business-id'));
+        });
+    }
 }
 
 function initStarRating() {
@@ -344,7 +382,7 @@ function displayReviews(data) {
             <h2>Customer Reviews (${data.review_count})</h2>
             <div class="rating-overview">
                 <span class="rating-score">${data.average_rating}</span>
-                <div class="stars">${'★'.repeat(Math.round(data.average_rating))}${'☆'.repeat(5 - Math.round(data.average_rating))}</div>
+                <div class="stars">${renderStars(data.average_rating)}</div>
                 <span class="review-count">Based on ${data.review_count} reviews</span>
             </div>
         </div>
@@ -353,19 +391,18 @@ function displayReviews(data) {
     `;
     
     data.reviews.forEach(review => {
+        const author = escapeHTML(review.author || 'User');
+        const title = review.title ? `<h3 class="review-title">${escapeHTML(review.title)}</h3>` : '';
+        const text = review.review_text ? `<p>${escapeHTML(review.review_text)}</p>` : '';
         html += `
             <article class="review" data-review-id="${review.id}">
                 <div class="review-header">
-                    <span class="reviewer-name">${review.author}</span>
-                    <div class="review-rating">${'★'.repeat(review.overall_rating)}${'☆'.repeat(5 - review.overall_rating)}</div>
+                    <span class="reviewer-name">${author}</span>
+                    <div class="review-rating">${renderStars(review.overall_rating)}</div>
                     <time>${new Date(review.created_at).toLocaleDateString('cs-CZ')}</time>
                 </div>
-                
-                ${review.title ? `<h3 class="review-title">${review.title}</h3>` : ''}
-                
-                <div class="review-body">
-                    <p>${review.review_text || ''}</p>
-                </div>
+                ${title}
+                <div class="review-body">${text}</div>
                 
                 <div class="review-actions">
                     <button class="helpful-btn" onclick="markHelpful(${review.id})">

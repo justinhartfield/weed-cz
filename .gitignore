@@ -18,3 +18,7 @@ Thumbs.db
 # Env
 .env
 node_modules/
+
+
+.cursor/rules/kluster-code-verify.mdc
+.kluster

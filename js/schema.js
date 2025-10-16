@@ -1,7 +1,7 @@
 // Schema.org LocalBusiness structured data generator
 // This script adds LocalBusiness schema to business detail pages
 
-function generateLocalBusinessSchema(business) {
+function generateLocalBusinessSchema(business, aggregate) {
     if (!business) return null;
     
     const schema = {
@@ -50,6 +50,13 @@ function generateLocalBusinessSchema(business) {
         };
     }
     
+    if (aggregate && aggregate.review_count > 0) {
+        schema.aggregateRating = {
+            "@type": "AggregateRating",
+            "ratingValue": aggregate.average_rating,
+            "reviewCount": aggregate.review_count
+        };
+    }
     return schema;
 }
 
@@ -63,7 +70,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const business = SITE_DATA.businesses.find(b => b.name === businessName);
         
         if (business) {
-            const schema = generateLocalBusinessSchema(business);
+            const aggregate = window.__LATEST_REVIEWS_AGGREGATE__;
+            const schema = generateLocalBusinessSchema(business, aggregate);
             
             if (schema) {
                 // Create and inject the schema script tag
