@@ -19,37 +19,49 @@
     <link rel="canonical" href="https://weed.cz/about.html">
 </head>
 <body>
-    <header>
+    <header class="header">
         <div class="container">
             <div class="header-content">
-                <a href="./index.html" class="logo">🌿 WEED.CZ</a>
-                <div class="header-right">
-                    <div class="search-container">
-                        <input type="text" class="search-input" placeholder="Hledat obchody, produkty, města..." data-i18n-placeholder="search_placeholder">
-                    </div>
-                    <div class="language-switcher">
-                        <button class="lang-btn active" data-lang="cs">CS</button>
-                        <button class="lang-btn" data-lang="en">EN</button>
-                    </div>
+                <a href="/" class="logo"><img src="/images/logo-horizontal.png" alt="Weed.cz" style="height: 40px; width: auto;"></a>
+                
+                <div class="search-container">
+                    <input type="text" id="global-search" placeholder="Weed.cz prohledávat..." class="search-input">
+                    <button id="search-button" class="search-button">🔍</button>
+                </div>
+                
+                <div class="language-selector">
+                    <select id="language-select">
+                        <option value="cs">CS</option>
+                        <option value="en">EN</option>
+                    </select>
                 </div>
             </div>
+            
+            <nav class="nav">
+                <a href="/" class="nav-item">
+                    🏠 Domů
+                </a>
+                <a href="/cbd-shops.html" class="nav-item">
+                    🍃 CBD Obchody <span class="badge badge-pink">79</span>
+                </a>
+                <a href="/seed-banks.html" class="nav-item">
+                    🌱 Seed Banky <span class="badge badge-orange">21</span>
+                </a>
+                <a href="/grow-shops.html" class="nav-item">
+                    🌾 Grow Shopy <span class="badge badge-blue">23</span>
+                </a>
+                <a href="/medical.html" class="nav-item">
+                    💊 Lékárny <span class="badge badge-green">21</span>
+                </a>
+                <a href="/blog.html" class="nav-item">
+                    📝 Blog <span class="badge badge-yellow">5</span>
+                </a>
+                <a href="/about.html" class="nav-item active">
+                    📖 O nás
+                </a>
+            </nav>
         </div>
     </header>
-
-    <nav class="main-nav">
-        <div class="container">
-            <ul class="nav-menu">
-                <li><a href="./index.html" data-i18n="nav_home">Domů</a></li>
-                <li><a href="./regions.html" data-i18n="nav_regions">Regiony</a></li>
-                <li><a href="./categories.html" data-i18n="nav_categories">Kategorie</a></li>
-                <li><a href="./cbd-shops.html" data-i18n="nav_cbd">CBD Obchody</a></li>
-                <li><a href="./seed-banks.html" data-i18n="nav_seeds">Seed Banky</a></li>
-                <li><a href="./medical.html" data-i18n="nav_medical">Lékárny</a></li>
-                <li><a href="./blog.html" data-i18n="nav_blog">Blog</a></li>
-                <li><a href="./about.html" class="active" data-i18n="nav_about">O nás</a></li>
-            </ul>
-        </div>
-    </nav>
 
     <div class="hero" style="background: linear-gradient(135deg, var(--leaf-green) 0%, var(--bud-green) 100%); padding: 80px 0;">
         <div class="container">
@@ -334,5 +346,59 @@
             });
         });
     </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">Weed.cz</h3>
+                    <p class="footer-text">Kompletní adresář cannabis obchodů, lékáren a služeb v České republice.</p>
+                    <p class="footer-text" style="margin-top: 16px;">Součást mezinárodní sítě: <a href="https://weed.de" target="_blank" rel="noopener" style="color: #D2691E; text-decoration: none;">Weed.de</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Kategorie</h4>
+                    <ul class="footer-links">
+                        <li><a href="/cbd-shops.html">CBD Obchody</a></li>
+                        <li><a href="/seed-banks.html">Seed Banky</a></li>
+                        <li><a href="/medical.html">Lékárny</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Blog</h4>
+                    <ul class="footer-links">
+                        <li><a href="/blog.html">Všechny články</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Regiony</h4>
+                    <ul class="footer-links">
+                        <li><a href="/praha/">Praha</a></li>
+                        <li><a href="/jihomoravsky/">Brno</a></li>
+                        <li><a href="/online/">Online</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">O nás</h4>
+                    <ul class="footer-links">
+                        <li><a href="/about.html">O projektu</a></li>
+                        <li><a href="mailto:info@weed.cz">Kontakt</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Weed.cz - Cannabis Directory České Republiky</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/search.js"></script>
+    <script src="js/mobile-menu.js"></script>
 </body>
 </html>
