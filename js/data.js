@@ -1,4 +1,4 @@
-const SITE_DATA = {
+window.SITE_DATA = {
   "businesses": [
     {
       "id": 0,
