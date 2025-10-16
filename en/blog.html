@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cannabis Blog & Guide | Weed.cz</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .blog-card {
+            background: white;
+            border: 2px solid var(--bud-green);
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+        .blog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(45, 74, 43, 0.15);
+        }
+        .blog-card-image {
+            height: 200px;
+            background: var(--leaf-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            border-bottom: 2px solid var(--bud-green);
+        }
+        .blog-card-content {
+            padding: 24px;
+        }
+        .blog-card-title {
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            color: var(--bud-green);
+            text-transform: uppercase;
+        }
+        .blog-card-title a {
+            color: var(--bud-green);
+            text-decoration: none;
+        }
+        .blog-card-title a:hover {
+            color: var(--leaf-green);
+        }
+        .blog-card-excerpt {
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+        .blog-card-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2Y3YW0SDT8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2Y3YW0SDT8');
+</script>
+    <link rel="canonical" href="https://weed.cz/blog.html">
+
+    <link rel="alternate" hreflang="cs" href="https://weed.cz/blog.html" />
+    <link rel="alternate" hreflang="en" href="https://weed.cz/en/blog.html" />
+    <link rel="alternate" hreflang="x-default" href="https://weed.cz/blog.html" />
+</head>
+<body>
+        <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo"><img src="/images/logo-horizontal.png" alt="Weed.cz" style="height: 40px; width: auto;"></a>
+            <div class="header-search">
+                <input type="text" placeholder="Weed.cz prohledávat...">
+            </div>
+            <div class="header-actions">
+                <select class="header-btn" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;">
+                    <option>CS</option>
+                    <option>EN</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation with Badges -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-badge">
+                🏠 Domů
+            </a>
+            <a href="/cbd-shops.html" class="nav-badge pink">
+                🌿 CBD Obchody <span class="count">79</span>
+            </a>
+            <a href="/seed-banks.html" class="nav-badge orange">
+                🌱 Seed Banky <span class="count">21</span>
+            </a>
+            <a href="/grow-shops.html" class="nav-badge blue">
+                🌾 Grow Shopy <span class="count">23</span>
+            </a>
+            <a href="/medical.html" class="nav-badge green">
+                💊 Lékárny <span class="count">21</span>
+            </a>
+            <a href="/blog.html" class="nav-badge yellow">
+                📝 Blog
+            </a>
+            <a href="/sitemap.html" class="nav-badge purple">
+                🗺️ Mapa stránek
+            </a>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <div class="section-header text-center">
+            <h1 class="section-title">
+                <span class="cs-content">CANNABIS PRŮVODCE</span>
+                <span class="en-content" style="display:none;">CANNABIS GUIDES</span>
+            </h1>
+            <p class="section-subtitle">
+                <span class="cs-content">Komplexní průvodce o konopí v České republice</span>
+                <span class="en-content" style="display:none;">Comprehensive guides about cannabis in Czech Republic</span>
+            </p>
+        </div>
+
+        <div class="blog-grid">
+            <div class="blog-card">
+                <div class="blog-card-image">⚖️</div>
+                <div class="blog-card-content">
+                    <h2 class="blog-card-title">
+                        <a href="/blog/czech-cannabis-laws-2025-complete-guide.html">
+                            <span class="cs-content">ZÁKONY O KONOPÍ V ČR 2025</span>
+                            <span class="en-content" style="display:none;">CANNABIS LAWS IN CZ 2025</span>
+                        </a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        <span class="cs-content">Kompletní průvodce současnými a budoucími zákony o konopí včetně změn v roce 2026.</span>
+                        <span class="en-content" style="display:none;">Complete guide to current and future cannabis laws including 2026 changes.</span>
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>4. ŘÍJNA 2025</span>
+                        <span>25 MIN</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-card-image">🌿</div>
+                <div class="blog-card-content">
+                    <h2 class="blog-card-title">
+                        <a href="/blog/cbd-vs-thc-complete-guide.html">
+                            <span class="cs-content">CBD VS THC PRŮVODCE</span>
+                            <span class="en-content" style="display:none;">CBD VS THC GUIDE</span>
+                        </a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        <span class="cs-content">Detailní průvodce rozdíly mezi CBD a THC, jejich účinky a zdravotní přínosy.</span>
+                        <span class="en-content" style="display:none;">Detailed guide to differences between CBD and THC, their effects and health benefits.</span>
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>4. ŘÍJNA 2025</span>
+                        <span>23 MIN</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-card-image">💊</div>
+                <div class="blog-card-content">
+                    <h2 class="blog-card-title">
+                        <a href="/blog/medical-cannabis-czech-republic-guide.html">
+                            <span class="cs-content">LÉKAŘSKÉ KONOPÍ V ČR</span>
+                            <span class="en-content" style="display:none;">MEDICAL CANNABIS IN CZ</span>
+                        </a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        <span class="cs-content">Kompletní informace o lékařském konopí - předpisy, podmínky, produkty a ceny.</span>
+                        <span class="en-content" style="display:none;">Complete information about medical cannabis - prescriptions, conditions, products and prices.</span>
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>4. ŘÍJNA 2025</span>
+                        <span>22 MIN</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-card-image">🌱</div>
+                <div class="blog-card-content">
+                    <h2 class="blog-card-title">
+                        <a href="/blog/home-cannabis-cultivation-guide.html">
+                            <span class="cs-content">DOMÁCÍ PĚSTOVÁNÍ</span>
+                            <span class="en-content" style="display:none;">HOME CULTIVATION</span>
+                        </a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        <span class="cs-content">Krok za krokem průvodce pěstováním konopí doma - od semen po sklizeň.</span>
+                        <span class="en-content" style="display:none;">Step-by-step guide to growing cannabis at home - from seeds to harvest.</span>
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>4. ŘÍJNA 2025</span>
+                        <span>20 MIN</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-card-image">✈️</div>
+                <div class="blog-card-content">
+                    <h2 class="blog-card-title">
+                        <a href="/blog/cannabis-tourism-czech-republic.html">
+                            <span class="cs-content">CANNABIS TURISMUS</span>
+                            <span class="en-content" style="display:none;">CANNABIS TOURISM</span>
+                        </a>
+                    </h2>
+                    <p class="blog-card-excerpt">
+                        <span class="cs-content">Kompletní průvodce pro cannabis turisty - místa, tipy a doporučení.</span>
+                        <span class="en-content" style="display:none;">Complete guide for cannabis tourists - places, tips and recommendations.</span>
+                    </p>
+                    <div class="blog-card-meta">
+                        <span>4. ŘÍJNA 2025</span>
+                        <span>15 MIN</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>WEED.CZ</h3>
+                <p>COMPLETE DIRECTORY OF CANNABIS STORES IN THE CZECH REPUBLIC</p>
+            </div>
+            <div class="footer-section">
+                <h3>CATEGORY</h3>
+                <ul>
+                    <li><a href="/cbd-shops.html">CBD OBCHODY</a></li>
+                    <li><a href="/seed-banks.html">SEED BANKY</a></li>
+                    <li><a href="/medical.html">LÉKÁRNY</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>BLOG</h3>
+                <ul>
+                    <li><a href="/blog.html">VŠECHNY ČLÁNKY</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 WEED.CZ - CANNABIS DIRECTORY OF THE CZECH REPUBLIC</p>
+        </div>
+    </footer>
+    <script src="./js/translations.js"></script>
+    <script src="./js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentLang = getCurrentLanguage();
+            updateContentLanguage(currentLang);
+        });
+        
+        function updateContentLanguage(lang) {
+            document.querySelectorAll('.cs-content').forEach(el => {
+                el.style.display = lang === 'cs' ? '' : 'none';
+            });
+            document.querySelectorAll('.en-content').forEach(el => {
+                el.style.display = lang === 'en' ? '' : 'none';
+            });
+        }
+        
+        const originalTranslatePage = translatePage;
+        translatePage = function(lang) {
+            originalTranslatePage(lang);
+            updateContentLanguage(lang);
+        };
+    </script>
+</body>
+</html>

@@ -32,13 +32,13 @@ const BUSINESS_IMAGES = {
     "/images/businesses/medical-seeds-storefront-2.jpg"
   ],
   "My-Garden.cz": [
-    "/images/businesses/my-garden-interior-1.jpg",
-    "/images/businesses/my-garden-interior-2.jpg"
+    "/images/businesses/my-garden-interior-1.jpeg",
+    "/images/businesses/my-garden-interior-2.jpeg"
   ],
   "GrowShop Olomouc": [
-    "/images/businesses/growshop-olomouc-1.jpg",
-    "/images/businesses/growshop-olomouc-2.jpg",
-    "/images/businesses/growshop-olomouc-3.jpg"
+    "/images/businesses/growshop-olomouc-interior-1.jpeg",
+    "/images/businesses/growshop-olomouc-interior-2.jpeg",
+    "/images/businesses/growshop-olomouc-interior-3.jpg"
   ],
   "Alchimia": [
     "/images/businesses/alchimia-logo.webp"
@@ -67,8 +67,8 @@ const CATEGORY_FALLBACKS = {
   ],
   "Seeds & Grow Shop": [
     "/images/businesses/grow-shop-generic.jpg",
-    "/images/businesses/my-garden-interior-1.jpg",
-    "/images/businesses/growshop-olomouc-1.jpg"
+    "/images/businesses/my-garden-interior-1.jpeg",
+    "/images/businesses/growshop-olomouc-interior-1.jpeg"
   ],
   "Medical Cannabis": [
     "/images/businesses/medical-cannabis-pharmacy.jpg",
