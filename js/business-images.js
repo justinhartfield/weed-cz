@@ -1,157 +1,129 @@
-// Business image mapping - specific businesses with real photos
+// Complete business images mapping for Weed.cz
+// Maps business names to their images
+
 const BUSINESS_IMAGES = {
-  "Mr.Budz Cannabis Shop": ["mr-budz-exterior.webp", "mr-budz-interior-1.jpg", "mr-budz-interior-2.jpg"],
-  "Hempo Cannabis Shop": ["hempo-exterior.jpg", "hempo-interior.jpg", "hempo-street.jpg"],
-  "Konopny Koutek CBD": ["konopny-koutek-interior-1.jpg", "konopny-koutek-interior-2.jpg", "konopny-koutek-interior-3.jpg", "konopny-koutek-interior-4.jpg", "konopny-koutek-products.jpg"],
-  "Medical Seeds": ["medical-seeds-exterior.jpeg", "medical-seeds-exterior-2.jpeg"],
-  "My-Garden growshop": ["my-garden-interior-1.jpeg", "my-garden-interior-2.jpeg"],
-  "GrowShop Olomouc": ["growshop-olomouc-interior-1.jpeg", "growshop-olomouc-interior-2.jpeg", "growshop-olomouc-interior-3.jpg"]
+  // CBD Shops - Specific Images
+  "Mr.Budz Cannabis Shop": [
+    "/images/businesses/mr-budz-exterior.jpg",
+    "/images/businesses/mr-budz-interior-1.jpg",
+    "/images/businesses/mr-budz-interior-2.jpg"
+  ],
+  "Hempo Cannabis Shop": [
+    "/images/businesses/hempo-exterior.jpg",
+    "/images/businesses/hempo-interior.jpg",
+    "/images/businesses/hempo-street.jpg"
+  ],
+  "Konopný Koutek CBD": [
+    "/images/businesses/konopny-koutek-interior-1.jpg",
+    "/images/businesses/konopny-koutek-interior-2.jpg",
+    "/images/businesses/konopny-koutek-interior-3.jpg",
+    "/images/businesses/konopny-koutek-tripadvisor.jpg"
+  ],
+  "Hempy CBD Shop": [
+    "/images/businesses/cbd-shop-prague-wellness.webp"
+  ],
+  "Zelená Země": [
+    "/images/businesses/zelena-zeme-brno.png"
+  ],
+  
+  // Seed Banks & Grow Shops - Specific Images
+  "Medical Seeds": [
+    "/images/businesses/medical-seeds-storefront-1.jpg",
+    "/images/businesses/medical-seeds-storefront-2.jpg"
+  ],
+  "My-Garden.cz": [
+    "/images/businesses/my-garden-interior-1.jpg",
+    "/images/businesses/my-garden-interior-2.jpg"
+  ],
+  "GrowShop Olomouc": [
+    "/images/businesses/growshop-olomouc-1.jpg",
+    "/images/businesses/growshop-olomouc-2.jpg",
+    "/images/businesses/growshop-olomouc-3.jpg"
+  ],
+  "Alchimia": [
+    "/images/businesses/alchimia-logo.webp"
+  ],
+  "Cleopatra Seeds": [
+    "/images/businesses/cleopatra-seeds.webp"
+  ],
+  "Nuka Seeds": [
+    "/images/businesses/nuka-seeds-product.webp"
+  ],
+  "Tokamak Seeds": [
+    "/images/businesses/tokamak-seeds.webp"
+  ],
+  "Tierra Verde": [
+    "/images/businesses/tierra-verde-shop.jpg"
+  ]
 };
 
-// Generic fallback images by category - ensures all businesses have images
-const FALLBACK_IMAGES = {
-  "CBD Retail Shop": "cbd-shop-prague-generic.webp",
-  "Seeds & Grow Shop": "grow-shop-generic.jpg",
-  "Seed Bank": "nuka-seeds-product.webp",
-  "Grow Shop": "cannabis-store-interior-generic.jpg",
-  "Medical Cannabis": "cannabis-shop-prague-generic.jpg",
-  "Online Shop": "cbd-shop-display.jpg"
+// Category fallback images
+const CATEGORY_FALLBACKS = {
+  "CBD Retail Shop": [
+    "/images/businesses/cbd-shop-storefront-1.jpg",
+    "/images/businesses/cbd-shop-display.jpg",
+    "/images/businesses/weed-shop-prague-street.jpg",
+    "/images/businesses/cbd-shop-prague-wellness.webp"
+  ],
+  "Seeds & Grow Shop": [
+    "/images/businesses/grow-shop-generic.jpg",
+    "/images/businesses/my-garden-interior-1.jpg",
+    "/images/businesses/growshop-olomouc-1.jpg"
+  ],
+  "Medical Cannabis": [
+    "/images/businesses/medical-cannabis-pharmacy.jpg",
+    "/images/businesses/medical-seeds-storefront-1.jpg"
+  ],
+  "E-commerce Platform": [
+    "/images/businesses/cbd-shop-display.jpg",
+    "/images/businesses/grow-shop-generic.jpg"
+  ],
+  "Delivery Service": [
+    "/images/businesses/cbd-shop-display.jpg"
+  ],
+  "Social Club & Event": [
+    "/images/businesses/cbd-shop-storefront-1.jpg"
+  ],
+  "Other": [
+    "/images/businesses/cbd-shop-display.jpg"
+  ]
 };
 
-/**
- * Get the primary image for a business
- */
-function getBusinessImage(businessName, category) {
-  // Check if business has specific images
-  if (BUSINESS_IMAGES[businessName] && BUSINESS_IMAGES[businessName].length > 0) {
-    return `/images/businesses/${BUSINESS_IMAGES[businessName][0]}`;
+// Function to get images for a business
+function getBusinessImages(businessName, category) {
+  // Check for exact match first
+  if (BUSINESS_IMAGES[businessName]) {
+    return BUSINESS_IMAGES[businessName];
   }
   
-  // Use fallback image based on category
-  if (FALLBACK_IMAGES[category]) {
-    return `/images/businesses/${FALLBACK_IMAGES[category]}`;
+  // Check for partial match (case insensitive)
+  const nameLower = businessName.toLowerCase();
+  for (const [key, images] of Object.entries(BUSINESS_IMAGES)) {
+    if (key.toLowerCase().includes(nameLower) || nameLower.includes(key.toLowerCase())) {
+      return images;
+    }
+  }
+  
+  // Return category fallback
+  if (CATEGORY_FALLBACKS[category]) {
+    // Return random image from category
+    const fallbacks = CATEGORY_FALLBACKS[category];
+    const randomIndex = Math.floor(Math.random() * fallbacks.length);
+    return [fallbacks[randomIndex]];
   }
   
   // Default fallback
-  return `/images/businesses/cannabis-shop-prague-generic.jpg`;
+  return ["/images/businesses/cbd-shop-display.jpg"];
 }
 
-/**
- * Get all images for a business (for gallery)
- */
-function getBusinessGallery(businessName) {
-  if (BUSINESS_IMAGES[businessName]) {
-    return BUSINESS_IMAGES[businessName].map(img => `/images/businesses/${img}`);
-  }
-  return [];
+// Function to get thumbnail (first image)
+function getBusinessThumbnail(businessName, category) {
+  const images = getBusinessImages(businessName, category);
+  return images[0];
 }
 
-/**
- * Add image to business card
- */
-function addImageToBusinessCard(card, businessName, category) {
-  const imageUrl = getBusinessImage(businessName, category);
-  
-  // Create image element
-  const imageDiv = document.createElement('div');
-  imageDiv.className = 'business-card-image';
-  imageDiv.style.backgroundImage = `url('${imageUrl}')`;
-  imageDiv.style.backgroundSize = 'cover';
-  imageDiv.style.backgroundPosition = 'center';
-  imageDiv.style.height = '200px';
-  imageDiv.style.borderRadius = '8px 8px 0 0';
-  
-  // Insert at the beginning of the card
-  card.insertBefore(imageDiv, card.firstChild);
+// Export for use in other scripts
+if (typeof window !== 'undefined') {
+  window.getBusinessImages = getBusinessImages;
+  window.getBusinessThumbnail = getBusinessThumbnail;
 }
-
-/**
- * Create photo gallery for business detail page
- */
-function createBusinessGallery(businessName, containerId) {
-  const gallery = getBusinessGallery(businessName);
-  const container = document.getElementById(containerId);
-  
-  if (!container || gallery.length === 0) {
-    return;
-  }
-  
-  // Create gallery HTML
-  const galleryHTML = `
-    <div class="business-gallery">
-      <h3>📸 Fotografie</h3>
-      <div class="gallery-grid">
-        ${gallery.map((img, index) => `
-          <div class="gallery-item" onclick="openLightbox(${index}, ${JSON.stringify(gallery).replace(/"/g, '&quot;')})">
-            <img src="${img}" alt="Photo ${index + 1}" loading="lazy">
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `;
-  
-  container.innerHTML = galleryHTML;
-}
-
-/**
- * Open lightbox for image viewing
- */
-function openLightbox(index, images) {
-  // Create lightbox if it doesn't exist
-  let lightbox = document.getElementById('image-lightbox');
-  if (!lightbox) {
-    lightbox = document.createElement('div');
-    lightbox.id = 'image-lightbox';
-    lightbox.className = 'lightbox';
-    lightbox.innerHTML = `
-      <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-      <img class="lightbox-content" id="lightbox-img">
-      <div class="lightbox-nav">
-        <button class="lightbox-prev" onclick="changeLightboxImage(-1)">&#10094;</button>
-        <button class="lightbox-next" onclick="changeLightboxImage(1)">&#10095;</button>
-      </div>
-    `;
-    document.body.appendChild(lightbox);
-  }
-  
-  // Store images in lightbox data
-  window.lightboxImages = images;
-  window.lightboxIndex = index;
-  
-  // Show lightbox
-  document.getElementById('lightbox-img').src = images[index];
-  lightbox.style.display = 'flex';
-}
-
-/**
- * Close lightbox
- */
-function closeLightbox() {
-  const lightbox = document.getElementById('image-lightbox');
-  if (lightbox) {
-    lightbox.style.display = 'none';
-  }
-}
-
-/**
- * Change lightbox image
- */
-function changeLightboxImage(direction) {
-  window.lightboxIndex += direction;
-  
-  if (window.lightboxIndex >= window.lightboxImages.length) {
-    window.lightboxIndex = 0;
-  }
-  if (window.lightboxIndex < 0) {
-    window.lightboxIndex = window.lightboxImages.length - 1;
-  }
-  
-  document.getElementById('lightbox-img').src = window.lightboxImages[window.lightboxIndex];
-}
-
-// Close lightbox on ESC key
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    closeLightbox();
-  }
-});
