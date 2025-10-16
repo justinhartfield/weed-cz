@@ -1,294 +1,264 @@
-// Advanced filtering and sorting for Weed.cz
+// Simple and effective filtering for Weed.cz business listings
 
-class BusinessFilter {
-    constructor() {
-        this.businesses = [];
-        this.filteredBusinesses = [];
-        this.filters = {
-            category: 'all',
-            city: 'all',
-            delivery: 'all',
-            onlineShop: 'all',
-            search: ''
-        };
-        this.sortBy = 'name';
-        this.sortOrder = 'asc';
+let allBusinesses = [];
+let filteredBusinesses = [];
+let currentCategory = '';
+
+// Initialize filters for a specific category
+function initializeFilters(category) {
+    currentCategory = category;
+    
+    // Get businesses from weedData
+    if (typeof window.weedData === 'undefined' || !window.weedData.businesses) {
+        console.error('weedData not loaded');
+        return;
     }
     
-    init(businesses) {
-        this.businesses = businesses;
-        this.filteredBusinesses = [...businesses];
-        this.setupEventListeners();
-        this.populateFilterOptions();
+    // Filter by category if specified
+    if (category && category !== 'all') {
+        allBusinesses = window.weedData.businesses.filter(b => b.category === category);
+    } else {
+        allBusinesses = window.weedData.businesses;
     }
     
-    setupEventListeners() {
-        // Category filter
-        const categoryFilter = document.getElementById('filter-category');
-        if (categoryFilter) {
-            categoryFilter.addEventListener('change', (e) => {
-                this.filters.category = e.target.value;
-                this.applyFilters();
-            });
-        }
-        
-        // City filter
-        const cityFilter = document.getElementById('filter-city');
-        if (cityFilter) {
-            cityFilter.addEventListener('change', (e) => {
-                this.filters.city = e.target.value;
-                this.applyFilters();
-            });
-        }
-        
-        // Delivery filter
-        const deliveryFilter = document.getElementById('filter-delivery');
-        if (deliveryFilter) {
-            deliveryFilter.addEventListener('change', (e) => {
-                this.filters.delivery = e.target.value;
-                this.applyFilters();
-            });
-        }
-        
-        // Online shop filter
-        const onlineShopFilter = document.getElementById('filter-online-shop');
-        if (onlineShopFilter) {
-            onlineShopFilter.addEventListener('change', (e) => {
-                this.filters.onlineShop = e.target.value;
-                this.applyFilters();
-            });
-        }
-        
-        // Search filter
-        const searchFilter = document.getElementById('filter-search');
-        if (searchFilter) {
-            searchFilter.addEventListener('input', debounce((e) => {
-                this.filters.search = e.target.value.toLowerCase();
-                this.applyFilters();
-            }, 300));
-        }
-        
-        // Sort by
-        const sortBySelect = document.getElementById('sort-by');
-        if (sortBySelect) {
-            sortBySelect.addEventListener('change', (e) => {
-                this.sortBy = e.target.value;
-                this.applyFilters();
-            });
-        }
-        
-        // Sort order
-        const sortOrderSelect = document.getElementById('sort-order');
-        if (sortOrderSelect) {
-            sortOrderSelect.addEventListener('change', (e) => {
-                this.sortOrder = e.target.value;
-                this.applyFilters();
-            });
-        }
-        
-        // Reset filters button
-        const resetButton = document.getElementById('reset-filters');
-        if (resetButton) {
-            resetButton.addEventListener('click', () => {
-                this.resetFilters();
-            });
-        }
+    filteredBusinesses = [...allBusinesses];
+    
+    // Populate city dropdown
+    populateCityFilter();
+    
+    // Setup event listeners
+    setupFilterListeners();
+    
+    // Initial render
+    renderBusinessCards();
+    updateResultsCount();
+}
+
+// Populate city filter dropdown
+function populateCityFilter() {
+    const cityFilter = document.getElementById('city-filter');
+    if (!cityFilter) return;
+    
+    // Get unique cities
+    const cities = [...new Set(allBusinesses.map(b => b.city))].filter(c => c).sort();
+    
+    // Clear existing options except first one
+    cityFilter.innerHTML = '<option value="">Všechna města</option>';
+    
+    // Add city options
+    cities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        cityFilter.appendChild(option);
+    });
+}
+
+// Setup filter event listeners
+function setupFilterListeners() {
+    // Search filter
+    const searchFilter = document.getElementById('search-filter');
+    if (searchFilter) {
+        searchFilter.addEventListener('input', applyFilters);
     }
     
-    populateFilterOptions() {
-        // Get unique categories
-        const categories = [...new Set(this.businesses.map(b => b.category))].sort();
-        const categoryFilter = document.getElementById('filter-category');
-        if (categoryFilter) {
-            categories.forEach(cat => {
-                const option = document.createElement('option');
-                option.value = cat;
-                option.textContent = cat;
-                categoryFilter.appendChild(option);
-            });
-        }
-        
-        // Get unique cities
-        const cities = [...new Set(this.businesses.map(b => b.city))].filter(c => c).sort();
-        const cityFilter = document.getElementById('filter-city');
-        if (cityFilter) {
-            cities.forEach(city => {
-                const option = document.createElement('option');
-                option.value = city;
-                option.textContent = city;
-                cityFilter.appendChild(option);
-            });
-        }
+    // City filter
+    const cityFilter = document.getElementById('city-filter');
+    if (cityFilter) {
+        cityFilter.addEventListener('change', applyFilters);
     }
     
-    applyFilters() {
-        let filtered = [...this.businesses];
-        
-        // Apply category filter
-        if (this.filters.category !== 'all') {
-            filtered = filtered.filter(b => b.category === this.filters.category);
-        }
-        
-        // Apply city filter
-        if (this.filters.city !== 'all') {
-            filtered = filtered.filter(b => b.city === this.filters.city);
-        }
-        
-        // Apply delivery filter
-        if (this.filters.delivery !== 'all') {
-            filtered = filtered.filter(b => b.delivery_available === this.filters.delivery);
-        }
-        
-        // Apply online shop filter
-        if (this.filters.onlineShop !== 'all') {
-            filtered = filtered.filter(b => b.online_shop === this.filters.onlineShop);
-        }
-        
-        // Apply search filter
-        if (this.filters.search) {
-            filtered = filtered.filter(b => {
-                const searchText = `${b.name} ${b.city} ${b.products} ${b.services}`.toLowerCase();
-                return searchText.includes(this.filters.search);
-            });
-        }
-        
-        // Apply sorting
-        filtered.sort((a, b) => {
-            let aVal, bVal;
-            
-            switch (this.sortBy) {
-                case 'name':
-                    aVal = a.name.toLowerCase();
-                    bVal = b.name.toLowerCase();
-                    break;
-                case 'city':
-                    aVal = a.city.toLowerCase();
-                    bVal = b.city.toLowerCase();
-                    break;
-                case 'category':
-                    aVal = a.category.toLowerCase();
-                    bVal = b.category.toLowerCase();
-                    break;
-                default:
-                    aVal = a.name.toLowerCase();
-                    bVal = b.name.toLowerCase();
-            }
-            
-            if (this.sortOrder === 'asc') {
-                return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
-            } else {
-                return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
-            }
-        });
-        
-        this.filteredBusinesses = filtered;
-        this.renderResults();
-        this.updateResultsCount();
+    // Delivery filter
+    const deliveryFilter = document.getElementById('delivery-filter');
+    if (deliveryFilter) {
+        deliveryFilter.addEventListener('change', applyFilters);
     }
     
-    renderResults() {
-        const container = document.getElementById('results-container');
-        if (!container) return;
-        
-        if (this.filteredBusinesses.length === 0) {
-            container.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-                    <h3 style="color: var(--text-gray); font-size: 24px; margin-bottom: 16px;">
-                        Nenalezeny žádné výsledky
-                    </h3>
-                    <p style="color: var(--text-gray); margin-bottom: 24px;">
-                        Zkuste upravit filtry nebo vyhledávání
-                    </p>
-                    <button id="reset-filters-inline" class="btn btn-primary">
-                        Resetovat filtry
-                    </button>
-                </div>
-            `;
-            
-            const resetBtn = document.getElementById('reset-filters-inline');
-            if (resetBtn) {
-                resetBtn.addEventListener('click', () => this.resetFilters());
-            }
-            return;
-        }
-        
-        container.innerHTML = '';
-        this.filteredBusinesses.forEach(business => {
-            if (typeof createBusinessCardHTML === 'function') {
-                container.innerHTML += createBusinessCardHTML(business);
-            }
-        });
+    // Online shop filter
+    const onlineFilter = document.getElementById('online-filter');
+    if (onlineFilter) {
+        onlineFilter.addEventListener('change', applyFilters);
     }
     
-    updateResultsCount() {
-        const countElement = document.getElementById('results-count');
-        if (countElement) {
-            const total = this.businesses.length;
-            const filtered = this.filteredBusinesses.length;
-            countElement.textContent = `Zobrazeno ${filtered} z ${total} lokací`;
-        }
+    // Sort by
+    const sortBy = document.getElementById('sort-by');
+    if (sortBy) {
+        sortBy.addEventListener('change', applyFilters);
     }
     
-    resetFilters() {
-        this.filters = {
-            category: 'all',
-            city: 'all',
-            delivery: 'all',
-            onlineShop: 'all',
-            search: ''
-        };
-        this.sortBy = 'name';
-        this.sortOrder = 'asc';
-        
-        // Reset form elements
-        const categoryFilter = document.getElementById('filter-category');
-        if (categoryFilter) categoryFilter.value = 'all';
-        
-        const cityFilter = document.getElementById('filter-city');
-        if (cityFilter) cityFilter.value = 'all';
-        
-        const deliveryFilter = document.getElementById('filter-delivery');
-        if (deliveryFilter) deliveryFilter.value = 'all';
-        
-        const onlineShopFilter = document.getElementById('filter-online-shop');
-        if (onlineShopFilter) onlineShopFilter.value = 'all';
-        
-        const searchFilter = document.getElementById('filter-search');
-        if (searchFilter) searchFilter.value = '';
-        
-        const sortBySelect = document.getElementById('sort-by');
-        if (sortBySelect) sortBySelect.value = 'name';
-        
-        const sortOrderSelect = document.getElementById('sort-order');
-        if (sortOrderSelect) sortOrderSelect.value = 'asc';
-        
-        this.applyFilters();
+    // Sort order
+    const sortOrder = document.getElementById('sort-order');
+    if (sortOrder) {
+        sortOrder.addEventListener('change', applyFilters);
+    }
+    
+    // Reset button
+    const resetBtn = document.getElementById('reset-filters');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', resetFilters);
     }
 }
 
-// Initialize filter on pages that need it
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof SITE_DATA !== 'undefined' && SITE_DATA.businesses) {
-        const filterContainer = document.getElementById('filters-container');
-        if (filterContainer) {
-            window.businessFilter = new BusinessFilter();
-            window.businessFilter.init(SITE_DATA.businesses);
+// Apply all filters
+function applyFilters() {
+    let results = [...allBusinesses];
+    
+    // Search filter
+    const searchValue = document.getElementById('search-filter')?.value.toLowerCase() || '';
+    if (searchValue) {
+        results = results.filter(b => {
+            const searchText = `${b.name} ${b.city} ${b.products || ''} ${b.services || ''}`.toLowerCase();
+            return searchText.includes(searchValue);
+        });
+    }
+    
+    // City filter
+    const cityValue = document.getElementById('city-filter')?.value || '';
+    if (cityValue) {
+        results = results.filter(b => b.city === cityValue);
+    }
+    
+    // Delivery filter
+    const deliveryValue = document.getElementById('delivery-filter')?.value || '';
+    if (deliveryValue) {
+        results = results.filter(b => b.delivery_available === deliveryValue);
+    }
+    
+    // Online shop filter
+    const onlineValue = document.getElementById('online-filter')?.value || '';
+    if (onlineValue) {
+        results = results.filter(b => b.online_shop === onlineValue);
+    }
+    
+    // Sorting
+    const sortBy = document.getElementById('sort-by')?.value || 'name';
+    const sortOrder = document.getElementById('sort-order')?.value || 'asc';
+    
+    results.sort((a, b) => {
+        let aVal = sortBy === 'city' ? (a.city || '') : (a.name || '');
+        let bVal = sortBy === 'city' ? (b.city || '') : (b.name || '');
+        
+        aVal = aVal.toLowerCase();
+        bVal = bVal.toLowerCase();
+        
+        if (sortOrder === 'asc') {
+            return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+        } else {
+            return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
         }
-    }
-});
+    });
+    
+    filteredBusinesses = results;
+    renderBusinessCards();
+    updateResultsCount();
+}
 
-// Debounce helper (if not already defined in main.js)
-if (typeof debounce === 'undefined') {
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
+// Render business cards
+function renderBusinessCards() {
+    const container = document.getElementById('business-list');
+    if (!container) return;
+    
+    if (filteredBusinesses.length === 0) {
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                <h3 style="color: #666; font-size: 24px; margin-bottom: 16px;">
+                    Nenalezeny žádné výsledky
+                </h3>
+                <p style="color: #999; margin-bottom: 24px;">
+                    Zkuste upravit filtry nebo vyhledávání
+                </p>
+            </div>
+        `;
+        return;
     }
+    
+    container.innerHTML = '';
+    
+    filteredBusinesses.forEach((business, index) => {
+        const card = createBusinessCard(business, index);
+        container.appendChild(card);
+    });
+}
+
+// Create a business card element
+function createBusinessCard(business, index) {
+    const card = document.createElement('div');
+    card.className = 'business-card';
+    
+    // Create badges
+    const badges = [];
+    if (business.category) {
+        badges.push(`<span class="badge badge-primary">${business.category}</span>`);
+    }
+    if (business.type) {
+        badges.push(`<span class="badge badge-info">${business.type}</span>`);
+    }
+    if (business.online_shop === 'Yes') {
+        badges.push(`<span class="badge badge-success">E-shop</span>`);
+    }
+    if (business.delivery_available === 'Yes') {
+        badges.push(`<span class="badge badge-warning">Rozvoz</span>`);
+    }
+    
+    // Build card HTML
+    card.innerHTML = `
+        <div class="business-card-header">
+            <h3 class="business-card-title">
+                <a href="${business.url || '#'}">${business.name}</a>
+            </h3>
+            <div class="business-badges">
+                ${badges.join('')}
+            </div>
+        </div>
+        <div class="business-card-body">
+            ${business.city ? `<div class="business-info-item">📍 <strong>${business.city}</strong></div>` : ''}
+            ${business.address ? `<div class="business-info-item">🏠 ${business.address}</div>` : ''}
+            ${business.phone ? `<div class="business-info-item">📞 <a href="tel:${business.phone}">${business.phone}</a></div>` : ''}
+            ${business.email ? `<div class="business-info-item">✉️ <a href="mailto:${business.email}">${business.email}</a></div>` : ''}
+            ${business.website ? `<div class="business-info-item">🌐 <a href="${business.website}" target="_blank">${business.website.replace('https://', '').replace('http://', '').substring(0, 30)}...</a></div>` : ''}
+            ${business.products ? `<div class="business-info-item">🌿 ${business.products}</div>` : ''}
+        </div>
+        <div class="business-card-footer">
+            ${business.url ? `<a href="${business.url}" class="btn btn-primary">Zobrazit detail</a>` : ''}
+            ${business.website ? `<a href="${business.website}" target="_blank" class="btn btn-outline">Navštívit web</a>` : ''}
+        </div>
+    `;
+    
+    return card;
+}
+
+// Update results count
+function updateResultsCount() {
+    const countElement = document.getElementById('results-count');
+    if (countElement) {
+        const total = allBusinesses.length;
+        const filtered = filteredBusinesses.length;
+        countElement.textContent = `Zobrazeno ${filtered} z ${total} lokací`;
+    }
+}
+
+// Reset all filters
+function resetFilters() {
+    // Reset all filter inputs
+    const searchFilter = document.getElementById('search-filter');
+    if (searchFilter) searchFilter.value = '';
+    
+    const cityFilter = document.getElementById('city-filter');
+    if (cityFilter) cityFilter.value = '';
+    
+    const deliveryFilter = document.getElementById('delivery-filter');
+    if (deliveryFilter) deliveryFilter.value = '';
+    
+    const onlineFilter = document.getElementById('online-filter');
+    if (onlineFilter) onlineFilter.value = '';
+    
+    const sortBy = document.getElementById('sort-by');
+    if (sortBy) sortBy.value = 'name';
+    
+    const sortOrder = document.getElementById('sort-order');
+    if (sortOrder) sortOrder.value = 'asc';
+    
+    // Reapply filters (which will show all)
+    applyFilters();
 }
 
