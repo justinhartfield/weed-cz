@@ -4,7 +4,7 @@
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cannabis Blog & Guide | Weed.cz</title>
+    <title>Cannabis Blog & Průvodce | Weed.cz</title>
     <link rel="stylesheet" href="./css/style.css">
     <style>
         .blog-grid {
@@ -83,14 +83,14 @@
         <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo"><img src="/images/logo-horizontal.png" alt="Weed.cz" style="height: 40px; width: auto;"></a>
+            <a href="/" class="logo"><img src="/../images/logo-horizontal.png" alt="Weed.cz" style="height: 40px; width: auto;"></a>
             <div class="header-search">
-                <input type="text" placeholder="Weed.cz prohledávat...">
+                <input type="text" placeholder="Search Weed.cz...">
             </div>
             <div class="header-actions">
-                <select class="header-btn" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;">
-                    <option>CS</option>
-                    <option>EN</option>
+                <select class="header-btn language-switcher" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;" onchange="if(this.value=='CS') window.location.href='/blog.html';">
+                    <option value="CS">CS</option>
+                    <option value="EN" selected>EN</option>
                 </select>
             </div>
         </div>
@@ -100,25 +100,25 @@
     <nav class="main-nav">
         <div class="nav-container">
             <a href="/" class="nav-badge">
-                🏠 Domů
+                🏠 Home
             </a>
             <a href="/cbd-shops.html" class="nav-badge pink">
-                🌿 CBD Obchody <span class="count">79</span>
+                🌿 CBD Shops <span class="count">79</span>
             </a>
             <a href="/seed-banks.html" class="nav-badge orange">
-                🌱 Seed Banky <span class="count">21</span>
+                🌱 Seed Banks <span class="count">21</span>
             </a>
             <a href="/grow-shops.html" class="nav-badge blue">
-                🌾 Grow Shopy <span class="count">23</span>
+                🌾 Grow Shops <span class="count">23</span>
             </a>
             <a href="/medical.html" class="nav-badge green">
-                💊 Lékárny <span class="count">21</span>
+                💊 Pharmacies <span class="count">21</span>
             </a>
             <a href="/blog.html" class="nav-badge yellow">
                 📝 Blog
             </a>
             <a href="/sitemap.html" class="nav-badge purple">
-                🗺️ Mapa stránek
+                🗺️ Sitemap
             </a>
         </div>
     </nav>
@@ -243,10 +243,10 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h3>WEED.CZ</h3>
-                <p>COMPLETE DIRECTORY OF CANNABIS STORES IN THE CZECH REPUBLIC</p>
+                <p>KOMPLETNÍ ADRESÁŘ CANNABIS OBCHODŮ V ČR</p>
             </div>
             <div class="footer-section">
-                <h3>CATEGORY</h3>
+                <h3>KATEGORIE</h3>
                 <ul>
                     <li><a href="/cbd-shops.html">CBD OBCHODY</a></li>
                     <li><a href="/seed-banks.html">SEED BANKY</a></li>
@@ -261,7 +261,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 WEED.CZ - CANNABIS DIRECTORY OF THE CZECH REPUBLIC</p>
+            <p>&copy; 2025 WEED.CZ - CANNABIS DIRECTORY ČESKÉ REPUBLIKY</p>
         </div>
     </footer>
     <script src="./js/translations.js"></script>

@@ -4,8 +4,8 @@
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pharmacies with Cannabis | 21 Locations | Weed.cz</title>
-    <meta name="description" content="Complete list of pharmacies with medical cannabis in the Czech Republic">
+    <title>Pharmacies s Cannabis | 21 Lokací | Weed.cz</title>
+    <meta name="description" content="Kompletní seznam lékáren s lékařským konopím v České republice">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="canonical" href="https://weed.cz/medical.html">
 
@@ -17,14 +17,14 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo"><img src="/images/logo-horizontal.png" alt="Weed.cz" style="height: 40px; width: auto;"></a>
+            <a href="/" class="logo"><img src="/../images/logo-horizontal.png" alt="Weed.cz" style="height: 40px; width: auto;"></a>
             <div class="header-search">
-                <input type="text" placeholder="Weed.cz prohledávat...">
+                <input type="text" placeholder="Search Weed.cz...">
             </div>
             <div class="header-actions">
-                <select class="header-btn" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;">
-                    <option>CS</option>
-                    <option>EN</option>
+                <select class="header-btn language-switcher" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;" onchange="if(this.value=='CS') window.location.href='/medical.html';">
+                    <option value="CS">CS</option>
+                    <option value="EN" selected>EN</option>
                 </select>
             </div>
         </div>
@@ -34,25 +34,25 @@
     <nav class="main-nav">
         <div class="nav-container">
             <a href="/" class="nav-badge">
-                🏠 Domů
+                🏠 Home
             </a>
             <a href="/cbd-shops.html" class="nav-badge pink">
-                🌿 CBD Obchody <span class="count">79</span>
+                🌿 CBD Shops <span class="count">79</span>
             </a>
             <a href="/seed-banks.html" class="nav-badge orange">
-                🌱 Seed Banky <span class="count">21</span>
+                🌱 Seed Banks <span class="count">21</span>
             </a>
             <a href="/grow-shops.html" class="nav-badge blue">
-                🌾 Grow Shopy <span class="count">23</span>
+                🌾 Grow Shops <span class="count">23</span>
             </a>
             <a href="/medical.html" class="nav-badge green">
-                💊 Lékárny <span class="count">21</span>
+                💊 Pharmacies <span class="count">21</span>
             </a>
             <a href="/blog/" class="nav-badge yellow">
                 📝 Blog
             </a>
             <a href="/sitemap.html" class="nav-badge purple">
-                🗺️ Mapa stránek
+                🗺️ Sitemap
             </a>
         </div>
     </nav>
@@ -61,24 +61,24 @@
     <section class="section">
         <div class="section-container">
             <div class="section-header">
-                <h1 class="section-title">💊 Lékárny</h1>
-                <p class="section-subtitle">21 lokací v České republice</p>
+                <h1 class="section-title">💊 Pharmacies</h1>
+                <p class="section-subtitle">21 locations v České republice</p>
             </div>
 
             <!-- Filters -->
             <div class="filters-container">
                 <div class="filter-group">
                     <label>🔍 Vyhledávání</label>
-                    <input type="text" id="search-filter" placeholder="Hledat podle názvu, města...">
+                    <input type="text" id="search-filter" placeholder="Search by name, city...">
                 </div>
                 <div class="filter-group">
-                    <label>📍 Město</label>
+                    <label>📍 City</label>
                     <select id="city-filter">
-                        <option value="">Všechna města</option>
+                        <option value="">All cities</option>
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label>🚚 Rozvoz</label>
+                    <label>🚚 Delivery</label>
                     <select id="delivery-filter">
                         <option value="">Vše</option>
                         <option value="Yes">Ano</option>
@@ -94,14 +94,14 @@
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label>⬇️ Řadit podle</label>
+                    <label>⬇️ Sort by</label>
                     <select id="sort-by">
-                        <option value="name">Název</option>
-                        <option value="city">Město</option>
+                        <option value="name">Name</option>
+                        <option value="city">City</option>
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label>🔄 Pořadí</label>
+                    <label>🔄 Order</label>
                     <select id="sort-order">
                         <option value="asc">A-Z</option>
                         <option value="desc">Z-A</option>
@@ -129,18 +129,18 @@
         <div class="seo-section" style="margin-bottom: 50px;">
             <h2 style="font-size: 32px; color: #3D2817; margin-bottom: 20px;">Lékařské konopí v České Republice</h2>
             <div style="line-height: 1.8; color: #333;">
-                <p>The Czech Republic legalized medical cannabis in 2013, becoming one of the first countries in Europe to recognize the therapeutic potential of cannabis. Today, patients with a doctor's prescription can obtain medical cannabis at more than 21 pharmacies across the country. Medical cannabis is used to treat a wide range of conditions, including chronic pain, multiple sclerosis, epilepsy, cancer, and other serious illnesses. Our directory includes all pharmacies authorized to dispense medical cannabis, providing patients with easy access to this essential treatment.</p>
+                <p>Česká republika legalizovala lékařské konopí v roce 2013, čímž se stala jednou z prvních zemí v Evropě, které uznaly terapeutický potenciál cannabis. Dnes mohou pacienti s předpisem od lékaře získat lékařské konopí v více než 21 lékárnách po celé zemi. Lékařské konopí se používá k léčbě široké škály onemocnění včetně chronické bolesti, mnohočetné sklerózy, epilepsie, rakoviny a dalších závažných stavů. Náš adresář zahrnuje všechny lékárny s povolením k výdeji lékařského konopí, poskytující pacientům snadný přístup k této důležité léčbě.</p>
             </div>
         </div>
 
         <div class="seo-section" style="margin-bottom: 50px;">
             <h2 style="font-size: 28px; color: #3D2817; margin-bottom: 20px;">Jak získat lékařské konopí v ČR</h2>
             <div style="line-height: 1.8; color: #333;">
-                <p>The process of obtaining medical cannabis in the Czech Republic begins with a visit to a doctor. The patient must have a diagnosed condition approved for cannabis treatment. The doctor will assess whether medical cannabis is a suitable treatment option and, if agreed, will issue a prescription.</p>
+                <p>Proces získání lékařského konopí v České republice začíná návštěvou lékaře. Pacient musí mít diagnostikované onemocnění, které je schváleno pro léčbu cannabis. Lékař posoudí, zda je lékařské konopí vhodnou léčebnou možností a v případě souhlasu vystaví předpis.</p>
                 
-                <p>A medical cannabis prescription is a special prescription that must include specific information such as the type of cannabis, dosage, and method of use. With this prescription, a patient can visit any pharmacy authorized to dispense medical cannabis. Not all pharmacies have this authorization, so it is important to use our directory to find the nearest authorized pharmacy.</p>
+                <p>Předpis na lékařské konopí je speciální recept, který musí obsahovat specifické informace včetně druhu konopí, dávkování a způsobu užití. S tímto předpisem může pacient navštívit kteroukoli lékárnu s povolením k výdeji lékařského konopí. Ne všechny lékárny mají toto povolení, proto je důležité použít náš adresář k nalezení nejbližší lékárny.</p>
                 
-                <p>Medical cannabis in the Czech Republic is available in the form of dried flowers, which are typically vaporized or prepared as tea. Pharmacies offer various strains with different THC to CBD ratios, allowing treatment to be tailored to the individual needs of the patient. The cost of medical cannabis is not covered by health insurance, so patients pay the full price.</p>
+                <p>Lékařské konopí v ČR je dostupné ve formě sušených květů, které se obvykle vaporizují nebo připravují jako čaj. Pharmacies nabízejí různé odrůdy s různým poměrem THC a CBD, což umožňuje přizpůsobit léčbu individuálním potřebám pacienta. Cena lékařského konopí není hrazena zdravotními pojišťovnami, pacienti platí plnou cenu.</p>
             </div>
         </div>
 
@@ -153,7 +153,7 @@
                 
                 <p><strong>Epilepsie</strong>, zejména formy rezistentní na konvenční léčbu, může být léčena lékařským konopím. CBD bohaté odrůdy se ukázaly jako obzvláště účinné při snižování frekvence záchvatů u některých pacientů. <strong>Onkologická onemocnění</strong> - cannabis může pomoci zmírnit nevolnost a zvracení spojené s chemoterapií, zlepšit chuť k jídlu a zmírnit bolest.</p>
                 
-                <p>Other approved indications include Crohn’s disease and ulcerative colitis, HIV/AIDS, glaucoma, Tourette’s syndrome, and other conditions approved by a physician. The final decision regarding the suitability of medical cannabis treatment always lies with the attending doctor.</p>
+                <p>Další schválené indikace zahrnují: Crohnovu chorobu a ulcerózní kolitidu, HIV/AIDS, glaukom, Tourettův syndrom a další stavy schválené lékařem. Konečné rozhodnutí o vhodnosti léčby lékařským konopím je vždy na ošetřujícím lékaři.</p>
             </div>
         </div>
 
@@ -169,11 +169,11 @@
         </div>
 
         <div class="seo-section" style="margin-bottom: 50px;">
-            <h2 style="font-size: 28px; color: #3D2817; margin-bottom: 20px;">Lékárny s lékařským konopím po celé ČR</h2>
+            <h2 style="font-size: 28px; color: #3D2817; margin-bottom: 20px;">Pharmacies s lékařským konopím po celé ČR</h2>
             <div style="line-height: 1.8; color: #333;">
-                <p>Pharmacies authorized to dispense medical cannabis can be found in Prague, Brno, Ostrava, and other major cities. Pharmacies in Prague typically offer the widest selection of strains and the longest opening hours. Pharmacies in Brno and Ostrava provide high-quality services with a personalized approach.</p>
+                <p>Pharmacies s povolením k výdeji lékařského konopí najdete v Praze, Brně, Ostravě a dalších větších městech. Pražské lékárny obvykle mají největší výběr odrůd a nejdelší otevírací dobu. Brněnské a ostravské lékárny poskytují kvalitní služby s osobním přístupem.</p>
                 
-                <p>When choosing a pharmacy, consider factors such as the availability of different strains, the pharmacists' knowledge of medical cannabis, opening hours, and location. Our directory will help you find the nearest pharmacy with complete information on availability and contact details.</p>
+                <p>Při výběru lékárny zvažte faktory jako dostupnost různých odrůd, znalosti farmaceutů o lékařském konopí, otevírací doba a poloha. Náš adresář vám pomůže najít nejbližší lékárnu s kompletními informacemi o dostupnosti a kontaktech.</p>
             </div>
         </div>
 
@@ -196,11 +196,11 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
-            <p>&copy; 2025 Weed.cz - Complete database of 144+ cannabis locations in the Czech Republic</p>
+            <p>&copy; 2025 Weed.cz - Kompletní databáze 144+ cannabis locations v České republice</p>
             <p style="margin-top: 16px;">
                 <a href="/privacy.html">Ochrana osobních údajů</a> | 
                 <a href="/terms.html">Podmínky používání</a> | 
-                <a href="/contact.html">Kontakt</a>
+                <a href="/contact.html">Contact</a>
             </p>
         </div>
     </footer>

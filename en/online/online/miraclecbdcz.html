@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiracleCBD.cz - Online - Weed.cz</title>
+    <meta name="description" content="MiracleCBD.cz - E-commerce Platform v Online. CBD products">
+    <link rel="stylesheet" href="/../../../css/style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Y3YW0SDT8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-2Y3YW0SDT8');
+    </script>
+
+    <link rel="alternate" hreflang="cs" href="https://weed.cz/online/online/miraclecbdcz.html" />
+    <link rel="alternate" hreflang="en" href="https://weed.cz/en/online/online/miraclecbdcz.html" />
+    <link rel="alternate" hreflang="x-default" href="https://weed.cz/online/online/miraclecbdcz.html" />
+</head>
+<body>
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+    
+        <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo"><img src="/../../../images/logo-horizontal.png" alt="Weed.cz" style="height: 40px; width: auto;"></a>
+            <div class="header-search">
+                <input type="text" placeholder="Search Weed.cz...">
+            </div>
+            <div class="header-actions">
+                <select class="header-btn language-switcher" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;" onchange="if(this.value=='CS') window.location.href='/online/online/miraclecbdcz.html';">
+                    <option value="CS">CS</option>
+                    <option value="EN" selected>EN</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation with Badges -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-badge">
+                🏠 Home
+            </a>
+            <a href="/cbd-shops.html" class="nav-badge pink">
+                🌿 CBD Shops <span class="count">79</span>
+            </a>
+            <a href="/seed-banks.html" class="nav-badge orange">
+                🌱 Seed Banks <span class="count">21</span>
+            </a>
+            <a href="/grow-shops.html" class="nav-badge blue">
+                🌾 Grow Shops <span class="count">23</span>
+            </a>
+            <a href="/medical.html" class="nav-badge green">
+                💊 Pharmacies <span class="count">21</span>
+            </a>
+            <a href="/blog/" class="nav-badge yellow">
+                📝 Blog
+            </a>
+            <a href="/sitemap.html" class="nav-badge purple">
+                🗺️ Sitemap
+            </a>
+        </div>
+    </nav>
+
+    <div class="container" id="main-content" style="margin-top: 40px;">
+        <!-- Breadcrumbs -->
+        <div style="margin-bottom: 20px; font-size: 14px;">
+            <a href="/" style="color: var(--text-gray); text-decoration: none;">Home</a>
+            <span style="color: var(--text-gray);"> / </span>
+            <a href="/online/online/index.html" style="color: var(--text-gray); text-decoration: none;">Online</a>
+            <span style="color: var(--text-gray);"> / </span>
+            <span style="color: var(--text-dark);">MiracleCBD.cz</span>
+        </div>
+        
+        <div class="business-detail">
+            <!-- Business Header -->
+            <div class="business-header">
+                <h1>MiracleCBD.cz</h1>
+        <!-- Business Image Gallery -->
+        <div class="business-gallery" id="business-gallery">
+            <!-- Images will be loaded by JavaScript -->
+        </div>
+        <script>
+        // Load business images
+        document.addEventListener('DOMContentLoaded', function() {
+            const businessName = "MiracleCBD.cz";
+            const category = document.querySelector('.badge-primary')?.textContent || 'Other';
+            
+            if (typeof getBusinessImages === 'function') {
+                const images = getBusinessImages(businessName, category);
+                const gallery = document.getElementById('business-gallery');
+                
+                if (images && images.length > 0) {
+                    gallery.innerHTML = images.map((img, i) => `
+                        <div class="gallery-item">
+                            <img src="${img}" alt="${businessName} - Foto ${i+1}" loading="lazy" onclick="openLightbox(${i})">
+                        </div>
+                    `).join('');
+                    
+                    // Add lightbox
+                    if (!document.getElementById('lightbox')) {
+                        gallery.insertAdjacentHTML('afterend', `
+                            <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+                                <span class="lightbox-close">&times;</span>
+                                <img class="lightbox-content" id="lightbox-img">
+                                <div class="lightbox-nav">
+                                    <button class="lightbox-prev" onclick="event.stopPropagation(); changeLightboxImage(-1)">&#10094;</button>
+                                    <button class="lightbox-next" onclick="event.stopPropagation(); changeLightboxImage(1)">&#10095;</button>
+                                </div>
+                            </div>
+                        `);
+                    }
+                    
+                    let currentImageIndex = 0;
+                    const lightboxImages = images;
+                    
+                    window.openLightbox = function(index) {
+                        currentImageIndex = index;
+                        document.getElementById('lightbox').style.display = 'flex';
+                        document.getElementById('lightbox-img').src = lightboxImages[index];
+                    };
+                    
+                    window.closeLightbox = function() {
+                        document.getElementById('lightbox').style.display = 'none';
+                    };
+                    
+                    window.changeLightboxImage = function(direction) {
+                        currentImageIndex += direction;
+                        if (currentImageIndex < 0) currentImageIndex = lightboxImages.length - 1;
+                        if (currentImageIndex >= lightboxImages.length) currentImageIndex = 0;
+                        document.getElementById('lightbox-img').src = lightboxImages[currentImageIndex];
+                    };
+                }
+            }
+        });
+        </script>
+
+                <div class="business-meta">
+                    <span class="badge badge-category">E-commerce Platform</span>
+                    <span class="badge badge-type">E-commerce</span>
+                    <span class="badge badge-available">Online Shop</span>
+                    <span class="badge badge-available">Delivery</span>
+                </div>
+            </div>
+            
+            <!-- Business Content Grid -->
+            <div class="business-content">
+                <!-- Main Content -->
+                <div class="business-main">
+                    <!-- Description -->
+                    
+                    
+                    <!-- Products -->
+                    
+                    <div class="info-box">
+                        <h3>🌿 Products</h3>
+                        <p>CBD products</p>
+                    </div>
+                    
+                    
+                    <!-- Services -->
+                    
+                    <div class="info-box">
+                        <h3>✨ Služby</h3>
+                        <p>E-commerce</p>
+                    </div>
+                    
+                    
+                    <!-- Map -->
+                    
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="business-sidebar">
+                    <!-- Contact Information -->
+                    <div class="info-box">
+                        <h3>📍 Contact Information</h3>
+                        <div class="contact-list">
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            <div class="contact-item">
+                                <strong>Website:</strong>
+                                <a href="www.miraclecbd.cz" target="_blank" rel="noopener">www.miraclecbd.cz</a>
+                            </div>
+                            
+                            
+                            
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="info-box">
+                        <h3>⚡ Quick Actions</h3>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            
+                            <a href="www.miraclecbd.cz" target="_blank" rel="noopener" class="btn btn-primary" style="width: 100%;">
+                                🌐 Visit Website
+                            </a>
+                            
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Related Businesses -->
+            <div class="related-businesses">
+                <h2>Similar businesses nearby</h2>
+                <div class="cards-grid" id="related-businesses">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 40px; text-align: center;">
+            <a href="/online/online/index.html" class="btn btn-primary">
+                Show all shops in Online
+            </a>
+        </div>
+    </div>
+
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Weed.cz</h3>
+                    <p>Complete directory of cannabis shops, pharmacies and services in Czech Republic.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="/cbd-shops.html">CBD Shops</a></li>
+                        <li><a href="/seed-banks.html">Seed Banks</a></li>
+                        <li><a href="/medical.html">Pharmacies</a></li>
+                        <li><a href="/blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Regions</h3>
+                    <ul>
+                        <li><a href="/praha/prague/index.html">Prague</a></li>
+                        <li><a href="/jihomoravsky/brno/index.html">Brno</a></li>
+                        <li><a href="/online/online/index.html">Online</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <ul>
+                        <li><a href="/about.html">About Project</a></li>
+                        <li><a href="/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Weed.cz - Kompletní databáze 144+ cannabis locations v České republice</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="/../../../js/data.js"></script>
+    <script src="/../../../js/translations.js"></script>
+    <script src="/../../../js/schema.js"></script>
+    <script src="/../../../js/main.js"></script>
+    <script>
+        // Load related businesses
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentCity = 'Online';
+            const currentCategory = 'E-commerce Platform';
+            const currentName = 'MiracleCBD.cz';
+            
+            if (typeof SITE_DATA !== 'undefined' && SITE_DATA.businesses) {
+                const related = SITE_DATA.businesses
+                    .filter(b => (b.city === currentCity || b.category === currentCategory) && b.name !== currentName)
+                    .slice(0, 3);
+                
+                const container = document.getElementById('related-businesses');
+                if (container && related.length > 0) {
+                    related.forEach(business => {
+                        container.innerHTML += createBusinessCardHTML(business);
+                    });
+                }
+            }
+        });
+    </script>
+    <script src="/../../../js/business-images.js"></script>
+</body>
+</html>
+

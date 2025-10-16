@@ -26,9 +26,9 @@
                 <input type="text" placeholder="Weed.cz prohledávat...">
             </div>
             <div class="header-actions">
-                <select class="header-btn" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;">
-                    <option>CS</option>
-                    <option>EN</option>
+                <select class="header-btn language-switcher" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;" onchange="if(this.value=='EN') window.location.href='/en/online/switzerlandczech/index.html';">
+                    <option value="CS" selected>CS</option>
+                    <option value="EN">EN</option>
                 </select>
             </div>
         </div>
