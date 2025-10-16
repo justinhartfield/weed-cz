@@ -184,7 +184,11 @@
                 </div>
             </div>
             
-            <!-- Related Businesses -->
+            
+                <!-- Photo Gallery -->
+                <div id="business-gallery"></div>
+                
+                <!-- Related Businesses -->
             <div class="related-businesses">
                 <h2>Podobné obchody v okolí</h2>
                 <div class="cards-grid" id="related-businesses">
@@ -247,6 +251,9 @@
     <script>
         // Load related businesses
         document.addEventListener('DOMContentLoaded', function() {
+        // Initialize photo gallery
+        createBusinessGallery('Hempo Cannabis Shop', 'business-gallery');
+
             const currentCity = 'Brno';
             const currentCategory = 'CBD Retail Shop';
             const currentName = 'Hempo Cannabis Shop';
@@ -265,6 +272,7 @@
             }
         });
     </script>
+    <script src="../../js/business-images.js"></script>
 </body>
 </html>
 

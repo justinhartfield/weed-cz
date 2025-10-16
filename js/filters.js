@@ -190,6 +190,13 @@ function createBusinessCard(business, index) {
     const card = document.createElement('div');
     card.className = 'business-card';
     
+    // Get business image
+    const imageUrl = typeof getBusinessImage === 'function' ? getBusinessImage(business.name, business.category) : '/images/businesses/cannabis-shop-prague-generic.jpg';
+    
+    // Add colored border
+    const colors = ['pink', 'orange', 'purple', 'green'];
+    card.classList.add(`border-${colors[index % colors.length]}`)
+    
     // Create badges
     const badges = [];
     if (business.category) {
@@ -207,6 +214,7 @@ function createBusinessCard(business, index) {
     
     // Build card HTML
     card.innerHTML = `
+        <div class="business-card-image" style="background-image: url(\'${imageUrl}\')"></div>
         <div class="business-card-header">
             <h3 class="business-card-title">
                 <a href="${business.url || '#'}">${business.name}</a>
