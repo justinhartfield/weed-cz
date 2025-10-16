@@ -4,278 +4,134 @@
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rozvozové služby - Weed.cz</title>
-    <meta name="description" content="Cannabis obchody a služby v České republice">
-    <link rel="stylesheet" href="./css/style.css">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-2Y3YW0SDT8"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-2Y3YW0SDT8');
-</script>
+    <title>Rozvoz CBD a Konopí | 6 Služeb | Weed.cz</title>
+    <meta name="description" content="Rozvoz CBD produktů a konopí po České republice">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="canonical" href="https://weed.cz/delivery.html">
 </head>
 <body>
-    <header>
-        <div class="header-top">
-            🌿 Kompletní databáze 144+ cannabis lokací v České republice
-        </div>
-        <div class="header-main">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
             <a href="/" class="logo"><img src="/images/logo-horizontal.png" alt="Weed.cz" style="height: 40px; width: auto;"></a>
-            <div class="search-bar">
-                <input type="text" id="search-input" placeholder="Hledat obchody, produkty, města...">
-            </div>
+
             <div class="header-actions">
-                <a href="/regions.html" class="btn btn-outline">Regiony</a>
-                <a href="/categories.html" class="btn btn-primary">Kategorie</a>
+                <select class="header-btn language-switcher" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;" onchange="if(this.value=='EN') window.location.href='/en/delivery.html';">
+                    <option value="CS" selected>CS</option>
+                    <option value="EN">EN</option>
+                </select>
             </div>
         </div>
     </header>
-    <nav>
+
+    <!-- Navigation with Badges -->
+    <nav class="main-nav">
         <div class="nav-container">
-            <ul class="nav-links">
-                <li><a href="/">Domů</a></li>
-                <li><a href="/regions.html">Regiony</a></li>
-                <li><a href="/categories.html">Kategorie</a></li>
-                <li><a href="/cbd-shops.html">CBD Obchody</a></li>
-                <li><a href="/seed-banks.html">Seed Banky</a></li>
-                <li><a href="/grow-shops.html">Grow Shopy</a></li>
-                <li><a href="/medical.html">Lékárny</a></li>
-                <li><a href="/blog.html" data-i18n="nav_blog">Blog</a></li>
-                <li><a href="/sitemap.html">Mapa stránek</a></li>
-            </ul>
+            <a href="/" class="nav-badge">
+                🏠 Domů
+            </a>
+            <a href="/cbd-shops.html" class="nav-badge pink">
+                🌿 CBD Obchody <span class="count">79</span>
+            </a>
+            <a href="/seed-banks.html" class="nav-badge orange">
+                🌱 Seed Banky <span class="count">21</span>
+            </a>
+            <a href="/grow-shops.html" class="nav-badge blue">
+                🌾 Grow Shopy <span class="count">23</span>
+            </a>
+            <a href="/medical.html" class="nav-badge green">
+                💊 Lékárny <span class="count">21</span>
+            </a>
+            <a href="/blog/" class="nav-badge yellow">
+                📝 Blog
+            </a>
+            <a href="/sitemap.html" class="nav-badge purple">
+                🗺️ Mapa stránek
+            </a>
         </div>
     </nav>
 
-    <div class="container" style="margin-top: 40px;">
-        <div class="section-header" style="text-align: center;">
-            <h1 class="section-title">Rozvozové služby</h1>
-            <p class="section-subtitle">6 lokací v České republice</p>
-        </div>
-        
-        <div class="cards-grid">
+    <!-- Page Content -->
+    <section class="section">
+        <div class="section-container">
+            <div class="section-header">
+                <h1 class="section-title">🚚 Rozvoz CBD a Konopí</h1>
+                <p class="section-subtitle">6 služeb rozvozu v České republice</p>
+            </div>
 
-    <div class="business-card category-delivery" data-category="Delivery Service" data-city="prague">
-        <div class="card-header">
-            <h3 class="card-title">
-                <a href="/praha/prague/skankcz.html">Skank.cz</a>
-            </h3>
-            <div class="card-meta">
-                <span class="badge badge-category">Delivery Service</span><span class="badge badge-type">Delivery Service</span><span class="badge badge-available">Online Shop</span>
+            <!-- Filters -->
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label>🔍 Vyhledávání</label>
+                    <input type="text" id="search-filter" placeholder="Hledat podle názvu, města...">
+                </div>
+                <div class="filter-group">
+                    <label>📍 Město</label>
+                    <select id="city-filter">
+                        <option value="">Všechna města</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>🛒 E-shop</label>
+                    <select id="online-filter">
+                        <option value="">Vše</option>
+                        <option value="Yes">Ano</option>
+                        <option value="No">Ne</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>⬇️ Řadit podle</label>
+                    <select id="sort-by">
+                        <option value="name">Název</option>
+                        <option value="city">Město</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>🔄 Pořadí</label>
+                    <select id="sort-order">
+                        <option value="asc">A-Z</option>
+                        <option value="desc">Z-A</option>
+                    </select>
+                </div>
+                <div class="filter-group" style="display: flex; align-items: flex-end;">
+                    <button id="reset-filters" class="btn btn-outline" style="width: 100%;">↺ Reset</button>
+                </div>
             </div>
-        </div>
-        <div class="card-body">
-            <div class="card-info">
-                
-        <div class="info-item">
-            <span class="info-icon">📍</span>
-            <span class="info-text">Prague</span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌐</span>
-            <span class="info-text"><a href="www.skank.cz" target="_blank" rel="noopener">skank.cz</a></span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌿</span>
-            <span class="info-text">Kratom, THC-X, CBD</span>
-        </div>
-            </div>
-        </div>
-        <div class="card-footer"><span class="tag">🚚 Rozvoz</span><span class="tag">🛒 E-shop</span><span class="tag">🕐 10:00-22:00 daily</span></div>
-    </div>
 
-    <div class="business-card category-delivery" data-category="Delivery Service" data-city="prague-entire-city">
-        <div class="card-header">
-            <h3 class="card-title">
-                <a href="/praha/prague-entire-city/califarmscz.html">Califarms.cz</a>
-            </h3>
-            <div class="card-meta">
-                <span class="badge badge-category">Delivery Service</span><span class="badge badge-type">Delivery Service</span><span class="badge badge-available">Online Shop</span>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="card-info">
-                
-        <div class="info-item">
-            <span class="info-icon">📍</span>
-            <span class="info-text">Prague (entire city)</span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">📞</span>
-            <span class="info-text">+420 607 420 420</span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌐</span>
-            <span class="info-text"><a href="www.califarms.cz" target="_blank" rel="noopener">califarms.cz</a></span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌿</span>
-            <span class="info-text">1% THC cannabis, HHCP, THC P, HHC, THC JD</span>
-        </div>
-            </div>
-        </div>
-        <div class="card-footer"><span class="tag">🚚 Rozvoz</span><span class="tag">🛒 E-shop</span><span class="tag">🕐 Daily</span></div>
-    </div>
+            <p id="results-count" style="text-align: center; margin: 20px 0; font-size: 16px; color: #666;"></p>
 
-    <div class="business-card category-delivery" data-category="Delivery Service" data-city="prague">
-        <div class="card-header">
-            <h3 class="card-title">
-                <a href="/praha/prague/rozvoz-hhccz.html">Rozvoz-hhc.cz</a>
-            </h3>
-            <div class="card-meta">
-                <span class="badge badge-category">Delivery Service</span><span class="badge badge-type">Delivery Service</span><span class="badge badge-available">Online Shop</span>
+            <!-- Business Cards Grid -->
+            <div class="cards-grid" id="business-list">
+                <!-- Cards will be loaded by JavaScript -->
             </div>
         </div>
-        <div class="card-body">
-            <div class="card-info">
-                
-        <div class="info-item">
-            <span class="info-icon">📍</span>
-            <span class="info-text">Prague</span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌐</span>
-            <span class="info-text"><a href="rozvoz-hhc.cz" target="_blank" rel="noopener">rozvoz-hhc.cz</a></span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌿</span>
-            <span class="info-text">Kratom, cannabis products</span>
-        </div>
-            </div>
-        </div>
-        <div class="card-footer"><span class="tag">🚚 Rozvoz</span><span class="tag">🛒 E-shop</span><span class="tag">🕐 10:00-22:00 daily</span></div>
-    </div>
+    </section>
 
-    <div class="business-card category-delivery" data-category="Delivery Service" data-city="prague-other-cities">
-        <div class="card-header">
-            <h3 class="card-title">
-                <a href="/praha/prague-other-cities/weeddelivery-praguecz.html">Weeddelivery-prague.cz</a>
-            </h3>
-            <div class="card-meta">
-                <span class="badge badge-category">Delivery Service</span><span class="badge badge-type">Delivery Service</span><span class="badge badge-available">Online Shop</span>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="card-info">
-                
-        <div class="info-item">
-            <span class="info-icon">📍</span>
-            <span class="info-text">Prague & other cities</span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌐</span>
-            <span class="info-text"><a href="weeddelivery-prague.cz" target="_blank" rel="noopener">weeddelivery-prague.cz</a></span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌿</span>
-            <span class="info-text">Cannabis products</span>
-        </div>
-            </div>
-        </div>
-        <div class="card-footer"><span class="tag">🚚 Rozvoz</span><span class="tag">🛒 E-shop</span><span class="tag">🕐 Daily</span></div>
-    </div>
-
-    <div class="business-card category-delivery" data-category="Delivery Service" data-city="czech-republic">
-        <div class="card-header">
-            <h3 class="card-title">
-                <a href="/online/czech-republic/canatura-delivery.html">Canatura Delivery</a>
-            </h3>
-            <div class="card-meta">
-                <span class="badge badge-category">Delivery Service</span><span class="badge badge-type">Delivery Service</span><span class="badge badge-available">Online Shop</span>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="card-info">
-                
-        <div class="info-item">
-            <span class="info-icon">📍</span>
-            <span class="info-text">Czech Republic</span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌐</span>
-            <span class="info-text"><a href="www.canatura.com" target="_blank" rel="noopener">canatura.com</a></span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌿</span>
-            <span class="info-text">Hemp and CBD products</span>
-        </div>
-            </div>
-        </div>
-        <div class="card-footer"><span class="tag">🚚 Rozvoz</span><span class="tag">🛒 E-shop</span><span class="tag">🕐 Business hours</span></div>
-    </div>
-
-    <div class="business-card category-delivery" data-category="Delivery Service" data-city="czech-republic-aš-to-jablunkov">
-        <div class="card-header">
-            <h3 class="card-title">
-                <a href="/online/czech-republic-aš-to-jablunkov/miraclecbd-delivery.html">MiracleCBD Delivery</a>
-            </h3>
-            <div class="card-meta">
-                <span class="badge badge-category">Delivery Service</span><span class="badge badge-type">Delivery Service</span><span class="badge badge-available">Online Shop</span>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="card-info">
-                
-        <div class="info-item">
-            <span class="info-icon">📍</span>
-            <span class="info-text">Czech Republic (Aš to Jablunkov)</span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌐</span>
-            <span class="info-text"><a href="www.miraclecbd.cz" target="_blank" rel="noopener">miraclecbd.cz</a></span>
-        </div>
-        <div class="info-item">
-            <span class="info-icon">🌿</span>
-            <span class="info-text">CBD products</span>
-        </div>
-            </div>
-        </div>
-        <div class="card-footer"><span class="tag">🚚 Rozvoz</span><span class="tag">🛒 E-shop</span><span class="tag">🕐 Business hours</span></div>
-    </div>
-
-        </div>
-    </div>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Weed.cz</h3>
-                <p>Kompletní adresář cannabis obchodů, lékáren a služeb v České republice.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Kategorie</h3>
-                <ul>
-                    <li><a href="/cbd-shops.html">CBD Obchody</a></li>
-                    <li><a href="/seed-banks.html">Seed Banky</a></li>
-                    <li><a href="/grow-shops.html">Grow Shopy</a></li>
-                    <li><a href="/medical.html">Lékárny</a></li>
-                <li><a href="/blog.html" data-i18n="nav_blog">Blog</a></li>
-                <li><a href="/sitemap.html">Mapa stránek</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Regiony</h3>
-                <ul>
-                    <li><a href="/praha/prague/index.html">Praha</a></li>
-                    <li><a href="/jihomoravsky/brno/index.html">Brno</a></li>
-                    <li><a href="/online/online/index.html">Online</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>O nás</h3>
-                <ul>
-                    <li><a href="/about.html">O projektu</a></li>
-                    <li><a href="/contact.html">Kontakt</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Weed.cz - Cannabis Directory České Republiky</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2025 Weed.cz - Kompletní databáze 144+ cannabis lokací v České republice</p>
+            <p style="margin-top: 16px;">
+                <a href="/privacy.html">Ochrana osobních údajů</a> | 
+                <a href="/terms.html">Podmínky používání</a> | 
+                <a href="/contact.html">Kontakt</a>
+            </p>
         </div>
     </footer>
-    <script src="./js/data.js"></script>
-    <script src="./js/main.js"></script>
+
+    <script src="js/data.js"></script>
+    <script src="js/business-images.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/schema.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    
+    <script>
+        // Initialize filters for delivery services
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initializeFilters === 'function') {
+                initializeFilters('Delivery Service');
+            }
+        });
+    </script>
 </body>
 </html>
