@@ -53,6 +53,67 @@
         <div class="section-header" style="text-align: center;">
             <h1 class="section-title">CBD Obchody</h1>
             <p class="section-subtitle">79 lokací v České republice</p>
+        
+        <!-- Filters and Sorting -->
+        <div id="filters-container" class="filters-container">
+            <div class="filter-group">
+                <label for="filter-search">🔍 Vyhledávání</label>
+                <input type="text" id="filter-search" placeholder="Hledat podle názvu, města...">
+            </div>
+            
+            <div class="filter-group">
+                <label for="filter-city">📍 Město</label>
+                <select id="filter-city">
+                    <option value="all">Všechna města</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="filter-delivery">🚚 Rozvoz</label>
+                <select id="filter-delivery">
+                    <option value="all">Vše</option>
+                    <option value="Yes">Ano</option>
+                    <option value="No">Ne</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="filter-online-shop">🛒 E-shop</label>
+                <select id="filter-online-shop">
+                    <option value="all">Vše</option>
+                    <option value="Yes">Ano</option>
+                    <option value="No">Ne</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="sort-by">⬇️ Řadit podle</label>
+                <select id="sort-by">
+                    <option value="name">Název</option>
+                    <option value="city">Město</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="sort-order">🔄 Pořadí</label>
+                <select id="sort-order">
+                    <option value="asc">A-Z</option>
+                    <option value="desc">Z-A</option>
+                </select>
+            </div>
+            
+            <div class="filter-group" style="justify-content: flex-end;">
+                <button id="reset-filters" class="btn btn-outline" style="margin-top: 24px;">
+                    ↺ Reset
+                </button>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0;">
+            <p id="results-count" style="color: var(--text-gray); font-size: 14px;">
+                Zobrazeno 79 z 79 lokací
+            </p>
+        </div>
         </div>
         
         <div class="cards-grid" id="results-container">
