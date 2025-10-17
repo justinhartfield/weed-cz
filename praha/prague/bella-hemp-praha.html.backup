@@ -4,8 +4,8 @@
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legalni-konopi.cz - Brno - Weed.cz</title>
-    <meta name="description" content="Legalni-konopi.cz - E-commerce Platform v Brno. CBD drops, oils, Phoenix Tears, candies, flowers, hash">
+    <title>Bella Hemp Praha - Prague - Weed.cz</title>
+    <meta name="description" content="Bella Hemp Praha - CBD Retail Shop v Prague. Hemp products">
     <link rel="stylesheet" href="../../css/style.css">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2Y3YW0SDT8"></script>
@@ -27,7 +27,7 @@
             <a href="/" class="logo"><img src="/images/logo-horizontal.webp" alt="Weed.cz" style="height: 40px; width: auto;"></a>
 
             <div class="header-actions">
-                <select class="header-btn language-switcher" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;" onchange="if(this.value=='EN') window.location.href='/en/jihomoravsky/brno/legalni-konopicz.html';">
+                <select class="header-btn language-switcher" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;" onchange="if(this.value=='EN') window.location.href='/en/praha/prague/bella-hemp-praha.html';">
                     <option value="CS" selected>CS</option>
                     <option value="EN">EN</option>
                 </select>
@@ -67,19 +67,19 @@
         <div style="margin-bottom: 20px; font-size: 14px;">
             <a href="/" style="color: var(--text-gray); text-decoration: none;">Domů</a>
             <span style="color: var(--text-gray);"> / </span>
-            <a href="/jihomoravsky/brno/index.html" style="color: var(--text-gray); text-decoration: none;">Brno</a>
+            <a href="/praha/prague/index.html" style="color: var(--text-gray); text-decoration: none;">Prague</a>
             <span style="color: var(--text-gray);"> / </span>
-            <span style="color: var(--text-dark);">Legalni-konopi.cz</span>
+            <span style="color: var(--text-dark);">Bella Hemp Praha</span>
         </div>
         
         <div class="business-detail">
             <!-- Business Header -->
             <div class="business-header">
-                <h1>Legalni-konopi.cz</h1>
+                <h1>Bella Hemp Praha</h1>
         <!-- Business Description -->
         <div class="business-description" style="background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
             <h2 style="color: #2c5530; margin-bottom: 15px;">O nás</h2>
-            <p style="line-height: 1.8; color: #333;">Legalni-konopi.cz je přední e-shop sídlící v Brně, specializující se na kvalitní CBD produkty a konopné extrakty. Nabízíme široký sortiment přírodních CBD kapek, olejů, Phoenix Tears, bonbónů, sušených květů i hashe, které splňují přísné standardy kvality a bezpečnosti. Naše produkty jsou pečlivě vybírány tak, aby zákazníkům přinášely maximální užitek – podporu relaxace, zmírnění stresu či zlepšení celkové pohody. Díky snadné dostupnosti a rychlému doručení po celé České republice je nákup u nás pohodlný a bezpečný. Legalni-konopi.cz klade důraz na transparentnost, odborné poradenství a zákaznický servis, což z nás činí důvěryhodného partnera v oblasti legálních konopných produktů. Naše CBD oleje a kapky obsahují plné spektrum kanabinoidů s minimálním obsahem THC pod zákonným limitem, což garantuje legálnost a bezpečnost užívání. Pro zákazníky z Brna nabízíme také osobní odběr a konzultace. Objevte přírodní cestu ke zdraví s Legalni-konopi.cz – vaším spolehlivým zdrojem kvalitního</p>
+            <p style="line-height: 1.8; color: #333;">Bella Hemp Praha je přední CBD retail shop sídlící v srdci Prahy, který nabízí široký výběr kvalitních konopných produktů. Specializujeme se na přírodní CBD oleje, konopné kapsle, krémy, kosmetiku a další doplňky stravy vyrobené z certifikovaného českého i evropského konopí. Naše produkty jsou pečlivě vybírány s důrazem na čistotu, účinnost a bezpečnost, což zajišťuje maximální užitek pro vaše zdraví a pohodu. Navštivte nás na snadno dostupné adrese v centru Prahy, kde vám náš odborný personál rád poradí s výběrem ideálního produktu přesně podle vašich potřeb. Bella Hemp Praha klade důraz na transparentnost a vzdělávání zákazníků o přínosech CBD a konopí. Díky našim přírodním produktům můžete podpořit relaxaci, lepší spánek, regeneraci i celkovou rovnováhu organismu. Pokud hledáte spolehlivý CBD obchod v Praze s osobním přístupem, Bella Hemp Praha je tou správnou volbou. Navštivte nás a objevte sílu konopí pro zdravý životní styl.</p>
         </div>
 
         <!-- Business Image Gallery -->
@@ -89,7 +89,7 @@
         <script>
         // Load business images
         document.addEventListener('DOMContentLoaded', function() {
-            const businessName = "Legalni-konopi.cz";
+            const businessName = "Bella Hemp Praha";
             const category = document.querySelector('.badge-primary')?.textContent || 'Other';
             
             if (typeof window.getBusinessImages === 'function') {
@@ -104,18 +104,16 @@
                     `).join('');
                     
                     // Add lightbox
-                    if (!document.getElementById('lightbox')) {
-                        gallery.insertAdjacentHTML('afterend', `
-                            <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-                                <span class="lightbox-close">&times;</span>
-                                <img class="lightbox-content" id="lightbox-img">
-                                <div class="lightbox-nav">
-                                    <button class="lightbox-prev" onclick="event.stopPropagation(); changeLightboxImage(-1)">&#10094;</button>
-                                    <button class="lightbox-next" onclick="event.stopPropagation(); changeLightboxImage(1)">&#10095;</button>
-                                </div>
+                    gallery.insertAdjacentHTML('afterend', `
+                        <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+                            <span class="lightbox-close">&times;</span>
+                            <img class="lightbox-content" id="lightbox-img">
+                            <div class="lightbox-nav">
+                                <button class="lightbox-prev" onclick="event.stopPropagation(); changeLightboxImage(-1)">&#10094;</button>
+                                <button class="lightbox-next" onclick="event.stopPropagation(); changeLightboxImage(1)">&#10095;</button>
                             </div>
-                        `);
-                    }
+                        </div>
+                    `);
                     
                     let currentImageIndex = 0;
                     const lightboxImages = images;
@@ -142,10 +140,10 @@
         </script>
 
                 <div class="business-meta">
-                    <span class="badge badge-category">E-commerce Platform</span>
-                    <span class="badge badge-type">E-commerce & Retail</span>
-                    <span class="badge badge-available">Online Shop</span>
-                    <span class="badge badge-available">Rozvoz</span>
+                    <span class="badge badge-category">CBD Retail Shop</span>
+                    <span class="badge badge-type">Retail</span>
+                    
+                    
                 </div>
             </div>
             
@@ -160,7 +158,7 @@
                     
                     <div class="info-box">
                         <h3>🌿 Produkty</h3>
-                        <p>CBD drops, oils, Phoenix Tears, candies, flowers, hash</p>
+                        <p>Hemp products</p>
                     </div>
                     
                     
@@ -182,7 +180,7 @@
                             </iframe>
                         </div>
                         <p style="margin-top: 12px; font-size: 14px;">
-                            <a href="https://www.google.com/maps/search/?api=1&query=Zámečnická 1, 602 00 Brno-střed,Brno" 
+                            <a href="https://www.google.com/maps/search/?api=1&query=Libuška 174,Prague" 
                                target="_blank" 
                                style="color: var(--bud-green);">
                                 📍 Otevřít v Google Maps
@@ -201,7 +199,7 @@
                             
                             <div class="contact-item">
                                 <strong>Adresa:</strong>
-                                <span>Zámečnická 1, 602 00 Brno-střed</span>
+                                <span>Libuška 174</span>
                             </div>
                             
                             
@@ -211,11 +209,6 @@
                             
                             
                             
-                            
-                            <div class="contact-item">
-                                <strong>Web:</strong>
-                                <a href="https://www.legalni-konopi.cz/" target="_blank" rel="noopener">www.legalni-konopi.cz/</a>
-                            </div>
                             
                             
                             
@@ -227,13 +220,9 @@
                         <h3>⚡ Rychlé akce</h3>
                         <div style="display: flex; flex-direction: column; gap: 12px;">
                             
-                            <a href="https://www.legalni-konopi.cz/" target="_blank" rel="noopener" class="btn btn-primary" style="width: 100%;">
-                                🌐 Navštívit web
-                            </a>
                             
                             
-                            
-                            <a href="https://www.google.com/maps/search/?api=1&query=Zámečnická 1, 602 00 Brno-střed,Brno" 
+                            <a href="https://www.google.com/maps/search/?api=1&query=Libuška 174,Prague" 
                                target="_blank" 
                                class="btn btn-outline" 
                                style="width: 100%;">
@@ -255,14 +244,12 @@
         </div>
         
         <div style="margin-top: 40px; text-align: center;">
-            <a href="/jihomoravsky/brno/index.html" class="btn btn-primary">
-                Zobrazit všechny obchody v Brno
+            <a href="/praha/prague/index.html" class="btn btn-primary">
+                Zobrazit všechny obchody v Prague
             </a>
         </div>
     </div>
 
-    
-    <!-- Footer -->
     
     <!-- Footer -->
     
@@ -444,9 +431,9 @@
     <script>
         // Load related businesses
         document.addEventListener('DOMContentLoaded', function() {
-            const currentCity = 'Brno';
-            const currentCategory = 'E-commerce Platform';
-            const currentName = 'Legalni-konopi.cz';
+            const currentCity = 'Prague';
+            const currentCategory = 'CBD Retail Shop';
+            const currentName = 'Bella Hemp Praha';
             
             if (typeof SITE_DATA !== 'undefined' && SITE_DATA.businesses) {
                 const related = SITE_DATA.businesses
@@ -463,12 +450,11 @@
         });
     </script>
     <script src="/js/business-images.js"></script>
-    <script src="/js/business-images.js"></script>
     <!-- Reviews System -->
     <script src="/js/reviews.js" onerror="console.error('Failed to load reviews.js'); document.getElementById('reviews-list').innerHTML = '<p>Systém recenzí se nepodařilo načíst. Zkuste prosím obnovit stránku.</p>';"></script>
     <script>
-        const businessId = 'legalni-konopicz';
-        const businessName = 'Legalni-konopi.cz';
+        const businessId = 'bella-hemp-praha';
+        const businessName = 'Bella Hemp Praha';
         
         document.addEventListener('DOMContentLoaded', function() {
             initializeReviews(businessId);
@@ -496,3 +482,4 @@
     </script>
 </body>
 </html>
+

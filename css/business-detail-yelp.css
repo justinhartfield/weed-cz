@@ -1,0 +1,593 @@
+/* Yelp-Style Business Detail Page */
+
+/* Hero Section - Full Width */
+.business-hero {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #000;
+}
+
+.business-hero-images {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: 100%;
+    gap: 0;
+}
+
+.business-hero-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.business-hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 40px 80px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+    color: white;
+}
+
+.business-hero-name {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    color: white;
+}
+
+.business-hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 16px;
+}
+
+.business-hero-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.business-hero-rating .stars {
+    color: #FF6B35;
+    font-size: 20px;
+}
+
+.business-hero-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hero-photos-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.9);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+/* Action Bar */
+.business-actions {
+    background: white;
+    border-bottom: 1px solid #e6e6e6;
+    padding: 20px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actions-left {
+    display: flex;
+    gap: 12px;
+}
+
+.actions-right {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: right;
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background: white;
+    transition: all 0.2s;
+}
+
+.btn-action:hover {
+    background: #f5f5f5;
+}
+
+.btn-action.primary {
+    background: #D32323;
+    color: white;
+    border-color: #D32323;
+}
+
+.btn-action.primary:hover {
+    background: #B81D1D;
+}
+
+.contact-link {
+    color: #0073bb;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.contact-link:hover {
+    text-decoration: underline;
+}
+
+/* Two-Column Layout */
+.business-content-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 80px;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 40px;
+}
+
+.business-main-content {
+    min-width: 0;
+}
+
+.business-sidebar {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+}
+
+/* Section Styling */
+.content-section {
+    background: white;
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 32px;
+    border: 1px solid #e6e6e6;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 24px 0;
+    color: #2b2b2b;
+}
+
+/* Location & Hours */
+.location-hours-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+}
+
+.hours-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.hours-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.hours-list li.closed {
+    color: #D32323;
+}
+
+.map-container {
+    width: 100%;
+    height: 250px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Rating Summary - Yelp Style */
+.rating-summary-yelp {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 32px;
+    align-items: center;
+    padding: 24px 0;
+}
+
+.overall-rating-display {
+    text-align: center;
+}
+
+.overall-rating-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: #2b2b2b;
+    margin: 0;
+}
+
+.overall-rating-stars {
+    color: #FF6B35;
+    font-size: 24px;
+    margin: 8px 0;
+}
+
+.overall-rating-count {
+    font-size: 14px;
+    color: #666;
+}
+
+.rating-distribution {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rating-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.rating-bar-label {
+    min-width: 50px;
+    color: #666;
+}
+
+.rating-bar-bg {
+    flex: 1;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.rating-bar-fill {
+    height: 100%;
+    background: #FF6B35;
+    transition: width 0.3s;
+}
+
+.rating-bar-count {
+    min-width: 40px;
+    text-align: right;
+    color: #666;
+}
+
+/* Review Cards - Yelp Style */
+.review-card {
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+    background: white;
+}
+
+.review-header {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.review-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
+}
+
+.review-user-info {
+    flex: 1;
+}
+
+.review-user-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2b2b2b;
+    margin: 0 0 4px 0;
+}
+
+.review-user-meta {
+    font-size: 12px;
+    color: #666;
+    display: flex;
+    gap: 8px;
+}
+
+.review-rating-date {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.review-stars {
+    color: #FF6B35;
+    font-size: 16px;
+}
+
+.review-date {
+    font-size: 14px;
+    color: #666;
+}
+
+.review-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    color: #2b2b2b;
+}
+
+.review-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #2b2b2b;
+    margin: 0 0 16px 0;
+}
+
+.review-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+    padding: 16px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.review-category-item {
+    font-size: 13px;
+    color: #666;
+}
+
+.review-category-label {
+    font-weight: 600;
+    color: #2b2b2b;
+}
+
+.review-reactions {
+    display: flex;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e6e6e6;
+}
+
+.reaction-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.reaction-btn:hover {
+    background: #f5f5f5;
+    border-color: #999;
+}
+
+/* Review Form - Yelp Style */
+.review-form {
+    background: #f9f9f9;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 32px;
+}
+
+.review-form h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 24px 0;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #2b2b2b;
+}
+
+.star-rating-input {
+    display: flex;
+    gap: 8px;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.star-rating-input input[type="radio"] {
+    display: none;
+}
+
+.star-rating-input label {
+    font-size: 32px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s;
+    margin: 0;
+}
+
+.star-rating-input input[type="radio"]:checked ~ label,
+.star-rating-input label:hover,
+.star-rating-input label:hover ~ label {
+    color: #FF6B35;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.category-ratings-input {
+    background: white;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.category-ratings-input h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-primary {
+    background: #D32323;
+    color: white;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background: #B81D1D;
+}
+
+.btn-secondary {
+    background: white;
+    color: #666;
+    padding: 14px 32px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: #f5f5f5;
+}
+
+/* Sidebar Cards */
+.sidebar-card {
+    background: white;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.sidebar-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .business-content-wrapper {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    
+    .business-sidebar {
+        position: static;
+    }
+    
+    .business-actions,
+    .business-hero-overlay {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .business-hero {
+        height: 300px;
+    }
+    
+    .business-hero-name {
+        font-size: 32px;
+    }
+    
+    .business-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .actions-left {
+        flex-direction: column;
+    }
+    
+    .actions-right {
+        text-align: left;
+        margin-top: 16px;
+    }
+    
+    .rating-summary-yelp {
+        grid-template-columns: 1fr;
+    }
+    
+    .location-hours-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Hide old styles when using Yelp layout */
+.yelp-layout .business-header,
+.yelp-layout .business-info,
+.yelp-layout .business-container:not(.business-content-wrapper) {
+    display: none;
+}
+

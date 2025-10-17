@@ -15,6 +15,8 @@
       gtag('js', new Date());
       gtag('config', 'G-2Y3YW0SDT8');
     </script>
+    <!-- Supabase Client -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
 </head>
 <body>
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
@@ -228,7 +230,143 @@
 
     
     <!-- Footer -->
-    <footer class="footer">
+    
+    <!-- Footer -->
+    
+        <!-- Rating Summary Section -->
+        <div class="business-container">
+            <div id="rating-summary" class="rating-summary-container">
+                <!-- Will be populated by JavaScript -->
+            </div>
+            
+            <!-- Write Review Button -->
+            <div class="review-actions-header">
+                <button id="login-btn" onclick="showLoginDialog()" style="display: none;">
+                    Přihlásit se
+                </button>
+                <button id="logout-btn" onclick="signOut()" style="display: none;">
+                    Odhlásit se
+                </button>
+                <button id="write-review-btn" onclick="showReviewForm()" style="display: none;">
+                    ✍️ Napsat recenzi
+                </button>
+            </div>
+            
+            <!-- Review Form (hidden by default) -->
+            <div id="review-form" class="review-form" style="display: none;">
+                <h3>Napište recenzi</h3>
+                <form onsubmit="handleReviewSubmit(event)">
+                    <!-- Overall Rating -->
+                    <div class="form-group">
+                        <label>Celkové hodnocení *</label>
+                        <div class="star-rating-input">
+                            <input type="radio" name="overall_rating" value="5" id="star5" required>
+                            <label for="star5">⭐⭐⭐⭐⭐</label>
+                            <input type="radio" name="overall_rating" value="4" id="star4">
+                            <label for="star4">⭐⭐⭐⭐</label>
+                            <input type="radio" name="overall_rating" value="3" id="star3">
+                            <label for="star3">⭐⭐⭐</label>
+                            <input type="radio" name="overall_rating" value="2" id="star2">
+                            <label for="star2">⭐⭐</label>
+                            <input type="radio" name="overall_rating" value="1" id="star1">
+                            <label for="star1">⭐</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Title -->
+                    <div class="form-group">
+                        <label for="review_title">Nadpis recenze</label>
+                        <input type="text" id="review_title" name="review_title" maxlength="100" placeholder="Shrňte svou zkušenost...">
+                    </div>
+                    
+                    <!-- Review Text -->
+                    <div class="form-group">
+                        <label for="review_text">Vaše recenze</label>
+                        <textarea id="review_text" rows="5" maxlength="1000" placeholder="Podělte se o své zkušenosti..."></textarea>
+                    </div>
+                    
+                    <!-- Category Ratings -->
+                    <div class="category-ratings-input">
+                        <h4>Hodnocení podle kategorií (volitelné)</h4>
+                        
+                        <div class="form-group">
+                            <label>🌿 Kvalita produktů</label>
+                            <select name="product_quality">
+                                <option value="">Nehodnoceno</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Výborné</option>
+                                <option value="4">⭐⭐⭐⭐ Dobré</option>
+                                <option value="3">⭐⭐⭐ Průměrné</option>
+                                <option value="2">⭐⭐ Podprůměrné</option>
+                                <option value="1">⭐ Špatné</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>📦 Výběr</label>
+                            <select name="selection">
+                                <option value="">Nehodnoceno</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Výborný</option>
+                                <option value="4">⭐⭐⭐⭐ Dobrý</option>
+                                <option value="3">⭐⭐⭐ Průměrný</option>
+                                <option value="2">⭐⭐ Podprůměrný</option>
+                                <option value="1">⭐ Špatný</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>👥 Personál</label>
+                            <select name="staff">
+                                <option value="">Nehodnoceno</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Výborný</option>
+                                <option value="4">⭐⭐⭐⭐ Dobrý</option>
+                                <option value="3">⭐⭐⭐ Průměrný</option>
+                                <option value="2">⭐⭐ Podprůměrný</option>
+                                <option value="1">⭐ Špatný</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>💰 Cena</label>
+                            <select name="price">
+                                <option value="">Nehodnoceno</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Výborná</option>
+                                <option value="4">⭐⭐⭐⭐ Dobrá</option>
+                                <option value="3">⭐⭐⭐ Průměrná</option>
+                                <option value="2">⭐⭐ Podprůměrná</option>
+                                <option value="1">⭐ Špatná</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>✨ Atmosféra</label>
+                            <select name="atmosphere">
+                                <option value="">Nehodnoceno</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Výborná</option>
+                                <option value="4">⭐⭐⭐⭐ Dobrá</option>
+                                <option value="3">⭐⭐⭐ Průměrná</option>
+                                <option value="2">⭐⭐ Podprůměrná</option>
+                                <option value="1">⭐ Špatná</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Odeslat recenzi</button>
+                        <button type="button" onclick="closeReviewForm()" class="btn-secondary">Zrušit</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Reviews List -->
+            <div class="reviews-section">
+                <h2>Recenze</h2>
+                <div id="reviews-list">
+                    <p class="loading">Načítání recenzí...</p>
+                </div>
+            </div>
+        </div>
+        
+<footer class="footer">
         <div class="footer-container">
             <div class="footer-content">
                 <div class="footer-section">
@@ -292,6 +430,36 @@
         });
     </script>
     <script src="/js/business-images.js"></script>
+    <script src="/js/business-images.js"></script>
+    <!-- Reviews System -->
+    <script src="/js/reviews.js" onerror="console.error('Failed to load reviews.js'); document.getElementById('reviews-list').innerHTML = '<p>Systém recenzí se nepodařilo načíst. Zkuste prosím obnovit stránku.</p>';"></script>
+    <script>
+        const businessId = 'cbdprodejnacz';
+        const businessName = 'CBDprodejna.cz';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeReviews(businessId);
+        });
+        
+        function handleReviewSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            const reviewData = {
+                businessName: businessName,
+                overallRating: parseInt(formData.get('overall_rating')),
+                title: formData.get('review_title') || null,
+                reviewText: document.getElementById('review_text').value || null,
+                productQuality: formData.get('product_quality') ? parseInt(formData.get('product_quality')) : null,
+                selection: formData.get('selection') ? parseInt(formData.get('selection')) : null,
+                staff: formData.get('staff') ? parseInt(formData.get('staff')) : null,
+                price: formData.get('price') ? parseInt(formData.get('price')) : null,
+                atmosphere: formData.get('atmosphere') ? parseInt(formData.get('atmosphere')) : null
+            };
+            
+            submitReview(reviewData);
+        }
+    </script>
 </body>
 </html>
-
