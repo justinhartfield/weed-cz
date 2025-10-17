@@ -130,7 +130,7 @@ async function signOut() {
 async function loadRatingSummary(businessId) {
     try {
         const { data, error } = await supabase
-            .rpc('get_business_rating_summary', { p_business_id: businessId });
+            .rpc('get_business_rating_summary', { business_id_param: businessId });
         
         if (error) throw error;
         
