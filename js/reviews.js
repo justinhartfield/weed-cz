@@ -1,449 +1,398 @@
-// Reviews System for Weed.cz
-// Connects to Flask API for ratings and reviews
+// Reviews System with Supabase Integration
+// Supabase configuration
+const SUPABASE_URL = 'https://jafpjwwowylamzdqqiss.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphZnBqd3dvd3lsYW16ZHFxaXNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NzczNjIsImV4cCI6MjA3NjI1MzM2Mn0.Td02K3J1uFKM5r96UxA45Guy4H2MtNNIXaBVm1Ueoqc';
 
-const API_BASE = (typeof window !== 'undefined' && window.REVIEWS_API_BASE) ? window.REVIEWS_API_BASE : 'http://localhost:5000/api';
-
-function escapeHTML(str) {
-    if (str === null || str === undefined) return '';
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
-function clampInt(n, min, max) {
-    const num = Number(n);
-    if (!Number.isFinite(num)) return min;
-    return Math.max(min, Math.min(max, Math.trunc(num)));
-}
-
-function renderStars(value) {
-    const count = clampInt(Math.round(Number(value) || 0), 0, 5);
-    return '★'.repeat(count) + '☆'.repeat(5 - count);
+// Initialize Supabase client
+let supabase;
+try {
+    if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('✅ Supabase client initialized');
+    } else {
+        console.error('❌ Supabase library not loaded');
+    }
+} catch (error) {
+    console.error('❌ Failed to initialize Supabase:', error);
 }
 
 // Current user state
 let currentUser = null;
+let currentBusinessId = null;
 
-// Check if user is logged in
+// Initialize reviews system
+async function initializeReviews(businessId) {
+    console.log('🔧 Initializing reviews for:', businessId);
+    currentBusinessId = businessId;
+    
+    if (!supabase) {
+        console.error('❌ Supabase not initialized');
+        document.getElementById('reviews-list').innerHTML = '<p class="error">Systém recenzí není k dispozici. Zkuste prosím obnovit stránku.</p>';
+        return;
+    }
+    
+    // Check auth status
+    await checkAuth();
+    
+    // Load rating summary
+    await loadRatingSummary(businessId);
+    
+    // Load reviews
+    await loadReviews(businessId);
+}
+
+// Check authentication status
 async function checkAuth() {
     try {
-        const response = await fetch(`${API_BASE}/auth/me`, {
-            credentials: 'include'
-        });
+        const { data: { session }, error } = await supabase.auth.getSession();
         
-        if (response.ok) {
-            currentUser = await response.json();
+        if (error) throw error;
+        
+        if (session) {
+            currentUser = session.user;
+            console.log('✅ User logged in:', currentUser.email);
             updateUIForLoggedInUser();
         } else {
             currentUser = null;
+            console.log('ℹ️ User not logged in');
             updateUIForLoggedOutUser();
         }
     } catch (error) {
-        console.error('Auth check failed:', error);
+        console.error('❌ Auth check failed:', error);
         currentUser = null;
+        updateUIForLoggedOutUser();
     }
 }
 
-// Request magic link login
-async function requestLogin(email) {
+// Update UI for logged in user
+function updateUIForLoggedInUser() {
+    const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const writeReviewBtn = document.getElementById('write-review-btn');
+    
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (logoutBtn) {
+        logoutBtn.style.display = 'inline-block';
+        logoutBtn.textContent = `Odhlásit se (${currentUser.email})`;
+    }
+    if (writeReviewBtn) writeReviewBtn.style.display = 'inline-block';
+}
+
+// Update UI for logged out user
+function updateUIForLoggedOutUser() {
+    const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const writeReviewBtn = document.getElementById('write-review-btn');
+    
+    if (loginBtn) loginBtn.style.display = 'inline-block';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+    if (writeReviewBtn) writeReviewBtn.style.display = 'none';
+}
+
+// Show login dialog
+async function showLoginDialog() {
+    const email = prompt('Zadejte svůj email pro přihlášení:');
+    if (!email) return;
+    
     try {
-        const response = await fetch(`${API_BASE}/auth/request-login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email }),
-            credentials: 'include'
+        const { error } = await supabase.auth.signInWithOtp({
+            email: email,
+            options: {
+                emailRedirectTo: window.location.href
+            }
         });
         
-        const data = await response.json();
+        if (error) throw error;
         
-        if (response.ok) {
-            alert('Magic link sent to your email! Check your inbox.');
-            // In production, the magic_link won't be returned
-            if (data.magic_link) {
-                console.log('Dev mode - Magic link:', data.magic_link);
-            }
+        alert('✅ Přihlašovací odkaz byl odeslán na váš email. Zkontrolujte prosím svou schránku.');
+    } catch (error) {
+        console.error('❌ Login failed:', error);
+        alert('❌ Přihlášení se nezdařilo: ' + error.message);
+    }
+}
+
+// Sign out
+async function signOut() {
+    try {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+        
+        currentUser = null;
+        updateUIForLoggedOutUser();
+        alert('✅ Byli jste odhlášeni');
+    } catch (error) {
+        console.error('❌ Logout failed:', error);
+        alert('❌ Odhlášení se nezdařilo: ' + error.message);
+    }
+}
+
+// Load rating summary
+async function loadRatingSummary(businessId) {
+    try {
+        const { data, error } = await supabase
+            .rpc('get_business_rating_summary', { p_business_id: businessId });
+        
+        if (error) throw error;
+        
+        const summary = data && data.length > 0 ? data[0] : null;
+        
+        if (summary && summary.review_count > 0) {
+            displayRatingSummary(summary);
         } else {
-            alert('Error: ' + data.error);
+            document.getElementById('rating-summary').innerHTML = `
+                <div class="rating-summary">
+                    <p>Zatím žádné recenze. Buďte první, kdo napíše recenzi!</p>
+                </div>
+            `;
         }
     } catch (error) {
-        console.error('Login request failed:', error);
-        alert('Failed to send login link. Please try again.');
+        console.error('❌ Failed to load rating summary:', error);
+        document.getElementById('rating-summary').innerHTML = '<p class="error">Nepodařilo se načíst hodnocení.</p>';
     }
+}
+
+// Display rating summary
+function displayRatingSummary(summary) {
+    const avgRating = parseFloat(summary.average_rating) || 0;
+    const reviewCount = parseInt(summary.review_count) || 0;
+    
+    const html = `
+        <div class="rating-summary">
+            <div class="rating-overview">
+                <div class="rating-score">
+                    <span class="rating-number">${avgRating.toFixed(1)}</span>
+                    <div class="rating-stars">${renderStars(avgRating)}</div>
+                    <div class="rating-count">${reviewCount} ${reviewCount === 1 ? 'recenze' : reviewCount < 5 ? 'recenze' : 'recenzí'}</div>
+                </div>
+            </div>
+            
+            ${summary.product_quality_avg ? `
+            <div class="category-ratings">
+                <div class="category-rating">
+                    <span class="category-label">🌿 Kvalita produktů</span>
+                    <span class="category-stars">${renderStars(summary.product_quality_avg)}</span>
+                    <span class="category-value">${parseFloat(summary.product_quality_avg).toFixed(1)}</span>
+                </div>
+                ${summary.selection_avg ? `
+                <div class="category-rating">
+                    <span class="category-label">📦 Výběr</span>
+                    <span class="category-stars">${renderStars(summary.selection_avg)}</span>
+                    <span class="category-value">${parseFloat(summary.selection_avg).toFixed(1)}</span>
+                </div>
+                ` : ''}
+                ${summary.staff_avg ? `
+                <div class="category-rating">
+                    <span class="category-label">👥 Personál</span>
+                    <span class="category-stars">${renderStars(summary.staff_avg)}</span>
+                    <span class="category-value">${parseFloat(summary.staff_avg).toFixed(1)}</span>
+                </div>
+                ` : ''}
+                ${summary.price_avg ? `
+                <div class="category-rating">
+                    <span class="category-label">💰 Cena</span>
+                    <span class="category-stars">${renderStars(summary.price_avg)}</span>
+                    <span class="category-value">${parseFloat(summary.price_avg).toFixed(1)}</span>
+                </div>
+                ` : ''}
+                ${summary.atmosphere_avg ? `
+                <div class="category-rating">
+                    <span class="category-label">✨ Atmosféra</span>
+                    <span class="category-stars">${renderStars(summary.atmosphere_avg)}</span>
+                    <span class="category-value">${parseFloat(summary.atmosphere_avg).toFixed(1)}</span>
+                </div>
+                ` : ''}
+            </div>
+            ` : ''}
+        </div>
+    `;
+    
+    document.getElementById('rating-summary').innerHTML = html;
+}
+
+// Render stars
+function renderStars(rating) {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5 ? 1 : 0;
+    const emptyStars = 5 - fullStars - halfStar;
+    
+    return '⭐'.repeat(fullStars) + (halfStar ? '⭐' : '') + '☆'.repeat(emptyStars);
+}
+
+// Load reviews
+async function loadReviews(businessId) {
+    try {
+        const { data: reviews, error } = await supabase
+            .from('reviews')
+            .select('*')
+            .eq('business_id', businessId)
+            .eq('status', 'approved')
+            .order('created_at', { ascending: false });
+        
+        if (error) throw error;
+        
+        if (reviews && reviews.length > 0) {
+            displayReviews(reviews);
+        } else {
+            document.getElementById('reviews-list').innerHTML = '<p class="no-reviews">Zatím žádné recenze.</p>';
+        }
+    } catch (error) {
+        console.error('❌ Failed to load reviews:', error);
+        document.getElementById('reviews-list').innerHTML = '<p class="error">Nepodařilo se načíst recenze.</p>';
+    }
+}
+
+// Display reviews
+function displayReviews(reviews) {
+    const html = reviews.map(review => `
+        <div class="review-card">
+            <div class="review-header">
+                <div class="review-rating">
+                    <span class="stars">${renderStars(review.overall_rating)}</span>
+                    <span class="rating-number">${review.overall_rating}/5</span>
+                </div>
+                <div class="review-date">${new Date(review.created_at).toLocaleDateString('cs-CZ')}</div>
+            </div>
+            
+            ${review.title ? `<h4 class="review-title">${escapeHTML(review.title)}</h4>` : ''}
+            
+            ${review.review_text ? `<p class="review-text">${escapeHTML(review.review_text)}</p>` : ''}
+            
+            ${review.product_quality_rating || review.selection_rating || review.staff_rating || review.price_rating || review.atmosphere_rating ? `
+            <div class="review-categories">
+                ${review.product_quality_rating ? `<span class="category-badge">🌿 Kvalita: ${renderStars(review.product_quality_rating)}</span>` : ''}
+                ${review.selection_rating ? `<span class="category-badge">📦 Výběr: ${renderStars(review.selection_rating)}</span>` : ''}
+                ${review.staff_rating ? `<span class="category-badge">👥 Personál: ${renderStars(review.staff_rating)}</span>` : ''}
+                ${review.price_rating ? `<span class="category-badge">💰 Cena: ${renderStars(review.price_rating)}</span>` : ''}
+                ${review.atmosphere_rating ? `<span class="category-badge">✨ Atmosféra: ${renderStars(review.atmosphere_rating)}</span>` : ''}
+            </div>
+            ` : ''}
+            
+            <div class="review-actions">
+                <button onclick="voteHelpful('${review.id}')" class="btn-helpful">
+                    👍 Užitečné (${review.helpful_count || 0})
+                </button>
+            </div>
+        </div>
+    `).join('');
+    
+    document.getElementById('reviews-list').innerHTML = html;
+}
+
+// Escape HTML
+function escapeHTML(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// Show review form
+function showReviewForm() {
+    if (!currentUser) {
+        alert('Prosím přihlaste se pro napsání recenze.');
+        showLoginDialog();
+        return;
+    }
+    
+    document.getElementById('review-form').style.display = 'block';
+    document.getElementById('review-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Close review form
+function closeReviewForm() {
+    document.getElementById('review-form').style.display = 'none';
 }
 
 // Submit review
-async function submitReview(businessId, reviewData) {
+async function submitReview(reviewData) {
     if (!currentUser) {
-        showLoginPrompt();
+        alert('Prosím přihlaste se pro napsání recenze.');
+        return;
+    }
+    
+    if (!reviewData.overallRating) {
+        alert('Prosím vyberte celkové hodnocení.');
         return;
     }
     
     try {
-        const response = await fetch(`${API_BASE}/reviews/submit`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                business_id: businessId,
-                ...reviewData
-            }),
-            credentials: 'include'
-        });
+        const { data, error } = await supabase
+            .from('reviews')
+            .insert([{
+                business_id: currentBusinessId,
+                user_id: currentUser.id,
+                overall_rating: reviewData.overallRating,
+                title: reviewData.title || null,
+                review_text: reviewData.reviewText || null,
+                product_quality_rating: reviewData.productQuality || null,
+                selection_rating: reviewData.selection || null,
+                staff_rating: reviewData.staff || null,
+                price_rating: reviewData.price || null,
+                atmosphere_rating: reviewData.atmosphere || null,
+                status: 'pending'
+            }]);
         
-        const data = await response.json();
+        if (error) throw error;
         
-        if (response.ok) {
-            alert('Review submitted! It will appear after moderation.');
-            closeReviewForm();
-            return true;
-        } else {
-            alert('Error: ' + data.error);
-            return false;
-        }
+        alert('✅ Děkujeme za vaši recenzi! Bude zveřejněna po schválení moderátorem.');
+        closeReviewForm();
+        
+        // Reset form
+        document.querySelector('#review-form form').reset();
+        
     } catch (error) {
-        console.error('Submit review failed:', error);
-        alert('Failed to submit review. Please try again.');
-        return false;
+        console.error('❌ Failed to submit review:', error);
+        alert('❌ Nepodařilo se odeslat recenzi: ' + error.message);
     }
 }
 
-// Load reviews for a business
-async function loadBusinessReviews(businessId) {
-    try {
-        const response = await fetch(`${API_BASE}/reviews/business/${businessId}`);
-        const data = await response.json();
-        
-        if (response.ok) {
-            // Expose sanitized aggregate for schema injection
-            const avg = Number(data.average_rating);
-            const cnt = Number(data.review_count);
-            window.__LATEST_REVIEWS_AGGREGATE__ = {
-                average_rating: Number.isFinite(avg) ? Math.max(0, Math.min(5, avg)) : 0,
-                review_count: Number.isFinite(cnt) ? Math.max(0, Math.trunc(cnt)) : 0
-            };
-            displayReviews(data);
-        }
-    } catch (error) {
-        console.error('Load reviews failed:', error);
-    }
-}
-
-// Mark review as helpful
-async function markHelpful(reviewId) {
+// Vote helpful
+async function voteHelpful(reviewId) {
     if (!currentUser) {
-        showLoginPrompt();
+        alert('Prosím přihlaste se pro hodnocení recenzí.');
+        showLoginDialog();
         return;
     }
     
     try {
-        const response = await fetch(`${API_BASE}/reviews/${reviewId}/helpful`, {
-            method: 'POST',
-            credentials: 'include'
-        });
+        const { error } = await supabase
+            .from('review_votes')
+            .insert([{
+                review_id: reviewId,
+                user_id: currentUser.id,
+                type: 'helpful'
+            }]);
         
-        const data = await response.json();
-        
-        if (response.ok) {
-            // Update helpful count in UI
-            const helpfulBtn = document.querySelector(`[data-review-id="${reviewId}"] .helpful-count`);
-            if (helpfulBtn) {
-                helpfulBtn.textContent = data.helpful_count;
+        if (error) {
+            if (error.code === '23505') { // Unique constraint violation
+                alert('Tuto recenzi jste již ohodnotili.');
+            } else {
+                throw error;
             }
         } else {
-            alert(data.error);
+            alert('✅ Děkujeme za vaše hodnocení!');
+            // Reload reviews to show updated count
+            await loadReviews(currentBusinessId);
         }
     } catch (error) {
-        console.error('Mark helpful failed:', error);
+        console.error('❌ Failed to vote:', error);
+        alert('❌ Nepodařilo se odeslat hodnocení: ' + error.message);
     }
 }
 
-// Flag review
-async function flagReview(reviewId, reason) {
-    if (!currentUser) {
-        showLoginPrompt();
-        return;
-    }
-    
-    try {
-        const response = await fetch(`${API_BASE}/reviews/${reviewId}/flag`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ reason }),
-            credentials: 'include'
-        });
-        
-        if (response.ok) {
-            alert('Review flagged. Thank you for helping maintain quality.');
-        }
-    } catch (error) {
-        console.error('Flag review failed:', error);
-    }
-}
-
-// UI Functions
-
-function updateUIForLoggedInUser() {
-    // Show "Write Review" button
-    const writeReviewBtns = document.querySelectorAll('.write-review-btn');
-    writeReviewBtns.forEach(btn => {
-        btn.style.display = 'inline-block';
-        btn.disabled = false;
-    });
-    
-    // Show user menu
-    const userMenu = document.querySelector('.user-menu');
-    if (userMenu) {
-        userMenu.innerHTML = `
-            <span>Welcome, ${currentUser.display_name}</span>
-            <button onclick="logout()">Logout</button>
-        `;
-    }
-}
-
-function updateUIForLoggedOutUser() {
-    // Show "Write Review" button and prompt for login when clicked
-    const writeReviewBtns = document.querySelectorAll('.write-review-btn');
-    writeReviewBtns.forEach(btn => {
-        btn.style.display = 'inline-block';
-        btn.disabled = false;
-        btn.onclick = showLoginPrompt;
-    });
-}
-
-function showLoginPrompt() {
-    const email = prompt('Enter your email to login:');
-    if (email) {
-        requestLogin(email);
-    }
-}
-
-function showReviewForm(businessId) {
-    if (!currentUser) {
-        showLoginPrompt();
-        return;
-    }
-    
-    const safeBusinessId = String(businessId).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-    const formHTML = `
-        <div class="review-form-overlay" id="review-form-overlay">
-            <div class="review-form-modal">
-                <h2>Write a Review</h2>
-                <form id="review-form" data-business-id="${safeBusinessId}">
-                    <div class="form-group">
-                        <label>Overall Rating *</label>
-                        <div class="star-rating" data-rating="0">
-                            <span class="star" data-value="1">☆</span>
-                            <span class="star" data-value="2">☆</span>
-                            <span class="star" data-value="3">☆</span>
-                            <span class="star" data-value="4">☆</span>
-                            <span class="star" data-value="5">☆</span>
-                        </div>
-                        <input type="hidden" name="overall_rating" id="overall_rating" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Review Title</label>
-                        <input type="text" name="title" maxlength="100" placeholder="Great CBD shop!">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Your Review</label>
-                        <textarea name="review_text" rows="5" maxlength="1000" placeholder="Share your experience..."></textarea>
-                    </div>
-                    
-                    <div class="category-ratings">
-                        <h3>Category Ratings (Optional)</h3>
-                        <div class="form-group">
-                            <label>Product Quality</label>
-                            <select name="product_quality_rating">
-                                <option value="">Not rated</option>
-                                <option value="1">1 star</option>
-                                <option value="2">2 stars</option>
-                                <option value="3">3 stars</option>
-                                <option value="4">4 stars</option>
-                                <option value="5">5 stars</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Selection</label>
-                            <select name="selection_rating">
-                                <option value="">Not rated</option>
-                                <option value="1">1 star</option>
-                                <option value="2">2 stars</option>
-                                <option value="3">3 stars</option>
-                                <option value="4">4 stars</option>
-                                <option value="5">5 stars</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Staff Knowledge</label>
-                            <select name="staff_rating">
-                                <option value="">Not rated</option>
-                                <option value="1">1 star</option>
-                                <option value="2">2 stars</option>
-                                <option value="3">3 stars</option>
-                                <option value="4">4 stars</option>
-                                <option value="5">5 stars</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Price</label>
-                            <select name="price_rating">
-                                <option value="">Not rated</option>
-                                <option value="1">1 star</option>
-                                <option value="2">2 stars</option>
-                                <option value="3">3 stars</option>
-                                <option value="4">4 stars</option>
-                                <option value="5">5 stars</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Atmosphere</label>
-                            <select name="atmosphere_rating">
-                                <option value="">Not rated</option>
-                                <option value="1">1 star</option>
-                                <option value="2">2 stars</option>
-                                <option value="3">3 stars</option>
-                                <option value="4">4 stars</option>
-                                <option value="5">5 stars</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="submit" class="btn-primary">Submit Review</button>
-                        <button type="button" class="btn-secondary" onclick="closeReviewForm()">Cancel</button>
-                    </div>
-                    <input type="submit" value="Submit" style="display:none" />
-                </form>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', formHTML);
-    
-    // Initialize star rating
-    initStarRating();
-
-    // Bind submit handler safely
-    const form = document.getElementById('review-form');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            handleReviewSubmit(e, form.getAttribute('data-business-id'));
-        });
-    }
-}
-
-function initStarRating() {
-    const stars = document.querySelectorAll('.star-rating .star');
-    stars.forEach(star => {
-        star.addEventListener('click', function() {
-            const rating = parseInt(this.dataset.value);
-            const container = this.parentElement;
-            container.dataset.rating = rating;
-            document.getElementById('overall_rating').value = rating;
-            
-            // Update star display
-            stars.forEach((s, i) => {
-                s.textContent = i < rating ? '★' : '☆';
-            });
-        });
-    });
-}
-
-function handleReviewSubmit(event, businessId) {
-    event.preventDefault();
-    
-    const formData = new FormData(event.target);
-    const reviewData = {};
-    
-    formData.forEach((value, key) => {
-        if (value) {
-            reviewData[key] = key.includes('rating') ? parseInt(value) : value;
+// Listen for auth state changes
+if (supabase) {
+    supabase.auth.onAuthStateChange((event, session) => {
+        console.log('🔐 Auth state changed:', event);
+        if (event === 'SIGNED_IN') {
+            currentUser = session.user;
+            updateUIForLoggedInUser();
+        } else if (event === 'SIGNED_OUT') {
+            currentUser = null;
+            updateUIForLoggedOutUser();
         }
     });
-    
-    submitReview(businessId, reviewData);
 }
 
-function closeReviewForm() {
-    const overlay = document.getElementById('review-form-overlay');
-    if (overlay) {
-        overlay.remove();
-    }
-}
-
-function displayReviews(data) {
-    const container = document.getElementById('reviews-container');
-    if (!container) return;
-    
-    let html = `
-        <div class="reviews-summary">
-            <h2>Customer Reviews (${data.review_count})</h2>
-            <div class="rating-overview">
-                <span class="rating-score">${data.average_rating}</span>
-                <div class="stars">${renderStars(data.average_rating)}</div>
-                <span class="review-count">Based on ${data.review_count} reviews</span>
-            </div>
-        </div>
-        
-        <div class="reviews-list">
-    `;
-    
-    data.reviews.forEach(review => {
-        const author = escapeHTML(review.author || 'User');
-        const title = review.title ? `<h3 class="review-title">${escapeHTML(review.title)}</h3>` : '';
-        const text = review.review_text ? `<p>${escapeHTML(review.review_text)}</p>` : '';
-        html += `
-            <article class="review" data-review-id="${review.id}">
-                <div class="review-header">
-                    <span class="reviewer-name">${author}</span>
-                    <div class="review-rating">${renderStars(review.overall_rating)}</div>
-                    <time>${new Date(review.created_at).toLocaleDateString('cs-CZ')}</time>
-                </div>
-                ${title}
-                <div class="review-body">${text}</div>
-                
-                <div class="review-actions">
-                    <button class="helpful-btn" onclick="markHelpful(${review.id})">
-                        👍 Helpful (<span class="helpful-count">${review.helpful_count}</span>)
-                    </button>
-                    <button class="flag-btn" onclick="flagReview(${review.id}, 'spam')">
-                        🚩 Report
-                    </button>
-                </div>
-            </article>
-        `;
-    });
-    
-    html += '</div>';
-    container.innerHTML = html;
-}
-
-async function logout() {
-    try {
-        await fetch(`${API_BASE}/auth/logout`, {
-            method: 'POST',
-            credentials: 'include'
-        });
-        currentUser = null;
-        updateUIForLoggedOutUser();
-        alert('Logged out successfully');
-    } catch (error) {
-        console.error('Logout failed:', error);
-    }
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', () => {
-    checkAuth();
-    
-    // Load reviews if on business page
-    const businessId = document.body.dataset.businessId;
-    if (businessId) {
-        loadBusinessReviews(businessId);
-    }
-});
+console.log('✅ Reviews system loaded');
 
