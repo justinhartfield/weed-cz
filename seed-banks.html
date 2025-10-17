@@ -14,8 +14,10 @@
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo"><img src="/images/logo-horizontal.webp" alt="Weed.cz" style="height: 40px; width: auto;"></a>
-
-            <div class="header-actions">
+            <div class="header-search">
+                <input type="text" id="header-search" placeholder="Weed.cz prohledávat..." style="padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; width: 200px; font-size: 14px;">
+            </div>
+<div class="header-actions">
                 <select class="header-btn language-switcher" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px;" onchange="if(this.value=='EN') window.location.href='/en/seed-banks.html';">
                     <option value="CS" selected>CS</option>
                     <option value="EN">EN</option>
@@ -190,13 +192,35 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
-            <p>&copy; 2025 Weed.cz - Kompletní databáze 144+ cannabis lokací v České republice</p>
-            <p style="margin-top: 16px;">
-                <a href="/privacy.html">Ochrana osobních údajů</a> | 
-                <a href="/terms.html">Podmínky používání</a> | 
-                <a href="/contact.html">Kontakt</a> | 
-                <a href="about.html">O projektu</a>
-            </p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Weed.cz</h3>
+                    <p>Kompletní adresář cannabis obchodů, lékáren a služeb v České republice.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Kategorie</h3>
+                    <ul>
+                        <li><a href="/cbd-shops.html">CBD Obchody</a></li>
+                        <li><a href="/seed-banks.html">Seed Banky</a></li>
+                        <li><a href="/grow-shops.html">Grow Shopy</a></li>
+                        <li><a href="/medical.html">Lékárny</a></li>
+                        <li><a href="/blog/">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Informace</h3>
+                    <ul>
+                        <li><a href="/about.html">O projektu</a></li>
+                        <li><a href="/contact.html">Kontakt</a></li>
+                        <li><a href="/privacy.html">Ochrana osobních údajů</a></li>
+                        <li><a href="/terms.html">Podmínky používání</a></li>
+                        <li><a href="/sitemap.html">Mapa stránek</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Weed.cz - Kompletní databáze 144+ cannabis lokací v České republice</p>
+            </div>
         </div>
     </footer>
 
