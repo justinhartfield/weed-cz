@@ -129,14 +129,27 @@ async function signOut() {
 // Load rating summary
 async function loadRatingSummary(businessId) {
     try {
-        const { data, error } = await supabase
-            .rpc('get_business_rating_summary', { business_id_param: businessId });
+        // Query approved reviews for this business
+        const { data: reviews, error } = await supabase
+            .from('reviews')
+            .select('overall_rating, product_quality_rating, selection_rating, staff_rating, price_rating, atmosphere_rating')
+            .eq('business_id', businessId)
+            .eq('status', 'approved');
         
         if (error) throw error;
         
-        const summary = data && data.length > 0 ? data[0] : null;
-        
-        if (summary && summary.review_count > 0) {
+        if (reviews && reviews.length > 0) {
+            // Calculate summary statistics
+            const summary = {
+                review_count: reviews.length,
+                average_rating: reviews.reduce((sum, r) => sum + r.overall_rating, 0) / reviews.length,
+                product_quality_avg: calculateAverage(reviews, 'product_quality_rating'),
+                selection_avg: calculateAverage(reviews, 'selection_rating'),
+                staff_avg: calculateAverage(reviews, 'staff_rating'),
+                price_avg: calculateAverage(reviews, 'price_rating'),
+                atmosphere_avg: calculateAverage(reviews, 'atmosphere_rating')
+            };
+            
             displayRatingSummary(summary);
         } else {
             document.getElementById('rating-summary').innerHTML = `
@@ -149,6 +162,13 @@ async function loadRatingSummary(businessId) {
         console.error('❌ Failed to load rating summary:', error);
         document.getElementById('rating-summary').innerHTML = '<p class="error">Nepodařilo se načíst hodnocení.</p>';
     }
+}
+
+// Helper function to calculate average for a rating field
+function calculateAverage(reviews, field) {
+    const validRatings = reviews.filter(r => r[field] !== null && r[field] !== undefined);
+    if (validRatings.length === 0) return null;
+    return validRatings.reduce((sum, r) => sum + r[field], 0) / validRatings.length;
 }
 
 // Display rating summary
