@@ -36,11 +36,18 @@ async function initializeReviews(businessId) {
     console.log('🔧 Initializing reviews for:', businessId);
     currentBusinessId = businessId;
     
-    if (!supabase) {
-        console.error('❌ Supabase not initialized');
-        document.getElementById('reviews-list').innerHTML = '<p class="error">Systém recenzí není k dispozici. Zkuste prosím obnovit stránku.</p>';
-        return;
+    // Ensure Supabase is initialized
+    if (!supabaseInitialized) {
+        const initialized = initSupabase();
+        if (!initialized) {
+            console.error('❌ Supabase not initialized');
+            document.getElementById('reviews-list').innerHTML = '<p class="error">Systém recenzí není k dispozici. Zkuste prosím obnovit stránku.</p>';
+            return;
+        }
     }
+    
+    // Ensure business exists in database
+    await ensureBusinessExists(businessId);
     
     // Check auth status
     await checkAuth();
@@ -50,6 +57,33 @@ async function initializeReviews(businessId) {
     
     // Load reviews
     await loadReviews(businessId);
+}
+
+// Ensure business exists in database
+async function ensureBusinessExists(businessId) {
+    try {
+        const { data: existing, error: selectError } = await supabase
+            .from('businesses')
+            .select('id')
+            .eq('id', businessId)
+            .single();
+        
+        if (selectError && selectError.code === 'PGRST116') {
+            // Business doesn't exist, create it
+            const businessName = document.querySelector('h1')?.textContent || businessId;
+            const { error: insertError } = await supabase
+                .from('businesses')
+                .insert([{ id: businessId, name: businessName }]);
+            
+            if (insertError) {
+                console.error('❌ Failed to create business:', insertError);
+            } else {
+                console.log('✅ Business created:', businessId);
+            }
+        }
+    } catch (error) {
+        console.error('❌ Error ensuring business exists:', error);
+    }
 }
 
 // Check authentication status
