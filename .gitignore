@@ -22,3 +22,7 @@ node_modules/
 
 .cursor/rules/kluster-code-verify.mdc
 .kluster
+-e 
+# Environment files
+*.env
+*.env.*
