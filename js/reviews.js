@@ -269,9 +269,9 @@ function displayRatingSummary(summary) {
         <div class="rating-summary">
             <div class="rating-overview">
                 <div class="rating-score">
-                    <span class="rating-number">${avgRating.toFixed(1)}</span>
+                    <span class="rating-number average-rating">${avgRating.toFixed(1)}</span>
                     <div class="rating-stars">${renderStars(avgRating)}</div>
-                    <div class="rating-count">${reviewCount} ${reviewCount === 1 ? 'recenze' : reviewCount < 5 ? 'recenze' : 'recenzí'}</div>
+                    <div class="rating-count review-count" data-count="${reviewCount}">${reviewCount} ${reviewCount === 1 ? 'recenze' : reviewCount < 5 ? 'recenze' : 'recenzí'}</div>
                 </div>
             </div>
             
