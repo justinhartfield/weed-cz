@@ -300,23 +300,50 @@ function renderStars(rating) {
 // Load reviews
 async function loadReviews(businessId) {
     try {
+        console.log('📝 Loading reviews for:', businessId);
+        
         const { data: reviews, error } = await supabase
             .from('reviews')
-            .select('*')
+            .select('id, overall_rating, title, review_text, product_quality_rating, selection_rating, staff_rating, price_rating, atmosphere_rating, helpful_count, created_at, user_id')
             .eq('business_id', businessId)
             .eq('status', 'approved')
             .order('created_at', { ascending: false });
         
-        if (error) throw error;
+        if (error) {
+            console.error('❌ Error loading reviews:', error);
+            throw error;
+        }
+        
+        console.log('✅ Loaded reviews:', reviews ? reviews.length : 0);
         
         if (reviews && reviews.length > 0) {
-            displayReviews(reviews);
+            // Get user display names
+            const userIds = [...new Set(reviews.map(r => r.user_id))];
+            const { data: users } = await supabase
+                .from('users')
+                .select('id, display_name, email')
+                .in('id', userIds);
+            
+            const userMap = {};
+            if (users) {
+                users.forEach(u => {
+                    userMap[u.id] = u.display_name || u.email?.split('@')[0] || 'User';
+                });
+            }
+            
+            displayReviews(reviews, userMap);
         } else {
-            document.getElementById('reviews-list').innerHTML = '<p class="no-reviews">Zatím žádné recenze.</p>';
+            const listEl = document.getElementById('reviews-list');
+            if (listEl) {
+                listEl.innerHTML = '<p class="no-reviews">Zatím žádné recenze.</p>';
+            }
         }
     } catch (error) {
         console.error('❌ Failed to load reviews:', error);
-        document.getElementById('reviews-list').innerHTML = '<p class="error">Nepodařilo se načíst recenze.</p>';
+        const listEl = document.getElementById('reviews-list');
+        if (listEl) {
+            listEl.innerHTML = '<p class="error">Nepodařilo se načíst recenze.</p>';
+        }
     }
 }
 
