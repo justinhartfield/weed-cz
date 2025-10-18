@@ -174,6 +174,8 @@ async function signOut() {
 // Load rating summary
 async function loadRatingSummary(businessId) {
     try {
+        console.log('📊 Loading rating summary for:', businessId);
+        
         // Query approved reviews for this business
         const { data: reviews, error } = await supabase
             .from('reviews')
@@ -181,7 +183,12 @@ async function loadRatingSummary(businessId) {
             .eq('business_id', businessId)
             .eq('status', 'approved');
         
-        if (error) throw error;
+        if (error) {
+            console.error('❌ Error loading reviews:', error);
+            throw error;
+        }
+        
+        console.log('✅ Loaded reviews:', reviews ? reviews.length : 0);
         
         if (reviews && reviews.length > 0) {
             // Calculate summary statistics
@@ -195,17 +202,24 @@ async function loadRatingSummary(businessId) {
                 atmosphere_avg: calculateAverage(reviews, 'atmosphere_rating')
             };
             
+            console.log('📊 Summary calculated:', summary);
             displayRatingSummary(summary);
         } else {
-            document.getElementById('rating-summary').innerHTML = `
-                <div class="rating-summary">
-                    <p>Zatím žádné recenze. Buďte první, kdo napíše recenzi!</p>
-                </div>
-            `;
+            const summaryEl = document.getElementById('rating-summary');
+            if (summaryEl) {
+                summaryEl.innerHTML = `
+                    <div class="rating-summary">
+                        <p>Zatím žádné recenze. Buďte první, kdo napíše recenzi!</p>
+                    </div>
+                `;
+            }
         }
     } catch (error) {
         console.error('❌ Failed to load rating summary:', error);
-        document.getElementById('rating-summary').innerHTML = '<p class="error">Nepodařilo se načíst hodnocení.</p>';
+        const summaryEl = document.getElementById('rating-summary');
+        if (summaryEl) {
+            summaryEl.innerHTML = '<p class="error">Nepodařilo se načíst hodnocení.</p>';
+        }
     }
 }
 
