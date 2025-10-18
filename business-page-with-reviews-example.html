@@ -14,27 +14,7 @@
     
     <!-- Business Info Section -->
     <div class="business-container">
-        <h1>Business Name</h1>
-        <p>Business description...</p>
-        
-        <!-- Rating Summary Section -->
-        <div id="rating-summary" class="rating-summary-container">
-            <!-- Will be populated by JavaScript -->
-        </div>
-        
-        <!-- Write Review Button -->
-        <div class="review-actions-header">
-            <button id="login-btn" onclick="showLoginDialog()" style="display: none;">
-                Přihlásit se
-            </button>
-            <button id="logout-btn" onclick="signOut()" style="display: none;">
-                Odhlásit se
-            </button>
-            <button id="write-review-btn" onclick="showReviewForm()" style="display: none;">
-                ✍️ Napsat recenzi
-            </button>
-        </div>
-        
+        <!-- Reviews Section (Moved above rating for better SEO) -->
         <!-- Review Form (hidden by default) -->
         <div id="review-form" class="review-form" style="display: none;">
             <h3>Napište recenzi</h3>
@@ -148,6 +128,30 @@
                 <p class="loading">Načítání recenzí...</p>
             </div>
         </div>
+        
+        <!-- Rating Summary Section -->
+        <div id="rating-summary" class="rating-summary-container">
+            <!-- Will be populated by JavaScript -->
+        </div>
+        <h1>Business Name</h1>
+        <p>Business description...</p>
+        
+        
+        
+        <!-- Write Review Button -->
+        <div class="review-actions-header">
+            <button id="login-btn" onclick="showLoginDialog()" style="display: none;">
+                Přihlásit se
+            </button>
+            <button id="logout-btn" onclick="signOut()" style="display: none;">
+                Odhlásit se
+            </button>
+            <button id="write-review-btn" onclick="showReviewForm()" style="display: none;">
+                ✍️ Napsat recenzi
+            </button>
+        </div>
+        
+        
     </div>
     
     <!-- Footer (your existing footer) -->
