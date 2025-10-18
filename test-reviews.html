@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Business - Reviews System Test</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .test-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        .rating-summary {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        .rating-overview {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .rating-score {
+            display: inline-block;
+        }
+        .rating-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .rating-stars {
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+        }
+        .rating-count {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .category-ratings {
+            margin-top: 1.5rem;
+        }
+        .category-rating {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .category-label {
+            font-weight: 500;
+        }
+        .category-stars {
+            margin: 0 0.5rem;
+        }
+        .category-value {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .review-actions-header {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .review-actions-header button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        #login-btn, #logout-btn {
+            background: #2196F3;
+            color: white;
+        }
+        #write-review-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        .review-form {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .star-rating-input {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+        .star-rating-input input {
+            display: none;
+        }
+        .star-rating-input label {
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-secondary {
+            background: #666;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .review-card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        .review-author {
+            font-weight: bold;
+            color: #333;
+        }
+        .review-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .review-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .review-title {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+        }
+        .review-text {
+            color: #333;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
+        .review-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .category-badge {
+            background: #f0f0f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 16px;
+            font-size: 0.85rem;
+        }
+        .review-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .btn-helpful {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .btn-helpful:hover {
+            background: #e0e0e0;
+        }
+        .no-reviews, .error {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        .error {
+            color: #d32f2f;
+            background: #ffebee;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-info">
+        <h2>🧪 Test stránka - Systém recenzí</h2>
+        <p>Toto je testovací stránka pro ověření funkčnosti systému recenzí.</p>
+        <p><strong>Business ID:</strong> test-business-123</p>
+        <p><a href="/moderation.html">→ Přejít na moderaci</a></p>
+    </div>
+
+    <h1>Test Cannabis Shop</h1>
+    <p>Toto je testovací obchod pro ověření systému recenzí.</p>
+
+    <!-- Rating Summary -->
+    <div id="rating-summary"></div>
+
+    <!-- Action Buttons -->
+    <div class="review-actions-header">
+        <button id="login-btn" onclick="showLoginDialog()" style="display: none;">
+            Přihlásit se
+        </button>
+        <button id="logout-btn" onclick="signOut()" style="display: none;">
+            Odhlásit se
+        </button>
+        <button id="write-review-btn" onclick="showReviewForm()" style="display: none;">
+            ✍️ Napsat recenzi
+        </button>
+    </div>
+
+    <!-- Review Form -->
+    <div id="review-form" class="review-form" style="display: none;">
+        <h3>Napište recenzi</h3>
+        <form onsubmit="handleReviewSubmit(event)">
+            <!-- Overall Rating -->
+            <div class="form-group">
+                <label>Celkové hodnocení *</label>
+                <div class="star-rating-input">
+                    <input type="radio" name="overall_rating" value="5" id="star5" required>
+                    <label for="star5">⭐⭐⭐⭐⭐</label>
+                    <input type="radio" name="overall_rating" value="4" id="star4">
+                    <label for="star4">⭐⭐⭐⭐</label>
+                    <input type="radio" name="overall_rating" value="3" id="star3">
+                    <label for="star3">⭐⭐⭐</label>
+                    <input type="radio" name="overall_rating" value="2" id="star2">
+                    <label for="star2">⭐⭐</label>
+                    <input type="radio" name="overall_rating" value="1" id="star1">
+                    <label for="star1">⭐</label>
+                </div>
+            </div>
+
+            <!-- Title -->
+            <div class="form-group">
+                <label for="review_title">Nadpis recenze</label>
+                <input type="text" id="review_title" name="title" maxlength="100" placeholder="Shrňte svou zkušenost...">
+            </div>
+
+            <!-- Review Text -->
+            <div class="form-group">
+                <label for="review_text">Vaše recenze</label>
+                <textarea id="review_text" name="review_text" rows="5" maxlength="2000" placeholder="Podělte se o své zkušenosti..."></textarea>
+            </div>
+
+            <!-- Category Ratings -->
+            <h4>Hodnocení podle kategorií (volitelné)</h4>
+            
+            <div class="form-group">
+                <label>🌿 Kvalita produktů</label>
+                <select name="product_quality">
+                    <option value="">Nehodnoceno</option>
+                    <option value="5">⭐⭐⭐⭐⭐ Výborné</option>
+                    <option value="4">⭐⭐⭐⭐ Dobré</option>
+                    <option value="3">⭐⭐⭐ Průměrné</option>
+                    <option value="2">⭐⭐ Podprůměrné</option>
+                    <option value="1">⭐ Špatné</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>📦 Výběr</label>
+                <select name="selection">
+                    <option value="">Nehodnoceno</option>
+                    <option value="5">⭐⭐⭐⭐⭐ Výborný</option>
+                    <option value="4">⭐⭐⭐⭐ Dobrý</option>
+                    <option value="3">⭐⭐⭐ Průměrný</option>
+                    <option value="2">⭐⭐ Podprůměrný</option>
+                    <option value="1">⭐ Špatný</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>👥 Personál</label>
+                <select name="staff">
+                    <option value="">Nehodnoceno</option>
+                    <option value="5">⭐⭐⭐⭐⭐ Výborný</option>
+                    <option value="4">⭐⭐⭐⭐ Dobrý</option>
+                    <option value="3">⭐⭐⭐ Průměrný</option>
+                    <option value="2">⭐⭐ Podprůměrný</option>
+                    <option value="1">⭐ Špatný</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>💰 Cena</label>
+                <select name="price">
+                    <option value="">Nehodnoceno</option>
+                    <option value="5">⭐⭐⭐⭐⭐ Výborná</option>
+                    <option value="4">⭐⭐⭐⭐ Dobrá</option>
+                    <option value="3">⭐⭐⭐ Průměrná</option>
+                    <option value="2">⭐⭐ Drahé</option>
+                    <option value="1">⭐ Velmi drahé</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>✨ Atmosféra</label>
+                <select name="atmosphere">
+                    <option value="">Nehodnoceno</option>
+                    <option value="5">⭐⭐⭐⭐⭐ Výborná</option>
+                    <option value="4">⭐⭐⭐⭐ Dobrá</option>
+                    <option value="3">⭐⭐⭐ Průměrná</option>
+                    <option value="2">⭐⭐ Podprůměrná</option>
+                    <option value="1">⭐ Špatná</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Odeslat recenzi</button>
+                <button type="button" class="btn-secondary" onclick="closeReviewForm()">Zrušit</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Reviews List -->
+    <h2>Recenze zákazníků</h2>
+    <div id="reviews-list"></div>
+
+    <script src="/js/reviews.js"></script>
+    <script>
+        // Initialize reviews for test business
+        const businessId = 'test-business-123';
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Initializing test page with business:', businessId);
+            initializeReviews(businessId);
+        });
+    </script>
+</body>
+</html>
