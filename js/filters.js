@@ -4,6 +4,40 @@ let allBusinesses = [];
 let filteredBusinesses = [];
 let currentCategory = '';
 
+// --- Supabase lightweight client for ratings on listing pages ---
+const SUPABASE_URL_LIST = 'https://jafpjwwowylamzdqqiss.supabase.co';
+const SUPABASE_ANON_KEY_LIST = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphZnBqd3dvd3lsYW16ZHFxaXNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NzczNjIsImV4cCI6MjA3NjI1MzM2Mn0.Td02K3J1uFKM5r96UxA45Guy4H2MtNNIXaBVm1Ueoqc';
+let supabaseList = null; let supabaseReady = false;
+
+function renderStarsSmall(r) {
+    const rating = Math.max(0, Math.min(5, Number(r) || 0));
+    const full = Math.floor(rating);
+    const half = rating % 1 >= 0.5 ? 1 : 0;
+    const empty = 5 - full - half;
+    return '⭐'.repeat(full) + (half ? '⭐' : '') + '☆'.repeat(empty);
+}
+
+async function ensureSupabaseList() {
+    if (supabaseReady && supabaseList) return true;
+    try {
+        if (typeof window.supabase === 'undefined' || !window.supabase.createClient) {
+            const s = document.createElement('script');
+            s.src = 'https://unpkg.com/@supabase/supabase-js@2.39.3/dist/umd/supabase.js';
+            s.async = true; await new Promise(res => { s.onload = () => res(); s.onerror = () => res(); document.head.appendChild(s); });
+        }
+        if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+            supabaseList = window.supabase.createClient(SUPABASE_URL_LIST, SUPABASE_ANON_KEY_LIST);
+            supabaseReady = true; return true;
+        }
+    } catch (_) {}
+    return false;
+}
+
+function extractBusinessIdFromUrl(url) {
+    if (!url) return null;
+    try { const parts = url.split('/'); const last = parts[parts.length-1] || ''; return last.replace(/\.html?$/i, ''); } catch(_) { return null; }
+}
+
 // Initialize filters for a specific category
 function initializeFilters(category) {
     currentCategory = category;
@@ -186,11 +220,17 @@ function renderBusinessCards() {
     }
     
     container.innerHTML = '';
+    const businessIds = [];
     
     filteredBusinesses.forEach((business, index) => {
         const card = createBusinessCard(business, index);
         container.appendChild(card);
+        const bid = extractBusinessIdFromUrl(business.url);
+        if (bid) businessIds.push(bid);
     });
+
+    // Batch fetch ratings and update cards
+    loadRatingsForCards(businessIds);
 }
 
 // Create a business card element
@@ -221,8 +261,9 @@ function createBusinessCard(business, index) {
     }
     
     // Build card HTML
+    const businessId = extractBusinessIdFromUrl(business.url);
     card.innerHTML = `
-        <div class="business-card-image" style="background-image: url(\'${imageUrl}\')"></div>
+        <div class="business-card-image" style="background-image: url('${imageUrl}')"></div>
         <div class="business-card-header">
             <h3 class="business-card-title">
                 <a href="${business.url || '#'}">${business.name}</a>
@@ -238,6 +279,10 @@ function createBusinessCard(business, index) {
             ${business.email ? `<div class="business-info-item">✉️ <a href="mailto:${business.email}">${business.email}</a></div>` : ''}
             ${business.website ? `<div class="business-info-item">🌐 <a href="${business.website}" target="_blank">${business.website.replace('https://', '').replace('http://', '').substring(0, 30)}...</a></div>` : ''}
             ${business.products ? `<div class="business-info-item">🌿 ${business.products}</div>` : ''}
+            <div class="business-info-item business-rating" data-bid="${businessId || ''}" style="margin-top:6px;">
+                <span class="stars">${renderStarsSmall(0)}</span>
+                <span class="rating-number" style="margin-left:6px;color:#555;">–</span>
+            </div>
         </div>
         <div class="business-card-footer">
             ${business.url ? `<a href="${business.url}" class="btn btn-primary">Zobrazit detail</a>` : ''}
@@ -246,6 +291,39 @@ function createBusinessCard(business, index) {
     `;
     
     return card;
+}
+
+// Batch load ratings for displayed cards
+async function loadRatingsForCards(businessIds) {
+    try {
+        if (!businessIds || businessIds.length === 0) return;
+        const ok = await ensureSupabaseList();
+        if (!ok) return;
+        const uniqueIds = [...new Set(businessIds)];
+        const { data, error } = await supabaseList
+            .from('reviews')
+            .select('business_id, overall_rating')
+            .in('business_id', uniqueIds)
+            .eq('status', 'approved');
+        if (error) { console.warn('ratings load error', error); return; }
+        const map = {};
+        (data || []).forEach(row => {
+            if (!map[row.business_id]) map[row.business_id] = [];
+            map[row.business_id].push(row.overall_rating);
+        });
+        const nodes = document.querySelectorAll('.business-card .business-rating[data-bid]');
+        nodes.forEach(node => {
+            const bid = node.getAttribute('data-bid');
+            if (!bid) return;
+            const ratings = map[bid] || [];
+            const count = ratings.length;
+            const avg = count ? (ratings.reduce((a,b)=>a+b,0) / count) : 0;
+            const starsEl = node.querySelector('.stars');
+            const numEl = node.querySelector('.rating-number');
+            if (starsEl) starsEl.textContent = renderStarsSmall(avg);
+            if (numEl) numEl.textContent = count ? `${avg.toFixed(1)} (${count})` : '–';
+        });
+    } catch (e) { console.warn('ratings update failed', e); }
 }
 
 // Update results count
