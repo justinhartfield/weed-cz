@@ -5,16 +5,27 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 // Initialize Supabase client
 let supabase;
-try {
-    if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('✅ Supabase client initialized');
-    } else {
-        console.error('❌ Supabase library not loaded');
+let supabaseInitialized = false;
+
+function initSupabase() {
+    try {
+        if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            supabaseInitialized = true;
+            console.log('✅ Supabase client initialized');
+            return true;
+        } else {
+            console.error('❌ Supabase library not loaded');
+            return false;
+        }
+    } catch (error) {
+        console.error('❌ Failed to initialize Supabase:', error);
+        return false;
     }
-} catch (error) {
-    console.error('❌ Failed to initialize Supabase:', error);
 }
+
+// Try to initialize immediately
+initSupabase();
 
 // Current user state
 let currentUser = null;
