@@ -348,10 +348,17 @@ async function loadReviews(businessId) {
 }
 
 // Display reviews
-function displayReviews(reviews) {
-    const html = reviews.map(review => `
+function displayReviews(reviews, userMap = {}) {
+    console.log('🖼️ Displaying reviews:', reviews.length);
+    
+    const html = reviews.map(review => {
+        const authorName = userMap[review.user_id] || 'User';
+        return `
         <div class="review-card">
             <div class="review-header">
+                <div class="review-author">
+                    <strong>${escapeHTML(authorName)}</strong>
+                </div>
                 <div class="review-rating">
                     <span class="stars">${renderStars(review.overall_rating)}</span>
                     <span class="rating-number">${review.overall_rating}/5</span>
@@ -379,9 +386,13 @@ function displayReviews(reviews) {
                 </button>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
     
-    document.getElementById('reviews-list').innerHTML = html;
+    const listEl = document.getElementById('reviews-list');
+    if (listEl) {
+        listEl.innerHTML = html;
+    }
 }
 
 // Escape HTML
