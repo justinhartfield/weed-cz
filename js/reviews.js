@@ -232,6 +232,13 @@ async function loadRatingSummary(businessId) {
             if (summaryEl) {
                 summaryEl.innerHTML = `
                     <div class="rating-summary">
+                        <div class="rating-overview">
+                            <div class="rating-score">
+                                <span class="rating-number average-rating">0.0</span>
+                                <div class="rating-stars">${renderStars(0)}</div>
+                                <div class="rating-count review-count" data-count="0">0 recenzí</div>
+                            </div>
+                        </div>
                         <p>Zatím žádné recenze. Buďte první, kdo napíše recenzi!</p>
                     </div>
                 `;

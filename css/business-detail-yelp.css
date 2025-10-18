@@ -586,8 +586,15 @@
 
 /* Hide old styles when using Yelp layout */
 .yelp-layout .business-header,
-.yelp-layout .business-info,
-.yelp-layout .business-container:not(.business-content-wrapper) {
+.yelp-layout .business-info {
     display: none;
 }
+
+/* Ensure footer reviews container and inner UI are always visible on Yelp layout */
+.yelp-layout .business-container { display: block; }
+.yelp-layout #rating-summary,
+.yelp-layout .review-actions-header,
+.yelp-layout #review-form,
+.yelp-layout .reviews-section,
+.yelp-layout #reviews-list { display: block; }
 
