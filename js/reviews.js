@@ -30,6 +30,10 @@ initSupabase();
 // Current user state
 let currentUser = null;
 let currentBusinessId = null;
+let currentSort = 'newest';
+let currentFilters = { withText: false, withCategoryRatings: false, minStars: null };
+let cachedReviews = [];
+let cachedUserMap = {};
 
 // Initialize reviews system
 async function initializeReviews(businessId) {
@@ -222,7 +226,8 @@ async function loadRatingSummary(businessId) {
                 selection_avg: calculateAverage(reviews, 'selection_rating'),
                 staff_avg: calculateAverage(reviews, 'staff_rating'),
                 price_avg: calculateAverage(reviews, 'price_rating'),
-                atmosphere_avg: calculateAverage(reviews, 'atmosphere_rating')
+                atmosphere_avg: calculateAverage(reviews, 'atmosphere_rating'),
+                distribution: [1,2,3,4,5].reduce((acc, star) => { acc[star] = reviews.filter(r => r.overall_rating === star).length; return acc; }, {})
             };
             
             console.log('📊 Summary calculated:', summary);
@@ -238,6 +243,15 @@ async function loadRatingSummary(businessId) {
                                 <div class="rating-stars">${renderStars(0)}</div>
                                 <div class="rating-count review-count" data-count="0">0 recenzí</div>
                             </div>
+                        </div>
+                        <div class="rating-distribution">
+                            ${[5,4,3,2,1].map(star => `
+                                <div class="rating-bar-row">
+                                    <div class="rating-bar-label">${star}★</div>
+                                    <div class="rating-bar-bg"><div class="rating-bar-fill" style="width:0%"></div></div>
+                                    <div class="rating-bar-count">0</div>
+                                </div>
+                            `).join('')}
                         </div>
                         <p>Zatím žádné recenze. Buďte první, kdo napíše recenzi!</p>
                     </div>
@@ -273,6 +287,19 @@ function displayRatingSummary(summary) {
                     <div class="rating-stars">${renderStars(avgRating)}</div>
                     <div class="rating-count review-count" data-count="${reviewCount}">${reviewCount} ${reviewCount === 1 ? 'recenze' : reviewCount < 5 ? 'recenze' : 'recenzí'}</div>
                 </div>
+            </div>
+            <div class="rating-distribution">
+                ${[5,4,3,2,1].map(star => {
+                    const count = summary.distribution ? (summary.distribution[star] || 0) : 0;
+                    const pct = reviewCount ? Math.round(count / reviewCount * 100) : 0;
+                    return `
+                        <div class="rating-bar-row">
+                            <div class="rating-bar-label">${star}★</div>
+                            <div class="rating-bar-bg"><div class="rating-bar-fill" style="width:${pct}%"></div></div>
+                            <div class="rating-bar-count">${count}</div>
+                        </div>
+                    `;
+                }).join('')}
             </div>
             
             ${summary.product_quality_avg ? `
@@ -354,14 +381,17 @@ async function loadReviews(businessId) {
                 .select('id, display_name, email')
                 .in('id', userIds);
             
-            const userMap = {};
+            cachedUserMap = {};
             if (users) {
                 users.forEach(u => {
-                    userMap[u.id] = u.display_name || u.email?.split('@')[0] || 'User';
+                    cachedUserMap[u.id] = u.display_name || u.email?.split('@')[0] || 'User';
                 });
             }
-            
-            displayReviews(reviews, userMap);
+            cachedReviews = reviews || [];
+
+            renderReviewControls();
+            const processed = applySortAndFilters(cachedReviews);
+            displayReviews(processed, cachedUserMap);
         } else {
             const listEl = document.getElementById('reviews-list');
             if (listEl) {
@@ -383,17 +413,18 @@ function displayReviews(reviews, userMap = {}) {
     
     const html = reviews.map(review => {
         const authorName = userMap[review.user_id] || 'User';
+        const initials = getInitials(authorName);
         return `
         <div class="review-card">
             <div class="review-header">
-                <div class="review-author">
-                    <strong>${escapeHTML(authorName)}</strong>
+                <div class="review-avatar">${initials}</div>
+                <div class="review-user-info">
+                    <div class="review-user-name">${escapeHTML(authorName)}</div>
+                    <div class="review-rating-date">
+                        <span class="review-stars">${renderStars(review.overall_rating)}</span>
+                        <span class="review-date">${new Date(review.created_at).toLocaleDateString('cs-CZ')}</span>
+                    </div>
                 </div>
-                <div class="review-rating">
-                    <span class="stars">${renderStars(review.overall_rating)}</span>
-                    <span class="rating-number">${review.overall_rating}/5</span>
-                </div>
-                <div class="review-date">${new Date(review.created_at).toLocaleDateString('cs-CZ')}</div>
             </div>
             
             ${review.title ? `<h4 class="review-title">${escapeHTML(review.title)}</h4>` : ''}
@@ -425,6 +456,68 @@ function displayReviews(reviews, userMap = {}) {
     }
 }
 
+// ---------- Reviews controls (sort + filters) ----------
+function renderReviewControls() {
+    const section = document.querySelector('.reviews-section');
+    if (!section) return;
+    let controls = document.getElementById('reviews-controls');
+    if (!controls) {
+        controls = document.createElement('div');
+        controls.id = 'reviews-controls';
+        controls.className = 'reviews-controls';
+        section.insertBefore(controls, document.getElementById('reviews-list'));
+    }
+    controls.innerHTML = `
+        <div class="controls-left">
+            <button class="filter-chip ${currentFilters.withText ? 'active' : ''}" data-filter="withText">S textem</button>
+            <button class="filter-chip ${currentFilters.withCategoryRatings ? 'active' : ''}" data-filter="withCategoryRatings">S kategoriemi</button>
+            <button class="filter-chip ${currentFilters.minStars===4 ? 'active' : ''}" data-filter="minStars-4">★ 4+</button>
+        </div>
+        <div class="controls-right">
+            <label for="reviews-sort" style="margin-right:8px;color:#666;">Seřadit:</label>
+            <select id="reviews-sort" class="sort-select">
+                <option value="newest" ${currentSort==='newest'?'selected':''}>Nejnovější</option>
+                <option value="highest" ${currentSort==='highest'?'selected':''}>Nejvyšší hodnocení</option>
+                <option value="lowest" ${currentSort==='lowest'?'selected':''}>Nejnižší hodnocení</option>
+            </select>
+        </div>
+    `;
+
+    controls.querySelectorAll('.filter-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const key = btn.getAttribute('data-filter');
+            if (key === 'withText') currentFilters.withText = !currentFilters.withText;
+            else if (key === 'withCategoryRatings') currentFilters.withCategoryRatings = !currentFilters.withCategoryRatings;
+            else if (key === 'minStars-4') currentFilters.minStars = currentFilters.minStars===4 ? null : 4;
+            refreshReviews();
+        });
+    });
+    const sortSelect = document.getElementById('reviews-sort');
+    if (sortSelect) sortSelect.addEventListener('change', (e) => { currentSort = e.target.value; refreshReviews(); });
+}
+
+function applySortAndFilters(reviews) {
+    let out = Array.isArray(reviews) ? reviews.slice() : [];
+    if (currentFilters.withText) out = out.filter(r => !!(r.review_text && r.review_text.trim().length > 0));
+    if (currentFilters.withCategoryRatings) out = out.filter(r => r.product_quality_rating || r.selection_rating || r.staff_rating || r.price_rating || r.atmosphere_rating);
+    if (currentFilters.minStars) out = out.filter(r => (r.overall_rating || 0) >= currentFilters.minStars);
+    if (currentSort === 'highest') out.sort((a,b) => (b.overall_rating||0) - (a.overall_rating||0));
+    else if (currentSort === 'lowest') out.sort((a,b) => (a.overall_rating||0) - (b.overall_rating||0));
+    else out.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+    return out;
+}
+
+function refreshReviews() {
+    const processed = applySortAndFilters(cachedReviews || []);
+    displayReviews(processed, cachedUserMap || {});
+}
+
+function getInitials(name) {
+    const n = (name || '').trim();
+    if (!n) return 'U';
+    const parts = n.split(/\s+/).slice(0,2);
+    return parts.map(p => p[0]).join('').toUpperCase();
+}
 // Escape HTML
 function escapeHTML(str) {
     if (!str) return '';
