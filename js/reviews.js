@@ -424,6 +424,7 @@ function closeReviewForm() {
 async function submitReview(reviewData) {
     if (!currentUser) {
         alert('Prosím přihlaste se pro napsání recenze.');
+        showLoginDialog();
         return;
     }
     
@@ -432,30 +433,67 @@ async function submitReview(reviewData) {
         return;
     }
     
+    console.log('📤 Submitting review:', reviewData);
+    
     try {
+        const reviewPayload = {
+            business_id: currentBusinessId,
+            user_id: currentUser.id,
+            overall_rating: parseInt(reviewData.overallRating),
+            title: reviewData.title || null,
+            review_text: reviewData.reviewText || null,
+            product_quality_rating: reviewData.productQuality ? parseInt(reviewData.productQuality) : null,
+            selection_rating: reviewData.selection ? parseInt(reviewData.selection) : null,
+            staff_rating: reviewData.staff ? parseInt(reviewData.staff) : null,
+            price_rating: reviewData.price ? parseInt(reviewData.price) : null,
+            atmosphere_rating: reviewData.atmosphere ? parseInt(reviewData.atmosphere) : null
+        };
+        
+        console.log('📦 Review payload:', reviewPayload);
+        
         const { data, error } = await supabase
             .from('reviews')
-            .insert([{
-                business_id: currentBusinessId,
-                user_id: currentUser.id,
-                overall_rating: reviewData.overallRating,
-                title: reviewData.title || null,
-                review_text: reviewData.reviewText || null,
-                product_quality_rating: reviewData.productQuality || null,
-                selection_rating: reviewData.selection || null,
-                staff_rating: reviewData.staff || null,
-                price_rating: reviewData.price || null,
-                atmosphere_rating: reviewData.atmosphere || null,
-                status: 'pending'
-            }]);
+            .insert([reviewPayload])
+            .select();
         
-        if (error) throw error;
+        if (error) {
+            console.error('❌ Supabase error:', error);
+            
+            // Check for rate limit error
+            if (error.message && error.message.includes('90 days')) {
+                alert('❌ Tuto firmu můžete recenzovat pouze jednou za 90 dní.');
+                return;
+            }
+            
+            throw error;
+        }
         
-        alert('✅ Děkujeme za vaši recenzi! Bude zveřejněna po schválení moderátorem.');
+        console.log('✅ Review submitted:', data);
+        
+        // Check status of submitted review
+        const status = data && data[0] ? data[0].status : 'pending';
+        
+        if (status === 'approved') {
+            alert('✅ Děkujeme za vaši recenzi! Byla automaticky schválena a je nyní viditelná.');
+        } else if (status === 'rejected') {
+            alert('❌ Vaše recenze byla zamítnuta automatickým systémem moderace.');
+        } else {
+            alert('✅ Děkujeme za vaši recenzi! Bude zveřejněna po schválení moderátorem.');
+        }
+        
         closeReviewForm();
         
         // Reset form
-        document.querySelector('#review-form form').reset();
+        const form = document.querySelector('#review-form form');
+        if (form) {
+            form.reset();
+        }
+        
+        // Reload reviews if approved
+        if (status === 'approved') {
+            await loadRatingSummary(currentBusinessId);
+            await loadReviews(currentBusinessId);
+        }
         
     } catch (error) {
         console.error('❌ Failed to submit review:', error);
