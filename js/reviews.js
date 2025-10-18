@@ -46,11 +46,14 @@ async function initializeReviews(businessId) {
         }
     }
     
-    // Ensure business exists in database
-    await ensureBusinessExists(businessId);
-    
+    // Make the review form visible for everyone (override inline style)
+    ensureReviewFormVisible();
+
     // Check auth status
     await checkAuth();
+    
+    // Ensure business exists in database only for privileged logged-in users
+    await ensureBusinessExists(businessId);
     
     // Load rating summary
     await loadRatingSummary(businessId);
@@ -62,6 +65,23 @@ async function initializeReviews(businessId) {
 // Ensure business exists in database
 async function ensureBusinessExists(businessId) {
     try {
+        // Skip for anonymous users
+        if (!currentUser) return;
+        
+        // Only moderators/admins are allowed to upsert businesses
+        let isPrivileged = false;
+        try {
+            const { data: me } = await supabase
+                .from('users')
+                .select('role')
+                .eq('id', currentUser.id)
+                .single();
+            isPrivileged = !!(me && (me.role === 'admin' || me.role === 'moderator'));
+        } catch (_) {
+            isPrivileged = false;
+        }
+        if (!isPrivileged) return;
+
         const { data: existing, error: selectError } = await supabase
             .from('businesses')
             .select('id')
@@ -97,15 +117,18 @@ async function checkAuth() {
             currentUser = session.user;
             console.log('✅ User logged in:', currentUser.email);
             updateUIForLoggedInUser();
+            updateReviewFormAccess();
         } else {
             currentUser = null;
             console.log('ℹ️ User not logged in');
             updateUIForLoggedOutUser();
+            updateReviewFormAccess();
         }
     } catch (error) {
         console.error('❌ Auth check failed:', error);
         currentUser = null;
         updateUIForLoggedOutUser();
+        updateReviewFormAccess();
     }
 }
 
@@ -566,12 +589,59 @@ if (supabase) {
         if (event === 'SIGNED_IN') {
             currentUser = session.user;
             updateUIForLoggedInUser();
+            updateReviewFormAccess();
         } else if (event === 'SIGNED_OUT') {
             currentUser = null;
             updateUIForLoggedOutUser();
+            updateReviewFormAccess();
         }
     });
 }
 
 console.log('✅ Reviews system loaded');
+
+// Ensure the review form is visible (override inline display:none across pages)
+function ensureReviewFormVisible() {
+    const formWrapper = document.getElementById('review-form');
+    if (formWrapper && formWrapper.style && formWrapper.style.display === 'none') {
+        formWrapper.style.display = 'block';
+    }
+}
+
+// For logged-out users: show prompt and disable inputs; enable for logged-in users
+function updateReviewFormAccess() {
+    const formWrapper = document.getElementById('review-form');
+    if (!formWrapper) return;
+
+    // Always visible
+    ensureReviewFormVisible();
+
+    // Create or find prompt container
+    let prompt = document.getElementById('review-form-login-prompt');
+    if (!prompt) {
+        prompt = document.createElement('div');
+        prompt.id = 'review-form-login-prompt';
+        prompt.style.margin = '0 0 12px 0';
+        prompt.style.padding = '10px 12px';
+        prompt.style.border = '1px solid #ffd7c2';
+        prompt.style.background = '#fff4ec';
+        prompt.style.borderRadius = '6px';
+        prompt.style.display = 'none';
+        prompt.innerHTML = 'Pro odeslání recenze se prosím <a href="#" id="review-login-link">přihlaste</a>.';
+        formWrapper.insertBefore(prompt, formWrapper.firstChild);
+        const link = prompt.querySelector('#review-login-link');
+        if (link) link.addEventListener('click', function(e) { e.preventDefault(); showLoginDialog(); });
+    }
+
+    // Enable/disable fields
+    const selector = '#review-form input, #review-form textarea, #review-form select, #review-form button[type="submit"]';
+    const fields = document.querySelectorAll(selector);
+    if (!currentUser) {
+        prompt.style.display = 'block';
+        fields.forEach(function(el) { el.disabled = true; });
+    } else {
+        prompt.style.display = 'none';
+        fields.forEach(function(el) { el.disabled = false; });
+    }
+}
 

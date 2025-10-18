@@ -83,40 +83,47 @@ ALTER TABLE public.review_votes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.review_flags ENABLE ROW LEVEL SECURITY;
 
 -- Users policies
+DROP POLICY IF EXISTS "Users can view all users" ON public.users;
 CREATE POLICY "Users can view all users" ON public.users FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Users can update own profile" ON public.users;
 CREATE POLICY "Users can update own profile" ON public.users FOR UPDATE USING (auth.uid() = id);
 
 -- Businesses policies
+DROP POLICY IF EXISTS "Anyone can view businesses" ON public.businesses;
 CREATE POLICY "Anyone can view businesses" ON public.businesses FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Admins can insert businesses" ON public.businesses;
 CREATE POLICY "Admins can insert businesses" ON public.businesses FOR INSERT 
     WITH CHECK (EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role IN ('admin', 'moderator')));
 
 -- Reviews policies
+DROP POLICY IF EXISTS "Anyone can view approved reviews" ON public.reviews;
 CREATE POLICY "Anyone can view approved reviews" ON public.reviews FOR SELECT 
     USING (status = 'approved' OR user_id = auth.uid() OR 
            EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role IN ('admin', 'moderator')));
-
+DROP POLICY IF EXISTS "Authenticated users can insert reviews" ON public.reviews;
 CREATE POLICY "Authenticated users can insert reviews" ON public.reviews FOR INSERT 
     WITH CHECK (auth.uid() IS NOT NULL AND user_id = auth.uid());
-
+DROP POLICY IF EXISTS "Users can update own pending reviews" ON public.reviews;
 CREATE POLICY "Users can update own pending reviews" ON public.reviews FOR UPDATE 
     USING (user_id = auth.uid() AND status = 'pending')
     WITH CHECK (user_id = auth.uid());
-
+DROP POLICY IF EXISTS "Moderators can update any review" ON public.reviews;
 CREATE POLICY "Moderators can update any review" ON public.reviews FOR UPDATE 
     USING (EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role IN ('admin', 'moderator')));
 
 -- Review votes policies
+DROP POLICY IF EXISTS "Authenticated users can view votes" ON public.review_votes;
 CREATE POLICY "Authenticated users can view votes" ON public.review_votes FOR SELECT 
     USING (auth.uid() IS NOT NULL);
-
+DROP POLICY IF EXISTS "Authenticated users can insert votes" ON public.review_votes;
 CREATE POLICY "Authenticated users can insert votes" ON public.review_votes FOR INSERT 
     WITH CHECK (auth.uid() IS NOT NULL AND user_id = auth.uid());
 
 -- Review flags policies
+DROP POLICY IF EXISTS "Moderators can view flags" ON public.review_flags;
 CREATE POLICY "Moderators can view flags" ON public.review_flags FOR SELECT 
     USING (EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role IN ('admin', 'moderator')));
-
+DROP POLICY IF EXISTS "Authenticated users can insert flags" ON public.review_flags;
 CREATE POLICY "Authenticated users can insert flags" ON public.review_flags FOR INSERT 
     WITH CHECK (auth.uid() IS NOT NULL AND user_id = auth.uid());
 
