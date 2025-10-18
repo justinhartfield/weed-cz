@@ -417,7 +417,31 @@ function showReviewForm() {
 
 // Close review form
 function closeReviewForm() {
-    document.getElementById('review-form').style.display = 'none';
+    const formEl = document.getElementById('review-form');
+    if (formEl) {
+        formEl.style.display = 'none';
+    }
+}
+
+// Handle review form submission
+function handleReviewSubmit(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    const reviewData = {
+        overallRating: formData.get('overall_rating'),
+        title: formData.get('title') || document.getElementById('review_title')?.value,
+        reviewText: formData.get('review_text') || document.getElementById('review_text')?.value,
+        productQuality: formData.get('product_quality'),
+        selection: formData.get('selection'),
+        staff: formData.get('staff'),
+        price: formData.get('price'),
+        atmosphere: formData.get('atmosphere')
+    };
+    
+    submitReview(reviewData);
 }
 
 // Submit review
